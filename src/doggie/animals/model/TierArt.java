@@ -32,7 +32,7 @@ public class TierArt implements java.io.Serializable {
 	
     @OneToMany(mappedBy="tierArt", fetch=FetchType.EAGER)
     @OrderBy("name")
-    private Set<AnimalModel> tiere;
+    private Set<AnimalModel> animals;
 	
 	@Version
 	long version;
@@ -69,18 +69,18 @@ public class TierArt implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Set<AnimalModel> getTiere() {
-		return tiere;
+	public Set<AnimalModel> getAnimals() {
+		return animals;
 	}
 
-	public void setTiere(Set<AnimalModel> tiere) {
-		this.tiere = tiere;
+	public void setAnimals(Set<AnimalModel> tiere) {
+		this.animals = tiere;
 	}
 
-	public void addTier(AnimalModel tier) {
-		if (tiere == null) {
-			tiere = new HashSet<AnimalModel>();
+	public void addAnimal(AnimalModel tier) {
+		if (animals == null) {
+			animals = new HashSet<AnimalModel>();
 		}
-		tiere.add(tier);
+		animals.add(tier);
 	}
 }

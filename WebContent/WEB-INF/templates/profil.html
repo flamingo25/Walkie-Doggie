@@ -12,22 +12,30 @@
 	<div class="container" role="main">
 
 		<div class="page-header">
-			<h1>Petbook</h1>
+			<h1>Profil</h1>
 		</div>
 		
-		<!-- list all profiles -->
-		
-		<div th:each="animal : ${animals}">
 		<p th:text="${animal.id}"></p>
-		<a th:text="${animal.name}" th:href="@{/profil(id=${animal.id})}"></a>
+		<p th:text="${animal.name}"></p>
+		<p th:text="${animal.rasse}"></p>
+		<p th:text="${animal.farbe}"></p>
+		<p th:text="${animal.tierAlter}"></p>
+		<p th:text="${animal.geschlecht}"></p>
+		<p th:text="${animal.kastriert}"></p>
 		<p th:text="${animal.beschreibung}"></p>
-		
 		<p th:text="${animal.tierArt.name}"></p>
-		<p></p>
+		<div th:each="impfung : ${impfungen}">
+		<p th:text="${impfung.name}"></p>
 		
 		</div>
+		<div th:each="ac : ${acs}">
+		<p th:text="${ac.verträglichkeit.beschreibung}"></p>
+		<p th:text="${ac.status}"></p>
+
+		</div>
 		
-		<!-- end of profiles -->
+		
+		</div>
 		
 	</div>
 	<!--  End of container -->

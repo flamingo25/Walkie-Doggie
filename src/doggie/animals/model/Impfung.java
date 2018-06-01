@@ -29,7 +29,7 @@ public class Impfung implements java.io.Serializable {
 	//Relationship
 	
 	@ManyToMany(mappedBy = "impfungen",fetch=FetchType.EAGER)
-	private List<AnimalModel> tiere;
+	private List<AnimalModel> animals;
 	
 	@Version
 	long version;
@@ -57,19 +57,19 @@ public class Impfung implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getBeschreibung() {
+	public String getName() {
 		return name;
 	}
 
-	public void setBeschreibung(String beschreibung) {
+	public void setName(String beschreibung) {
 		this.name = beschreibung;
 	}
 
-	public List<AnimalModel> getTiere() {
-		return tiere;
+	public List<AnimalModel> getAnimals() {
+		return animals;
 	}
 
-	public void setTiere(List<AnimalModel> tiere) {
-		this.tiere = tiere;
+	public void setAnimals(List<AnimalModel> tiere) {
+		this.animals = tiere;
 	}
 }

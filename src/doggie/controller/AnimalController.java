@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import doggie.animals.dao.ACRepository;
 import doggie.animals.dao.AnimalRepository;
 import doggie.animals.dao.CompatibilityRepository;
+import doggie.animals.dao.ImpfungRepository;
 import doggie.animals.model.AnimalModel;
 import doggie.animals.model.Impfung;
 import doggie.animals.model.TierArt;
@@ -23,6 +26,12 @@ public class AnimalController {
 	
 	@Autowired
 	CompatibilityRepository compatibilityRepository;
+	
+	@Autowired
+	ImpfungRepository impfungRepository;
+	
+	@Autowired
+	ACRepository acRepository;
 	
 	@RequestMapping(value = { "/fill" })
 	public String fillData(Model model) {
@@ -56,5 +65,17 @@ public class AnimalController {
 		model.addAttribute("animals", animals);
 		
 		return "petbook";
+	}
+	
+	@RequestMapping(value = { "/profil" })
+	public String profil(Model model, @RequestParam int id) {
+		AnimalModel animal = animalRepository.findById(id);
+		model.addAttribute("animal", animal);
+		List<Impfung> impfungen = impfungRepository.findAllByAnimals(animal);
+		model.addAttribute("impfungen", impfungen);
+		List<TierVerträglichkeit> acs = acRepository.findAllByTier(animal);
+		model.addAttribute("acs", acs);
+		
+		return "profil";
 	}
 }
