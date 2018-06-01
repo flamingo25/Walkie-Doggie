@@ -12,10 +12,22 @@
 	<div class="container" role="main">
 
 		<div class="page-header">
-			<h1>Default Index</h1>
+			<h1>Petbook</h1>
 		</div>
 		
-		<a th:href="@{/petbook}" class="btn btn-danger">Petbook</a>
+		<!-- list all profiles -->
+		
+		<div th:each="animal : ${animals}">
+		<p th:text="${animal.id}"></p>
+		<a th:text="${animal.name}" th:href="@{/profil(id=${animal.id})}"></a>
+		<p th:text="${animal.description}"></p>
+		
+		<p th:text="${animal.species.name}"></p>
+		<p></p>
+		
+		</div>
+		
+		<!-- end of profiles -->
 		
 	</div>
 	<!--  End of container -->

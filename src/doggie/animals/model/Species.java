@@ -15,8 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "tierart")
-public class TierArt implements java.io.Serializable {
+@Table(name = "species")
+public class Species implements java.io.Serializable {
 	
 	@Id
 	@Column(name = "id")
@@ -30,9 +30,8 @@ public class TierArt implements java.io.Serializable {
 	
 	//Relationship
 	
-    @OneToMany(mappedBy="tierArt", fetch=FetchType.EAGER)
-    @OrderBy("name")
-    private Set<AnimalModel> tiere;
+    @OneToMany(mappedBy="species", fetch=FetchType.EAGER)
+    private Set<AnimalModel> animals;
 	
 	@Version
 	long version;
@@ -41,16 +40,16 @@ public class TierArt implements java.io.Serializable {
 	
 	//Constructor
 	
-	public TierArt() {
+	public Species() {
 	}
 	
-	public TierArt(String tierArt) {
+	public Species(String name) {
 		super();
-		this.name = tierArt;
+		this.name = name;
 	}
-	
-	
-	
+
+
+
 	//Getter + Setter
 
 	public int getId() {
@@ -69,18 +68,18 @@ public class TierArt implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Set<AnimalModel> getTiere() {
-		return tiere;
+	public Set<AnimalModel> getAnimals() {
+		return animals;
 	}
 
-	public void setTiere(Set<AnimalModel> tiere) {
-		this.tiere = tiere;
+	public void setAnimals(Set<AnimalModel> animals) {
+		this.animals = animals;
 	}
-
-	public void addTier(AnimalModel tier) {
-		if (tiere == null) {
-			tiere = new HashSet<AnimalModel>();
+	
+	public void addAnimal(AnimalModel animal) {
+		if (animals == null) {
+			animals = new HashSet<AnimalModel>();
 		}
-		tiere.add(tier);
+		animals.add(animal);
 	}
 }

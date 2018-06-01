@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "tier_vertraeglichkeit")
-public class TierVerträglichkeit implements java.io.Serializable {
+@Table(name = "ac")
+public class AC implements java.io.Serializable {
 
 	@Id
 	@Column(name = "id")
@@ -26,12 +26,12 @@ public class TierVerträglichkeit implements java.io.Serializable {
 	//Relationship
 	
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "tier_id")
-	private AnimalModel tier;
+    @JoinColumn(name = "animal_id")
+	private AnimalModel animal;
     
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "verträglichkeit_id")
-	private Verträglichkeit verträglichkeit;
+    @JoinColumn(name = "compatibility_id")
+	private Compatibility compatibility;
     
     @Column
 	private boolean status;
@@ -40,20 +40,18 @@ public class TierVerträglichkeit implements java.io.Serializable {
     
 	//Constructor
     
-    public TierVerträglichkeit() {
+    public AC() {
 	}
-      
-	public TierVerträglichkeit(AnimalModel tier, Verträglichkeit verträglichkeit, boolean status) {
+
+	public AC(boolean status) {
 		super();
-		this.tier = tier;
-		this.verträglichkeit = verträglichkeit;
 		this.status = status;
 	}
 
 	@Version
 	long version;
-    
-	
+
+
 
 	//Getter + Setter
 	
@@ -65,26 +63,26 @@ public class TierVerträglichkeit implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public AnimalModel getTier() {
-		return tier;
+	public AnimalModel getAnimal() {
+		return animal;
 	}
-	
-	public void setTier(AnimalModel tier) {
-		this.tier = tier;
+
+	public void setAnimal(AnimalModel animal) {
+		this.animal = animal;
 	}
-	
-	public Verträglichkeit getVerträglichkeit() {
-		return verträglichkeit;
+
+	public Compatibility getCompatibility() {
+		return compatibility;
 	}
-	
-	public void setVerträglichkeit(Verträglichkeit verträglichkeit) {
-		this.verträglichkeit = verträglichkeit;
+
+	public void setCompatibility(Compatibility compatibility) {
+		this.compatibility = compatibility;
 	}
-	
+
 	public boolean isStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
