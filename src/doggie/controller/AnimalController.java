@@ -1,5 +1,7 @@
 package doggie.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,5 +46,15 @@ public class AnimalController {
 		compatibilityRepository.save(tttt);
 					
 		return "index";
+	}
+	
+	@RequestMapping(value = "/petbook")
+	public String petbook(Model model) {
+		
+		List<AnimalModel> animals = animalRepository.findAll();
+
+		model.addAttribute("animals", animals);
+		
+		return "petbook";
 	}
 }
