@@ -14,8 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "vertraeglichkeit")
-public class Verträglichkeit implements java.io.Serializable {
+@Table(name = "compatibility")
+public class Compatibility implements java.io.Serializable {
 	
 	@Id
 	@Column(name = "id")
@@ -23,14 +23,14 @@ public class Verträglichkeit implements java.io.Serializable {
 	private int id;
 
 	@Column(nullable = false, length = 30)
-	private String beschreibung;
+	private String name;
 	
 	
 	
 	//Relationship
 	
-	@OneToMany(mappedBy="verträglichkeit", fetch = FetchType.LAZY)
-	private Set<TierVerträglichkeit> tierverträglichkeit;
+	@OneToMany(mappedBy="compatibility", fetch = FetchType.LAZY)
+	private Set<AC> acs;
 	
 	@Version
 	long version;
@@ -39,14 +39,14 @@ public class Verträglichkeit implements java.io.Serializable {
 	
 	//Constructor
 	
-	public Verträglichkeit() {
+	public Compatibility() {
 	}
 
-	public Verträglichkeit(String beschreibung) {
+	public Compatibility(String name) {
 		super();
-		this.beschreibung = beschreibung;
+		this.name = name;
 	}
-	
+
 	
 	
 	//Getter + Setter
@@ -59,19 +59,20 @@ public class Verträglichkeit implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getBeschreibung() {
-		return beschreibung;
+	public String getName() {
+		return name;
 	}
 
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public Set<TierVerträglichkeit> getTiere() {
-		return tierverträglichkeit;
+	public Set<AC> getAcs() {
+		return acs;
 	}
 
-	public void setTiere(Set<TierVerträglichkeit> tierverträglichkeit) {
-		this.tierverträglichkeit = tierverträglichkeit;
+	public void setAcs(Set<AC> acs) {
+		this.acs = acs;
 	}
+
 }

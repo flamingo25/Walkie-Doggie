@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import doggie.animals.model.AnimalModel;
-import doggie.animals.model.Impfung;
+import doggie.animals.model.Vaccination;
 
 @Repository
 @Transactional
-public interface ImpfungRepository extends JpaRepository<Impfung, Integer> {
+public interface VaccinationRepository extends JpaRepository<Vaccination, Integer> {
 
-	List<Impfung> findAllByAnimals(AnimalModel animalModel);
+	List<Vaccination> findAllByAnimals(AnimalModel animalModel);
 }

@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "impfung")
-public class Impfung implements java.io.Serializable {
+@Table(name = "vaccination")
+public class Vaccination implements java.io.Serializable {
 	
 	@Id
 	@Column(name = "id")
@@ -28,7 +28,7 @@ public class Impfung implements java.io.Serializable {
 	
 	//Relationship
 	
-	@ManyToMany(mappedBy = "impfungen",fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy = "vaccinations",fetch=FetchType.EAGER)
 	private List<AnimalModel> animals;
 	
 	@Version
@@ -37,16 +37,16 @@ public class Impfung implements java.io.Serializable {
 	
 	//Constructor
 	
-	public Impfung() {
+	public Vaccination() {
+	}
+	
+	public Vaccination(String name) {
+		super();
+		this.name = name;
 	}
 
-	public Impfung(String beschreibung) {
-		super();
-		this.name = beschreibung;
-	}
-	
-	
-	
+
+
 	//Getter + Setter
 
 	public int getId() {
@@ -61,15 +61,15 @@ public class Impfung implements java.io.Serializable {
 		return name;
 	}
 
-	public void setName(String beschreibung) {
-		this.name = beschreibung;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<AnimalModel> getAnimals() {
 		return animals;
 	}
 
-	public void setAnimals(List<AnimalModel> tiere) {
-		this.animals = tiere;
+	public void setAnimals(List<AnimalModel> animals) {
+		this.animals = animals;
 	}
 }

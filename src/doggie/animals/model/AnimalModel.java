@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 @Entity
-@Table(name = "tiere")
+@Table(name = "animals")
 public class AnimalModel implements java.io.Serializable {
 
 	@Id
@@ -30,35 +30,35 @@ public class AnimalModel implements java.io.Serializable {
 	private String name;
 
 	@Column(nullable = false, length = 30)
-	private String rasse;
+	private String breed;
 
 	@Column(nullable = false, length = 30)
-	private String farbe;
+	private String color;
 
 	@Column(nullable = false)
-	private int tierAlter;
+	private int age;
 
 	@Column(nullable = false, length = 20)
-	private String geschlecht;
+	private String gender;
 
 	@Column(nullable = false)
-	private boolean kastriert;
+	private boolean castrated;
 
 	@Column(nullable = false)
-	private String beschreibung;
+	private String description;
 	
 	
 	
 	//Relationship
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	TierArt tierArt;
+	private Species species;
 
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private List<Impfung> impfungen;
+	private List<Vaccination> vaccinations;
 	
-	@OneToMany(mappedBy="tier", fetch = FetchType.LAZY)
-	private Set<TierVerträglichkeit> tierverträglichkeit;
+	@OneToMany(mappedBy="animal", fetch = FetchType.LAZY)
+	private Set<AC> acs;
 
 	@Version
 	long version;
@@ -70,17 +70,18 @@ public class AnimalModel implements java.io.Serializable {
 	public AnimalModel() {
 	}
 
-	public AnimalModel(String name, String rasse, String farbe, int alter, String geschlecht, boolean kastriert,
-			String beschreibung) {
+	public AnimalModel(String name, String breed, String color, int age, String gender, boolean castrated,
+			String description) {
 		super();
 		this.name = name;
-		this.rasse = rasse;
-		this.farbe = farbe;
-		this.tierAlter = alter;
-		this.geschlecht = geschlecht;
-		this.kastriert = kastriert;
-		this.beschreibung = beschreibung;
+		this.breed = breed;
+		this.color = color;
+		this.age = age;
+		this.gender = gender;
+		this.castrated = castrated;
+		this.description = description;
 	}
+	
 	
 	
 	
@@ -102,82 +103,82 @@ public class AnimalModel implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public String getRasse() {
-		return rasse;
+	public String getBreed() {
+		return breed;
 	}
 
-	public void setRasse(String rasse) {
-		this.rasse = rasse;
+	public void setBreed(String breed) {
+		this.breed = breed;
 	}
 
-	public String getFarbe() {
-		return farbe;
+	public String getColor() {
+		return color;
 	}
 
-	public void setFarbe(String farbe) {
-		this.farbe = farbe;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
-	public String getGeschlecht() {
-		return geschlecht;
+	public int getAge() {
+		return age;
 	}
 
-	public void setGeschlecht(String geschlecht) {
-		this.geschlecht = geschlecht;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
-	public boolean isKastriert() {
-		return kastriert;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setKastriert(boolean kastriert) {
-		this.kastriert = kastriert;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
-	public String getBeschreibung() {
-		return beschreibung;
+	public boolean isCastrated() {
+		return castrated;
 	}
 
-	public void setBeschreibung(String beschreibung) {
-		this.beschreibung = beschreibung;
+	public void setCastrated(boolean castrated) {
+		this.castrated = castrated;
 	}
 
-	public int getTierAlter() {
-		return tierAlter;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setTierAlter(int tierAlter) {
-		this.tierAlter = tierAlter;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public TierArt getTierArt() {
-		return tierArt;
+	public Species getSpecies() {
+		return species;
 	}
 
-	public void setTierArt(TierArt tierArt) {
-		this.tierArt = tierArt;
+	public void setSpecies(Species species) {
+		this.species = species;
 	}
 
-	public List<Impfung> getImpfungen() {
-		return impfungen;
+	public List<Vaccination> getVaccinations() {
+		return vaccinations;
 	}
 
-	public void setImpfungen(List<Impfung> impfungen) {
-		this.impfungen = impfungen;
+	public void setVaccinations(List<Vaccination> vaccinations) {
+		this.vaccinations = vaccinations;
 	}
 	
-	public void addImpfung(Impfung impfung) {
-		if (impfungen == null) {
-			impfungen = new ArrayList<Impfung>();
+	public void addVaccination(Vaccination vaccination) {
+		if (vaccinations == null) {
+			vaccinations = new ArrayList<Vaccination>();
 		}
-		impfungen.add(impfung);
+		vaccinations.add(vaccination);
 	}
 
-	public Set<TierVerträglichkeit> getTierverträglichkeit() {
-		return tierverträglichkeit;
+	public Set<AC> getAcs() {
+		return acs;
 	}
 
-	public void setTierverträglichkeit(Set<TierVerträglichkeit> tierverträglichkeit) {
-		this.tierverträglichkeit = tierverträglichkeit;
+	public void setAcs(Set<AC> acs) {
+		this.acs = acs;
 	}
 }

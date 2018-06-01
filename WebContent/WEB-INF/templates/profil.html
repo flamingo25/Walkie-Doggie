@@ -17,19 +17,19 @@
 		
 		<p th:text="${animal.id}"></p>
 		<p th:text="${animal.name}"></p>
-		<p th:text="${animal.rasse}"></p>
-		<p th:text="${animal.farbe}"></p>
-		<p th:text="${animal.tierAlter}"></p>
-		<p th:text="${animal.geschlecht}"></p>
-		<p th:text="${animal.kastriert}"></p>
-		<p th:text="${animal.beschreibung}"></p>
-		<p th:text="${animal.tierArt.name}"></p>
-		<div th:each="impfung : ${impfungen}">
-		<p th:text="${impfung.name}"></p>
+		<p th:text="${animal.breed}"></p>
+		<p th:text="${animal.color}"></p>
+		<p th:text="${animal.age}"></p>
+		<p th:text="${animal.gender}"></p>
+		<p th:text="${animal.castrated}"></p>
+		<p th:text="${animal.description}"></p>
+		<p th:text="${animal.species.name}"></p>
+		<div th:each="vaccination : ${vaccinations}">
+		<p th:text="${vaccination.name}"></p>
 		
 		</div>
 		<div th:each="ac : ${acs}">
-		<p th:text="${ac.verträglichkeit.beschreibung}"></p>
+		<p th:text="${ac.compatibility.name}"></p>
 		<p th:text="${ac.status}"></p>
 
 		</div>
