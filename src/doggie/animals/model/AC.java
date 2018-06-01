@@ -25,11 +25,11 @@ public class AC implements java.io.Serializable {
 	
 	//Relationship
 	
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "animal_id")
 	private AnimalModel animal;
     
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "compatibility_id")
 	private Compatibility compatibility;
     
