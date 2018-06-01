@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import doggie.dao.UserDao;
-import doggie.dao.UserRoleDao;
+import doggie.user.dao.UserDao;
+import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserRole;
 

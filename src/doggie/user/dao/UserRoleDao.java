@@ -1,4 +1,4 @@
-package doggie.dao;
+package doggie.user.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;

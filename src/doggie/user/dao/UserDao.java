@@ -1,4 +1,4 @@
-package doggie.dao;
+package doggie.user.dao;
 
 import java.util.List;
 
