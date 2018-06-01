@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import doggie.dao.UserDao;
 import doggie.dao.UserRoleDao;
-import doggie.model.User;
-import doggie.model.UserRole;
+import doggie.user.model.User;
+import doggie.user.model.UserRole;
 
 @Controller
 public class SecurityController {

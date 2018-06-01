@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import doggie.model.User;
+import doggie.user.model.User;
 
 @Repository
 @Transactional

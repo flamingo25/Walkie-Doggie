@@ -1,4 +1,4 @@
-package doggie.model;
+package doggie.user.model;
 
 import java.util.HashSet;
 import java.util.Set;
