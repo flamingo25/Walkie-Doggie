@@ -13,20 +13,23 @@
 			<div class="col-md-4 col-md-offset-4">
 				<form th:action="@{/login}" method="post">
 					<h2 class="form-signin-heading">Please sign in</h2>
-					
-					<div th:if="${param.error}" class="alert alert-danger">Invalid username and password.</div>
-					
-					<div th:if="${param.logout}" class="alert alert-success">You have been logged out.</div>
 
-					<label for="inputEmail" class="sr-only">Email address</label> 
-					<input type="text" id="username" class="form-control" placeholder="User" required autofocus name="username"> 
-					
-					<label for="inputPassword" class="sr-only">Password</label> 
-					<input type="password" id="password" class="form-control" placeholder="Password" required name="password">
+					<div th:if="${param.error}" class="alert alert-danger">Invalid
+						username and password.</div>
+
+					<div th:if="${param.logout}" class="alert alert-success">You
+						have been logged out.</div>
+
+					<label for="inputEmail" class="sr-only">Email address</label> <input
+						type="text" id="username" class="form-control" placeholder="User"
+						required autofocus name="username"> <label
+						for="inputPassword" class="sr-only">Password</label> <input
+						type="password" id="password" class="form-control"
+						placeholder="Password" required name="password">
 					<button class="btn btn-lg btn-primary btn-block" type="submit">
-						Sign in
-					</button>
+						Sign in</button>
 				</form>
+				<a th:href="@{/fillUsers}" class="btn btn-danger">Users </a>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 package doggie.animals.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,8 +58,11 @@ public class AnimalModel implements java.io.Serializable {
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private List<Vaccination> vaccinations;
 	
-	@OneToMany(mappedBy="animal", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="animal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	private Set<AC> acs;
+	
+	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	private Set<AnimalImage> image;
 
 	@Version
 	long version;
@@ -180,5 +184,20 @@ public class AnimalModel implements java.io.Serializable {
 
 	public void setAcs(Set<AC> acs) {
 		this.acs = acs;
+	}
+
+	public Set<AnimalImage> getImage() {
+		return image;
+	}
+
+	public void setImage(Set<AnimalImage> image) {
+		this.image = image;
+	}
+	
+	public void addImage(AnimalImage newImage) {
+		if (image == null) {
+			image = new HashSet<AnimalImage>();
+		}
+		image.add(newImage);
 	}
 }
