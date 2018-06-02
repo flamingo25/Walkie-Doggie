@@ -1,11 +1,16 @@
 package doggie.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import doggie.user.dao.UserDao;
 import doggie.user.dao.UserRoleDao;
@@ -25,14 +30,17 @@ public class SecurityController {
 	@Transactional
 	public String fillData(Model model) {
 
-		UserRole adminRole = userRoleDao.getRole("ROLE_ADMIN");
-		if (adminRole == null)
+		UserRole adminRole = userRoleDao.findByRole("ROLE_ADMIN");
+		if (adminRole == null) {
 			adminRole = new UserRole("ROLE_ADMIN");
+			userRoleDao.save(adminRole);
+		}
 
-		UserRole userRole = userRoleDao.getRole("ROLE_USER");
-		if (userRole == null)
+		UserRole userRole = userRoleDao.findByRole("ROLE_USER");
+		if (userRole == null) {
 			userRole = new UserRole("ROLE_USER");
-
+			userRoleDao.save(userRole);
+		}
 		User admin = new User("admin", "password", true);
 		admin.encryptPassword();
 		admin.addUserRole(userRole);
@@ -46,6 +54,36 @@ public class SecurityController {
 
 		return "forward:login";
 	}
+
+	@RequestMapping(value = { "/signUp" }, method = RequestMethod.GET)
+	public String signUp() {
+		return "signUp";
+	}
+
+
+	@RequestMapping(value = { "/signUp" }, method = RequestMethod.POST)
+	public String signUp(Model model, 
+			@RequestParam("username") String username,
+			@RequestParam("password") String password1,
+			@RequestParam("password2") String password2) {
+		
+		List<User> users = userDao.findByUsername(username);
+		if (CollectionUtils.isEmpty(users)) {
+			if (password1.equals(password2)) {
+			User user = new User(username, password1, true);
+			user.encryptPassword();
+			user.addUserRole(userRoleDao.findByRole("ROLE_USER"));
+			userDao.persist(user);
+			model.addAttribute("message", "User " + username + " created!");
+			} else {
+				model.addAttribute("errorMessage", "Error: Passwords doesn't match!");
+			}
+		} else {
+			model.addAttribute("errorMessage", "Error: " + username + " already exists!");
+		}
+		return "signUp";
+	}
+	
 
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
