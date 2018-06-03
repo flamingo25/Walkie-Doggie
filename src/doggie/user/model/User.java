@@ -33,7 +33,7 @@ public class User implements java.io.Serializable {
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
  
-	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.PERSIST)
+	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.MERGE)
 	private Set<UserRole> userRoles;
  
 	public User() {
