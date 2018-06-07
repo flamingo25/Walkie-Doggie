@@ -52,10 +52,10 @@ public class AnimalModel implements java.io.Serializable {
 	
 	//Relationship
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Species species;
 
-	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Vaccination> vaccinations;
 	
 	@OneToMany(mappedBy="animal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
