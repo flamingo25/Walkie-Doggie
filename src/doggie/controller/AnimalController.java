@@ -81,6 +81,15 @@ public class AnimalController {
 
 		return "profil";
 	}
+	
+	@RequestMapping(value = "/deleteAnimal")
+	public String deleteAnimal(Model model, @RequestParam int id) {
+
+		animalRepository.deleteById(id);
+		model.addAttribute("errorMessage", "Animal " + id + " deleted<br>");
+		
+		return "petbook";
+	}
 
 	@RequestMapping(value = "/addAnimal", method = RequestMethod.GET)
 	public String showAddAnimalForm(Model model) {
@@ -89,7 +98,7 @@ public class AnimalController {
 		
 		List<Vaccination> vaccinations = vaccinationRepository.findAll();
 		model.addAttribute("vaccinations", vaccinations);
-		model.addAttribute("selectedVaccinations", new ArrayList<Vaccination>());
+		model.addAttribute("selectedV", new ArrayList<Integer>());
 		return "editAnimal";
 	}
 
