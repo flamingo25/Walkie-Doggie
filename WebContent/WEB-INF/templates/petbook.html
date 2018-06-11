@@ -43,7 +43,8 @@
 		<p th:text="${animal.species.name}"></p>
 		<p></p>
 		<a th:href="@{/editAnimal(id=${animal.id})}" class="btn btn-danger">Edit
-			Animal </a>
+			Animal </a> <a th:href="@{/deleteAnimal(id=${animal.id})}"
+			class="btn btn-danger">Delete Animal </a>
 		<p></p>
 
 	</div>
