@@ -19,15 +19,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import doggie.animals.dao.ACRepository;
 import doggie.animals.dao.AnimalRepository;
 import doggie.animals.dao.CompatibilityRepository;
 import doggie.animals.dao.ImageRepository;
 import doggie.animals.dao.SpeciesRepository;
 import doggie.animals.dao.VaccinationRepository;
-import doggie.animals.model.AC;
 import doggie.animals.model.AnimalImage;
 import doggie.animals.model.AnimalModel;
+import doggie.animals.model.Compatibility;
 import doggie.animals.model.Species;
 import doggie.animals.model.Vaccination;
 
@@ -45,9 +44,6 @@ public class AnimalController {
 	
 	@Autowired
 	SpeciesRepository speciesRepository;
-
-	@Autowired
-	ACRepository acRepository;
 
 	@Autowired
 	ImageRepository imageRepository;
@@ -74,7 +70,7 @@ public class AnimalController {
 		model.addAttribute("animal", animal);
 		List<Vaccination> vaccinations = vaccinationRepository.findAllByAnimals(animal);
 		model.addAttribute("vaccinations", vaccinations);
-		List<AC> acs = acRepository.findAllByAnimal(animal);
+		List<Compatibility> acs = compatibilityRepository.findAllByAnimals(animal);
 		model.addAttribute("acs", acs);
 		List<AnimalImage> images = imageRepository.findAllByAnimal(animal);
 		model.addAttribute("images", images);
@@ -82,6 +78,7 @@ public class AnimalController {
 		return "profil";
 	}
 	
+
 	@RequestMapping(value = "/deleteAnimal")
 	public String deleteAnimal(Model model, @RequestParam int id) {
 
@@ -90,7 +87,8 @@ public class AnimalController {
 		
 		return "petbook";
 	}
-
+  
+  
 	@RequestMapping(value = "/addAnimal", method = RequestMethod.GET)
 	public String showAddAnimalForm(Model model) {
 		List<Species> species = speciesRepository.findAll();
@@ -99,6 +97,11 @@ public class AnimalController {
 		List<Vaccination> vaccinations = vaccinationRepository.findAll();
 		model.addAttribute("vaccinations", vaccinations);
 		model.addAttribute("selectedV", new ArrayList<Integer>());
+		
+		List<Compatibility> acs = compatibilityRepository.findAll();
+		model.addAttribute("acs", acs);
+		model.addAttribute("selectedAcs", new ArrayList<Integer>());
+		
 		return "editAnimal";
 	}
 
@@ -116,13 +119,22 @@ public class AnimalController {
 		List<Species> species = speciesRepository.findAll();
 		model.addAttribute("species", species);
 		
+		
+		
 		List<Vaccination> vaccinations = vaccinationRepository.findAll();
 		model.addAttribute("vaccinations", vaccinations);
 		
 		List<Vaccination> selectedVaccinations = vaccinationRepository.findAllByAnimals(animal);
 		List<Integer> selectedV = selectedVaccinations.stream().map(v -> v.getId()).collect(Collectors.toList());;
-				
 		model.addAttribute("selectedV", selectedV);
+		
+		
+		List<Compatibility> acs = compatibilityRepository.findAll();
+		model.addAttribute("acs", acs);
+		
+		List<Compatibility> selectedCompatibility = compatibilityRepository.findAllByAnimals(animal);
+		List<Integer> selectedAcs = selectedCompatibility.stream().map(v -> v.getId()).collect(Collectors.toList());;		
+		model.addAttribute("selectedAcs", selectedAcs);
 		
 		return "editAnimal";
 	}
@@ -130,7 +142,8 @@ public class AnimalController {
 	@RequestMapping(value = "/addAnimal", method = RequestMethod.POST)
 	public String addAnimal(@Valid AnimalModel newAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
-			@RequestParam("vaccination") List<Integer> vaccination) {
+			@RequestParam("vaccination") List<Integer> vaccination,
+			@RequestParam("compatibility") List<Integer> compatibility) {
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -148,6 +161,7 @@ public class AnimalController {
 		else {
 			newAnimalModel.setSpecies(speciesRepository.findById(species).get());
 			newAnimalModel.setVaccinations(vaccinationRepository.findByIdIn(vaccination));
+			newAnimalModel.setCompatibilities(compatibilityRepository.findByIdIn(compatibility));
 			animalRepository.save(newAnimalModel);
 			
 			model.addAttribute("message", "New Animal " + newAnimalModel.getId() + " added.");
@@ -160,7 +174,8 @@ public class AnimalController {
 	@RequestMapping(value = "/editAnimal", method = RequestMethod.POST)
 	public String editAnimal(@Valid AnimalModel changedAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
-			@RequestParam("vaccination") List<Integer> vaccination) {
+			@RequestParam("vaccination") List<Integer> vaccination,
+			@RequestParam("compatibility") List<Integer> compatibility) {
 
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -186,9 +201,11 @@ public class AnimalController {
 		animal.setAge(changedAnimalModel.getAge());
 		animal.setGender(changedAnimalModel.getGender());
 		animal.setCastrated(changedAnimalModel.isCastrated());
+		animal.setChipped(changedAnimalModel.isChipped());
 		animal.setDescription(changedAnimalModel.getDescription());
 		animal.setSpecies(speciesRepository.findById(species).get());
 		animal.setVaccinations(vaccinationRepository.findByIdIn(vaccination));
+		animal.setCompatibilities(compatibilityRepository.findByIdIn(compatibility));
 		animalRepository.save(animal);
 
 		model.addAttribute("message", "Changed animal " + changedAnimalModel.getId());

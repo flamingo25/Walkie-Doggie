@@ -44,6 +44,9 @@ public class AnimalModel implements java.io.Serializable {
 
 	@Column(nullable = false)
 	private boolean castrated;
+	
+	@Column(nullable = false)
+	private boolean chipped;
 
 	@Column(nullable = false)
 	private String description;
@@ -58,8 +61,8 @@ public class AnimalModel implements java.io.Serializable {
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Vaccination> vaccinations;
 	
-	@OneToMany(mappedBy="animal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	private Set<AC> acs;
+	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
+	private List<Compatibility> compatibilities;
 	
 	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Set<AnimalImage> image;
@@ -72,10 +75,10 @@ public class AnimalModel implements java.io.Serializable {
 	//Constructor
 
 	public AnimalModel() {
-	}
-
+	}	
+	
 	public AnimalModel(String name, String breed, String color, int age, String gender, boolean castrated,
-			String description) {
+			boolean chipped, String description) {
 		super();
 		this.name = name;
 		this.breed = breed;
@@ -83,12 +86,12 @@ public class AnimalModel implements java.io.Serializable {
 		this.age = age;
 		this.gender = gender;
 		this.castrated = castrated;
+		this.chipped = chipped;
 		this.description = description;
 	}
 	
 	
-	
-	
+
 	//Getter + Setter
 
 	public int getId() {
@@ -177,13 +180,28 @@ public class AnimalModel implements java.io.Serializable {
 		}
 		vaccinations.add(vaccination);
 	}
-
-	public Set<AC> getAcs() {
-		return acs;
+	
+	public boolean isChipped() {
+		return chipped;
 	}
 
-	public void setAcs(Set<AC> acs) {
-		this.acs = acs;
+	public void setChipped(boolean chipped) {
+		this.chipped = chipped;
+	}
+
+	public List<Compatibility> getCompatibilities() {
+		return compatibilities;
+	}
+
+	public void setCompatibilities(List<Compatibility> compatibilitys) {
+		this.compatibilities = compatibilitys;
+	}
+	
+	public void addCompatibility(Compatibility compatibility) {
+		if (compatibilities == null) {
+			compatibilities = new ArrayList<Compatibility>();
+		}
+		compatibilities.add(compatibility);
 	}
 
 	public Set<AnimalImage> getImage() {

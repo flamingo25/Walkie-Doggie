@@ -91,6 +91,17 @@
 							</div>
 						</div>
 
+						<!-- --------------  chipped ---------------- -->
+						<div class="form-group">
+							<label for="inputChipped" class="col-md-2 control-label">Chipped</label>
+							<div class="col-md-10">
+								<input th:checked="${animal} ? ${animal.chipped}"
+									type="checkbox" name="chipped" class="form-check-input"
+									id="inputChipped"> <input type="hidden" value="on"
+									name="_chipped" />
+							</div>
+						</div>
+
 						<!-- --------------  Description ---------------- -->
 						<div class="form-group">
 							<label for="inputDescription" class="col-md-2 control-label">Description
@@ -116,6 +127,20 @@
 							</div>
 						</div>
 
+						<!-- --------------  Compatibility ---------------- -->
+						<div class="form-group">
+							<label for="inputCompatibility" class="col-md-2 control-label">Compatibility
+							</label>
+							<div class="col-md-10">
+								<select multiple="multiple" class="form-control"
+									id="inputCompatibility" name="compatibility">
+									<option th:each="ac : ${acs}"
+										th:value="${ac.id}" th:text="${ac.name}"
+										th:selected="${selectedAcs.contains(ac.id)}"></option>
+								</select>
+							</div>
+						</div>
+
 						<!-- --------------  Vaccination ---------------- -->
 						<div class="form-group">
 							<label for="inputVaccination" class="col-md-2 control-label">Vaccination
@@ -127,7 +152,6 @@
 										th:value="${vaccination.id}" th:text="${vaccination.name}"
 										th:selected="${selectedV.contains(vaccination.id)}"></option>
 								</select>
-
 							</div>
 						</div>
 

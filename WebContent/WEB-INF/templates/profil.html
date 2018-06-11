@@ -40,16 +40,15 @@
 		<p th:text="${animal.age}"></p>
 		<p th:text="${animal.gender}"></p>
 		<p th:text="${animal.castrated}"></p>
+		<p th:text="${animal.chipped}"></p>
 		<p th:text="${animal.description}"></p>
 		<p th:text="${animal.species.name}"></p>
 		<div th:each="vaccination : ${vaccinations}">
 			<p th:text="${vaccination.name}"></p>
-
 		</div>
+		
 		<div th:each="ac : ${acs}">
-			<p th:text="${ac.compatibility.name}"></p>
-			<p th:text="${ac.status}"></p>
-
+			<p th:text="${ac.name}"></p>
 		</div>
 
 
