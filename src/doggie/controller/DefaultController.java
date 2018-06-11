@@ -6,13 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import doggie.animals.dao.ACRepository;
 import doggie.animals.dao.AnimalRepository;
 import doggie.animals.dao.CompatibilityRepository;
 import doggie.animals.dao.ImageRepository;
 import doggie.animals.dao.SpeciesRepository;
 import doggie.animals.dao.VaccinationRepository;
-import doggie.animals.model.AC;
 import doggie.animals.model.AnimalModel;
 import doggie.animals.model.Compatibility;
 import doggie.animals.model.Species;
@@ -32,9 +30,6 @@ public class DefaultController {
 	
 	@Autowired
 	SpeciesRepository speciesRepository;
-
-	@Autowired
-	ACRepository acRepository;
 
 	@Autowired
 	ImageRepository imageRepository;
@@ -70,22 +65,29 @@ public class DefaultController {
 		vaccinationRepository.save(impfung3);
 		vaccinationRepository.save(impfung4);
 		vaccinationRepository.save(impfung5);
-
+		
 		
 		Compatibility vt1 = new Compatibility("vt1");
 		Compatibility vt2 = new Compatibility("vt2");
+		Compatibility vt3 = new Compatibility("vt3");
+		Compatibility vt4 = new Compatibility("vt4");
+		Compatibility vt5 = new Compatibility("vt5");
+		compatibilityRepository.save(vt1);
+		compatibilityRepository.save(vt2);
+		compatibilityRepository.save(vt3);
+		compatibilityRepository.save(vt4);
+		compatibilityRepository.save(vt5);
 
-		AnimalModel test = new AnimalModel("a", "b", "c", 12, "a", false, "asdasdas");
+		
+		AnimalModel test = new AnimalModel("a", "b", "c", 12, "a", false, true, "asdasdas");
 		test.addVaccination(vaccinationRepository.findById(2).get());
 		test.addVaccination(vaccinationRepository.findById(4).get());
+		test.addCompatibility(compatibilityRepository.findById(1).get());
+		test.addCompatibility(compatibilityRepository.findById(2).get());
+		test.addCompatibility(compatibilityRepository.findById(5).get());		
 		test.setSpecies(speciesRepository.findById(1).get());
 
-		AC tttt = new AC();
-		tttt.setAnimal(test);
-		tttt.setCompatibility(vt1);
-		tttt.setStatus(true);
-
-		compatibilityRepository.save(tttt);
+		animalRepository.save(test);
 
 		return "index";
 	}

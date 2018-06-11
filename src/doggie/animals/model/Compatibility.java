@@ -1,15 +1,14 @@
 package doggie.animals.model;
 
-import java.util.Set;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -29,8 +28,8 @@ public class Compatibility implements java.io.Serializable {
 	
 	//Relationship
 	
-	@OneToMany(mappedBy="compatibility", fetch = FetchType.LAZY)
-	private Set<AC> acs;
+	@ManyToMany(mappedBy = "compatibilities",fetch=FetchType.EAGER)
+	private List<AnimalModel> animals;
 	
 	@Version
 	long version;
@@ -67,12 +66,11 @@ public class Compatibility implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Set<AC> getAcs() {
-		return acs;
+	public List<AnimalModel> getAnimals() {
+		return animals;
 	}
 
-	public void setAcs(Set<AC> acs) {
-		this.acs = acs;
+	public void setAnimals(List<AnimalModel> animals) {
+		this.animals = animals;
 	}
-
 }
