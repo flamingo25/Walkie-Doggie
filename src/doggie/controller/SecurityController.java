@@ -1,6 +1,9 @@
 package doggie.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import doggie.user.dao.UserDao;
 import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
+import doggie.user.model.UserProfile;
 import doggie.user.model.UserRole;
 
 @Controller
@@ -45,12 +49,12 @@ public class SecurityController {
 		admin.encryptPassword();
 		admin.addUserRole(userRole);
 		admin.addUserRole(adminRole);
-		userDao.persist(admin);
+		userDao.save(admin);
 
 		User user = new User("user", "password", true);
 		user.encryptPassword();
 		user.addUserRole(userRole);
-		userDao.persist(user);
+		userDao.save(user);
 
 		return "forward:login";
 	}
@@ -67,13 +71,13 @@ public class SecurityController {
 			@RequestParam("password") String password1,
 			@RequestParam("password2") String password2) {
 		
-		List<User> users = userDao.findByUsername(username);
+		List<User> users = userDao.findByUserName(username);
 		if (CollectionUtils.isEmpty(users)) {
 			if (password1.equals(password2)) {
 			User user = new User(username, password1, true);
 			user.encryptPassword();
 			user.addUserRole(userRoleDao.findByRole("ROLE_USER"));
-			userDao.persist(user);
+			userDao.save(user);
 			model.addAttribute("message", "User " + username + " created!");
 			} else {
 				model.addAttribute("errorMessage", "Error: Passwords doesn't match!");
@@ -83,6 +87,31 @@ public class SecurityController {
 		}
 		return "signUp";
 	}
+	
+	
+	@RequestMapping(value = { "/addProfile" })
+	public String addProfile(Model model) {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(1990, 04, 13);
+		
+		Date date = cal.getTime();
+		
+		Optional<User> userOpt = userDao.findById(1);
+		
+		if (!userOpt.isPresent())
+			throw new IllegalArgumentException("No user with id");
+		
+		User user = userOpt.get();
+		UserProfile userprofile = new UserProfile("admin", "adminson", date, "admin@doggie.at", 8010, "Graz", "Alte Poststraﬂe 123", "0123 / 456 78 90");
+		user.setUserProfile(userprofile);
+		userDao.save(user);
+		
+		
+
+		return "petbook";
+	}
+	
 	
 
 	@ExceptionHandler(Exception.class)
