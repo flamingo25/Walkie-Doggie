@@ -1,6 +1,7 @@
 package doggie.controller;
 
 import java.io.OutputStream;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,8 +144,8 @@ public class AnimalController {
 	@RequestMapping(value = "/addAnimal", method = RequestMethod.POST)
 	public String addAnimal(@Valid AnimalModel newAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
-			@RequestParam("vaccination") List<Integer> vaccination,
-			@RequestParam("compatibility") List<Integer> compatibility) {
+			@RequestParam(required = false, name = "vaccination") List<Integer> vaccination,
+			@RequestParam(required = false, name = "compatibility") List<Integer> compatibility) {
 		
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -160,8 +162,13 @@ public class AnimalController {
 			model.addAttribute("errorMessage", "Animal does exist!<br>");
 		else {
 			newAnimalModel.setSpecies(speciesRepository.findById(species).get());
+			
+			if (!CollectionUtils.isEmpty(vaccination)) 
 			newAnimalModel.setVaccinations(vaccinationRepository.findByIdIn(vaccination));
+			
+			if (!CollectionUtils.isEmpty(compatibility))
 			newAnimalModel.setCompatibilities(compatibilityRepository.findByIdIn(compatibility));
+			
 			animalRepository.save(newAnimalModel);
 			
 			model.addAttribute("message", "New Animal " + newAnimalModel.getId() + " added.");
@@ -174,8 +181,8 @@ public class AnimalController {
 	@RequestMapping(value = "/editAnimal", method = RequestMethod.POST)
 	public String editAnimal(@Valid AnimalModel changedAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
-			@RequestParam("vaccination") List<Integer> vaccination,
-			@RequestParam("compatibility") List<Integer> compatibility) {
+			@RequestParam(required = false, name = "vaccination") List<Integer> vaccination,
+			@RequestParam(required = false, name = "compatibility") List<Integer> compatibility) {
 
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -204,7 +211,11 @@ public class AnimalController {
 		animal.setChipped(changedAnimalModel.isChipped());
 		animal.setDescription(changedAnimalModel.getDescription());
 		animal.setSpecies(speciesRepository.findById(species).get());
+		
+		if (!CollectionUtils.isEmpty(vaccination))
 		animal.setVaccinations(vaccinationRepository.findByIdIn(vaccination));
+		
+		if (!CollectionUtils.isEmpty(compatibility))
 		animal.setCompatibilities(compatibilityRepository.findByIdIn(compatibility));
 		animalRepository.save(animal);
 
