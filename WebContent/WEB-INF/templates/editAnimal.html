@@ -36,7 +36,8 @@
 							</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputName" type="text"
-									name="name" th:value="${animal} ? ${animal.name}">
+									name="name" th:value="${animal} ? ${animal.name}"
+									required="required">
 							</div>
 						</div>
 
@@ -46,7 +47,8 @@
 							</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputBreed" type="text"
-									name="breed" th:value="${animal} ? ${animal.breed}">
+									name="breed" th:value="${animal} ? ${animal.breed}"
+									required="required">
 							</div>
 						</div>
 
@@ -56,7 +58,8 @@
 							</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputColor" type="text"
-									name="color" th:value="${animal} ? ${animal.color}">
+									name="color" th:value="${animal} ? ${animal.color}"
+									required="required">
 							</div>
 						</div>
 
@@ -65,7 +68,8 @@
 							<label for="inputAge" class="col-md-2 control-label">Age</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputAge" type="number" min="0"
-									step="1" name="age" th:value="${animal} ? ${animal.age}">
+									step="1" name="age" th:value="${animal} ? ${animal.age}"
+									required="required">
 							</div>
 						</div>
 
@@ -74,8 +78,13 @@
 							<label for="inputGender" class="col-md-2 control-label">Gender
 							</label>
 							<div class="col-md-10">
-								<input class="form-control" id="inputGender" type="text"
-									name="gender" th:value="${animal} ? ${animal.gender}">
+								<select class="form-control" id="inputGender" name="gender">
+									<option th:value="Männlich" th:text="Männlich"
+										th:selected="${animal} ? ${animal.gender.equals('Männlich')}"></option>
+
+									<option th:value="Weiblich" th:text="Weiblich"
+										th:selected="${animal} ? ${animal.gender.equals('Weiblich')}"></option>
+								</select>
 							</div>
 						</div>
 
@@ -108,7 +117,8 @@
 							</label>
 							<div class="col-md-10">
 								<input class="form-control" id="inputDescription" type="text"
-									name="description" th:value="${animal} ? ${animal.description}">
+									name="description" th:value="${animal} ? ${animal.description}"
+									required="required">
 							</div>
 						</div>
 
@@ -134,8 +144,8 @@
 							<div class="col-md-10">
 								<select multiple="multiple" class="form-control"
 									id="inputCompatibility" name="compatibility">
-									<option th:each="ac : ${acs}"
-										th:value="${ac.id}" th:text="${ac.name}"
+									<option th:each="ac : ${acs}" th:value="${ac.id}"
+										th:text="${ac.name}"
 										th:selected="${selectedAcs.contains(ac.id)}"></option>
 								</select>
 							</div>

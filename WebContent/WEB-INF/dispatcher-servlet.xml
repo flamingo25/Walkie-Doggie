@@ -51,6 +51,7 @@
 		class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
 		<property name="prefix" value="/WEB-INF/templates/" />
 		<property name="suffix" value=".html" />
+		<property name="characterEncoding" value="UTF-8" />
 		<property name="templateMode" value="HTML" />
 		<property name="cacheable" value="false" />
 	</bean>
