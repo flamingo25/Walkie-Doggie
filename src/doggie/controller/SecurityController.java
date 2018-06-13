@@ -1,16 +1,19 @@
 package doggie.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,9 +33,9 @@ public class SecurityController {
 	@Autowired
 	UserRoleDao userRoleDao;
 
-	@RequestMapping("/fillUsers")
+	@PostConstruct
 	@Transactional
-	public String fillData(Model model) {
+	public void init() {
 
 		UserRole adminRole = userRoleDao.findByRole("ROLE_ADMIN");
 		if (adminRole == null) {
@@ -55,8 +58,6 @@ public class SecurityController {
 		user.encryptPassword();
 		user.addUserRole(userRole);
 		userDao.save(user);
-
-		return "forward:login";
 	}
 
 	@RequestMapping(value = { "/signUp" }, method = RequestMethod.GET)
@@ -66,7 +67,8 @@ public class SecurityController {
 
 
 	@RequestMapping(value = { "/signUp" }, method = RequestMethod.POST)
-	public String signUp(Model model, 
+	public String signUp(@Valid UserProfile newUserProfile, Model model, 
+			@RequestParam("date") String date,
 			@RequestParam("username") String username,
 			@RequestParam("password") String password1,
 			@RequestParam("password2") String password2) {
@@ -77,6 +79,20 @@ public class SecurityController {
 			User user = new User(username, password1, true);
 			user.encryptPassword();
 			user.addUserRole(userRoleDao.findByRole("ROLE_USER"));
+			
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			try {
+				cal.setTime(sdf.parse(date));
+			} catch (ParseException e) {				
+				model.addAttribute("errorMessage", "Error:" + e.getMessage());
+			}
+			Date dayOfBirth = cal.getTime();
+			newUserProfile.setDayOfBirth(dayOfBirth);
+				
+			
+			user.setUserProfile(newUserProfile);
 			userDao.save(user);
 			model.addAttribute("message", "User " + username + " created!");
 			} else {
@@ -87,37 +103,5 @@ public class SecurityController {
 		}
 		return "signUp";
 	}
-	
-	
-	@RequestMapping(value = { "/addProfile" })
-	public String addProfile(Model model) {
 		
-		Calendar cal = Calendar.getInstance();
-		cal.set(1990, 04, 13);
-		
-		Date date = cal.getTime();
-		
-		Optional<User> userOpt = userDao.findById(1);
-		
-		if (!userOpt.isPresent())
-			throw new IllegalArgumentException("No user with id");
-		
-		User user = userOpt.get();
-		UserProfile userprofile = new UserProfile("admin", "adminson", date, "admin@doggie.at", 8010, "Graz", "Alte Poststraﬂe 123", "0123 / 456 78 90");
-		user.setUserProfile(userprofile);
-		userDao.save(user);
-		
-		
-
-		return "petbook";
-	}
-	
-	
-
-	@ExceptionHandler(Exception.class)
-	public String handleAllException(Exception ex) {
-
-		return "error";
-
-	}
 }

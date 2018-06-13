@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,7 +61,7 @@ public class AnimalController {
 		return "petbook";
 	}
 
-	@RequestMapping(value = { "/profil" })
+	@RequestMapping(value = { "/animalProfile" })
 	public String profil(Model model, @RequestParam int id) {
 		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
 
@@ -77,7 +78,7 @@ public class AnimalController {
 		List<AnimalImage> images = imageRepository.findAllByAnimal(animal);
 		model.addAttribute("images", images);
 
-		return "profil";
+		return "animalProfile";
 	}
 	
 
@@ -256,7 +257,7 @@ public class AnimalController {
 			model.addAttribute("errorMessage", "Error:" + e.getMessage());
 		}
 
-		return "forward:/profil";
+		return "forward:/animalProfile";
 	}
 
 	@RequestMapping("/animalImage")
@@ -276,5 +277,10 @@ public class AnimalController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public String handleAllException(Exception ex) {
+		return "error";
 	}
 }
