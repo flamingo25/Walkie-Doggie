@@ -2,7 +2,7 @@ package doggie.user.model;
 
 import java.util.HashSet;
 import java.util.Set;
- 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
- 
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  
 @Entity
@@ -35,6 +36,9 @@ public class User implements java.io.Serializable {
  
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.MERGE)
 	private Set<UserRole> userRoles;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private UserProfile userProfile;
  
 	public User() {
 	}
@@ -98,5 +102,12 @@ public class User implements java.io.Serializable {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		password = passwordEncoder.encode(password);		
 	}
- 
+
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	} 
 }
