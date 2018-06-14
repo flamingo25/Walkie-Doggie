@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:include="~{includes/bootstrap :: bootstrapMeta}" th:remove="tag" />
+<title>Walkie-Doggie</title>
+<div th:include="~{includes/bootstrap :: bootstrapCSS}" th:remove="tag" />
+<link
+	href="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css"
+	rel="stylesheet">
+</head>
+
+<body>
+	<div class="container" role="main">
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<form class="form-horizontal" method="post"
+					th:action="@{/editProfile}">
+					<fieldset>
+						<legend>Edit Profile</legend>
+
+						<!-- Username -->
+						<div class="form-group">
+							<label for="inputUser" class="col-md-2 control-label">Username</label>
+							<div class="col-md-10">
+								<input type="text" id="username" class="form-control" required
+									autofocus name="username" th:value="${user.userName}"
+									th:readonly="true">
+							</div>
+						</div>
+
+						<!-- First Name -->
+						<div class="form-group">
+							<label for="inputFirstName" class="col-md-2 control-label">First
+								name</label>
+							<div class="col-md-10">
+								<input type="text" id="firstName" class="form-control" required
+									name="firstName" th:value="${user.userProfile.firstName}">
+							</div>
+						</div>
+
+						<!-- Surname -->
+						<div class="form-group">
+							<label for="inputSurName" class="col-md-2 control-label">Surname</label>
+							<div class="col-md-10">
+								<input type="text" id="surName" class="form-control" required
+									name="surName" th:value="${user.userProfile.surName}">
+							</div>
+						</div>
+
+						<!-- Day of Birth -->
+						<div class="form-group">
+							<label for="inputDayOfBirth" class="col-md-2 control-label">Day
+								of birth</label>
+							<div class="col-md-10">
+								<input type="date" id="date" class="form-control" required
+									name="date" th:value="${user.userProfile.dayOfBirth}">
+							</div>
+						</div>
+
+						<!-- E-Mail -->
+						<div class="form-group">
+							<label for="inputEmail" class="col-md-2 control-label">E-Mail</label>
+							<div class="col-md-10">
+								<input type="text" id="email" class="form-control" required
+									name="email" th:value="${user.userProfile.email}">
+							</div>
+						</div>
+
+						<!-- Zip -->
+						<div class="form-group">
+							<label for="inputZip" class="col-md-2 control-label">ZIP</label>
+							<div class="col-md-10">
+								<input type="number" id="zip" class="form-control" required
+									name="zip" th:value="${user.userProfile.zip}">
+							</div>
+						</div>
+
+						<!-- City -->
+						<div class="form-group">
+							<label for="inputUser" class="col-md-2 control-label">City</label>
+							<div class="col-md-10">
+								<input type="text" id="city" class="form-control" required
+									name="city" th:value="${user.userProfile.city}">
+							</div>
+						</div>
+
+						<!-- Address -->
+						<div class="form-group">
+							<label for="inputAddress" class="col-md-2 control-label">Address</label>
+							<div class="col-md-10">
+								<input type="text" id="address" class="form-control" required
+									name="address" th:value="${user.userProfile.address}">
+							</div>
+						</div>
+
+						<!-- Phone -->
+						<div class="form-group">
+							<label for="inputPhone" class="col-md-2 control-label">Phone</label>
+							<div class="col-md-10">
+								<input type="text" id="phone" class="form-control" required
+									name="phone" th:value="${user.userProfile.phone}">
+							</div>
+						</div>
+
+						<!-- --------------  buttons ---------------- -->
+						<div class="form-group">
+							<div class="col-md-10 col-md-offset-2">
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<a href="userProfile" class="btn btn-default"> Cancel </a>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+</html>
