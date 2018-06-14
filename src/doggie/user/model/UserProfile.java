@@ -2,8 +2,10 @@ package doggie.user.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,6 +52,9 @@ public class UserProfile implements java.io.Serializable {
 	
 	@OneToOne(mappedBy = "userProfile")
 	private User user;
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private UserImage image;
 	
 	
 	
@@ -147,5 +152,13 @@ public class UserProfile implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public UserImage getImage() {
+		return image;
+	}
+
+	public void setImage(UserImage image) {
+		this.image = image;
 	}
 }

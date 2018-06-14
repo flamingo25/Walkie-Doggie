@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,11 +69,20 @@ public class SecurityController {
 
 
 	@RequestMapping(value = { "/signUp" }, method = RequestMethod.POST)
-	public String signUp(@Valid UserProfile newUserProfile, Model model, 
+	public String signUp(@Valid UserProfile newUserProfile, BindingResult bindingResult, Model model, 
 			@RequestParam("date") String date,
 			@RequestParam("username") String username,
 			@RequestParam("password") String password1,
 			@RequestParam("password2") String password2) {
+		
+		if (bindingResult.hasErrors()) {
+			String errorMessage = "";
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				errorMessage += fieldError.getField() + " is invalid<br>";
+			}
+			model.addAttribute("errorMessage", errorMessage);
+			return "forward:/petbook";
+		}
 		
 		List<User> users = userDao.findByUserName(username);
 		if (CollectionUtils.isEmpty(users)) {

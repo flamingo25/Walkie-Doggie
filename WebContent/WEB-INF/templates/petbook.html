@@ -37,7 +37,7 @@
 
 	<div th:each="animal : ${animals}">
 		<p th:text="${animal.id}"></p>
-		<a th:text="${animal.name}" th:href="@{/profil(id=${animal.id})}"></a>
+		<a th:text="${animal.name}" th:href="@{/animalProfile(id=${animal.id})}"></a>
 		<p th:text="${animal.description}"></p>
 
 		<p th:text="${animal.species.name}"></p>
