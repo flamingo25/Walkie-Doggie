@@ -6,12 +6,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -24,7 +22,6 @@ import doggie.user.dao.UserDao;
 import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserProfile;
-import doggie.user.model.UserRole;
 
 @Controller
 public class SecurityController {
@@ -35,38 +32,10 @@ public class SecurityController {
 	@Autowired
 	UserRoleDao userRoleDao;
 
-	@PostConstruct
-	@Transactional
-	public void init() {
-
-		UserRole adminRole = userRoleDao.findByRole("ROLE_ADMIN");
-		if (adminRole == null) {
-			adminRole = new UserRole("ROLE_ADMIN");
-			userRoleDao.save(adminRole);
-		}
-
-		UserRole userRole = userRoleDao.findByRole("ROLE_USER");
-		if (userRole == null) {
-			userRole = new UserRole("ROLE_USER");
-			userRoleDao.save(userRole);
-		}
-		User admin = new User("admin", "password", true);
-		admin.encryptPassword();
-		admin.addUserRole(userRole);
-		admin.addUserRole(adminRole);
-		userDao.save(admin);
-
-		User user = new User("user", "password", true);
-		user.encryptPassword();
-		user.addUserRole(userRole);
-		userDao.save(user);
-	}
-
 	@RequestMapping(value = { "/signUp" }, method = RequestMethod.GET)
 	public String signUp() {
 		return "signUp";
 	}
-
 
 	@RequestMapping(value = { "/signUp" }, method = RequestMethod.POST)
 	public String signUp(@Valid UserProfile newUserProfile, BindingResult bindingResult, Model model, 
