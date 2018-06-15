@@ -128,7 +128,7 @@ public class AnimalController {
 		model.addAttribute("vaccinations", vaccinations);
 		
 		List<Vaccination> selectedVaccinations = vaccinationRepository.findAllByAnimals(animal);
-		List<Integer> selectedV = selectedVaccinations.stream().map(v -> v.getId()).collect(Collectors.toList());;
+		List<Integer> selectedV = selectedVaccinations.stream().map(v -> v.getId()).collect(Collectors.toList());
 		model.addAttribute("selectedV", selectedV);
 		
 		
@@ -136,7 +136,7 @@ public class AnimalController {
 		model.addAttribute("acs", acs);
 		
 		List<Compatibility> selectedCompatibility = compatibilityRepository.findAllByAnimals(animal);
-		List<Integer> selectedAcs = selectedCompatibility.stream().map(v -> v.getId()).collect(Collectors.toList());;		
+		List<Integer> selectedAcs = selectedCompatibility.stream().map(v -> v.getId()).collect(Collectors.toList());	
 		model.addAttribute("selectedAcs", selectedAcs);
 		
 		return "/animal/edit";
@@ -173,7 +173,6 @@ public class AnimalController {
 			animalRepository.save(newAnimalModel);
 			
 			model.addAttribute("message", "New Animal " + newAnimalModel.getId() + " added.");
-			
 		}
 		
 		return "forward:/animal/petbook";

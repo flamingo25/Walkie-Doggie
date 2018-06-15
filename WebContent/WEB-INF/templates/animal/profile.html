@@ -31,6 +31,7 @@
 		</div>
 
 		<a th:href="@{/animal/petbook}" class="btn btn-danger">Back</a>
+		<a th:href="@{/favourite(id=${animal.id})}" class="btn btn-danger">Add Favourite</a>
 
 
 		<p th:text="${animal.id}"></p>

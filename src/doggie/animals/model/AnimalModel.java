@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import doggie.user.model.User;
+
 @Entity
 @Table(name = "animals")
 public class AnimalModel implements java.io.Serializable {
@@ -60,6 +62,9 @@ public class AnimalModel implements java.io.Serializable {
 
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Vaccination> vaccinations;
+	
+	@ManyToMany(mappedBy = "favourites",fetch=FetchType.LAZY)
+	private List<User> fUser;
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Compatibility> compatibilities;
@@ -217,5 +222,13 @@ public class AnimalModel implements java.io.Serializable {
 			image = new HashSet<AnimalImage>();
 		}
 		image.add(newImage);
+	}
+
+	public List<User> getfUser() {
+		return fUser;
+	}
+
+	public void setfUser(List<User> fUser) {
+		this.fUser = fUser;
 	}
 }
