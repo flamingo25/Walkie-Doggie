@@ -34,7 +34,7 @@ public class DefaultController {
 	@Autowired
 	ImageRepository imageRepository;
 	
-	@RequestMapping(value = { "/", "list" })
+	@RequestMapping(value = "/")
 	public String index() {
 		return "index";
 	}

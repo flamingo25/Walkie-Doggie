@@ -16,7 +16,7 @@
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<form class="form-horizontal" method="post"
-					th:action="${animal} ? @{/editAnimal(id=${animal.id})} : @{/addAnimal}">
+					th:action="${animal} ? @{/animal/edit(id=${animal.id})} : @{/animal/add}">
 					<fieldset>
 						<legend th:text="${animal}? 'Change Animal' : 'New Animal'">New
 							Animal</legend>

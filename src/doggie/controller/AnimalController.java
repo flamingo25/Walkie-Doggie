@@ -51,17 +51,17 @@ public class AnimalController {
 	@Autowired
 	ImageRepository imageRepository;
 
-	@RequestMapping(value = "/petbook")
+	@RequestMapping(value = {"/animal/petbook", "/animal/"})
 	public String petbook(Model model) {
 
 		List<AnimalModel> animals = animalRepository.findAll();
 
 		model.addAttribute("animals", animals);
 
-		return "petbook";
+		return "/animal/petbook";
 	}
 
-	@RequestMapping(value = { "/animalProfile" })
+	@RequestMapping(value = { "/animal/profile" })
 	public String profil(Model model, @RequestParam int id) {
 		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
 
@@ -78,21 +78,21 @@ public class AnimalController {
 		List<AnimalImage> images = imageRepository.findAllByAnimal(animal);
 		model.addAttribute("images", images);
 
-		return "animalProfile";
+		return "/animal/profile";
 	}
 	
 
-	@RequestMapping(value = "/deleteAnimal")
+	@RequestMapping(value = "/animal/delete")
 	public String deleteAnimal(Model model, @RequestParam int id) {
 
 		animalRepository.deleteById(id);
 		model.addAttribute("errorMessage", "Animal " + id + " deleted<br>");
 		
-		return "petbook";
+		return "forward:/animal/petbook";
 	}
   
   
-	@RequestMapping(value = "/addAnimal", method = RequestMethod.GET)
+	@RequestMapping(value = "/animal/add", method = RequestMethod.GET)
 	public String showAddAnimalForm(Model model) {
 		List<Species> species = speciesRepository.findAll();
 		model.addAttribute("species", species);
@@ -105,10 +105,10 @@ public class AnimalController {
 		model.addAttribute("acs", acs);
 		model.addAttribute("selectedAcs", new ArrayList<Integer>());
 		
-		return "editAnimal";
+		return "/animal/edit";
 	}
 
-	@RequestMapping(value = "/editAnimal", method = RequestMethod.GET)
+	@RequestMapping(value = "/animal/edit", method = RequestMethod.GET)
 	public String showChangeAnimalForm(Model model, @RequestParam int id) {
 
 		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
@@ -139,10 +139,10 @@ public class AnimalController {
 		List<Integer> selectedAcs = selectedCompatibility.stream().map(v -> v.getId()).collect(Collectors.toList());;		
 		model.addAttribute("selectedAcs", selectedAcs);
 		
-		return "editAnimal";
+		return "/animal/edit";
 	}
 	
-	@RequestMapping(value = "/addAnimal", method = RequestMethod.POST)
+	@RequestMapping(value = "/animal/add", method = RequestMethod.POST)
 	public String addAnimal(@Valid AnimalModel newAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
 			@RequestParam(required = false, name = "vaccination") List<Integer> vaccination,
@@ -154,7 +154,7 @@ public class AnimalController {
 				errorMessage += fieldError.getField() + " is invalid<br>";
 			}
 			model.addAttribute("errorMessage", errorMessage);
-			return "forward:/petbook";
+			return "forward:/animal/petbook";
 		}
 		
 		Optional<AnimalModel> animalOpt = animalRepository.findById(newAnimalModel.getId());
@@ -176,10 +176,10 @@ public class AnimalController {
 			
 		}
 		
-		return "forward:/petbook";
+		return "forward:/animal/petbook";
 	}
 	
-	@RequestMapping(value = "/editAnimal", method = RequestMethod.POST)
+	@RequestMapping(value = "/animal/edit", method = RequestMethod.POST)
 	public String editAnimal(@Valid AnimalModel changedAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
 			@RequestParam(required = false, name = "vaccination") List<Integer> vaccination,
@@ -191,7 +191,7 @@ public class AnimalController {
 				errorMessage += fieldError.getField() + " is invalid<br>";
 			}
 			model.addAttribute("errorMessage", errorMessage);
-			return "forward:/petbook";
+			return "forward:/animal/petbook";
 		}
  
 		Optional<AnimalModel> animalOpt = animalRepository.findById(changedAnimalModel.getId());
@@ -222,16 +222,16 @@ public class AnimalController {
 
 		model.addAttribute("message", "Changed animal " + changedAnimalModel.getId());
 		}
-		return "forward:/petbook";
+		return "forward:/animal/petbook";
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.GET)
+	@RequestMapping(value = "/animal/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam("id") int animalId) {
 		model.addAttribute("animalId", animalId);
-		return "uploadFile";
+		return "/animal/upload";
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@RequestMapping(value = "/animal/upload", method = RequestMethod.POST)
 	public String uploadDocument(Model model, @RequestParam("id") int animalId,
 			@RequestParam("myFile") MultipartFile file) {
 
@@ -257,10 +257,10 @@ public class AnimalController {
 			model.addAttribute("errorMessage", "Error:" + e.getMessage());
 		}
 
-		return "forward:/animalProfile";
+		return "forward:/animal/profile";
 	}
 
-	@RequestMapping("/animalImage")
+	@RequestMapping("/animal/image")
 	public void download(@RequestParam("id") int imageId, HttpServletResponse response) {
 
 		Optional<AnimalImage> imgOpt = imageRepository.findById(imageId);

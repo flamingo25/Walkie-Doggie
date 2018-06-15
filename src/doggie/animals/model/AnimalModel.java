@@ -48,7 +48,7 @@ public class AnimalModel implements java.io.Serializable {
 	@Column(nullable = false)
 	private boolean chipped;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "text")
 	private String description;
 	
 	

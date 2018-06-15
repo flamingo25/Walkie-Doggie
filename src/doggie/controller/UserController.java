@@ -38,17 +38,17 @@ public class UserController {
 	@Autowired
 	UserImageDao userImageDao;
 
-	@RequestMapping(value = { "/userProfile" })
+	@RequestMapping(value = {"/user/profile", "/user/"})
 	public String userProfile(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
 		
 		model.addAttribute("user", user);
 		
-		return "userProfile";
+		return "/user/profile";
 	}
 	
-	@RequestMapping(value = { "/editProfile" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)
 	public String showEditProfile(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
@@ -59,10 +59,10 @@ public class UserController {
 
 		model.addAttribute("user", user);
 		
-		return "editProfile";
+		return "/user/edit";
 	}
 	
-	@RequestMapping(value = { "/editProfile" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST)
 	public String editProfile(@Valid UserProfile newUserProfile,
 			Model model, Principal principal, BindingResult bindingResult,
 			@RequestParam("date") String date) {
@@ -73,7 +73,7 @@ public class UserController {
 				errorMessage += fieldError.getField() + " is invalid<br>";
 			}
 			model.addAttribute("errorMessage", errorMessage);
-			return "forward:/petbook";
+			return "forward:/user/profile";
 		}
 		
 		List<User> userOpt = userDao.findByUserName(principal.getName());
@@ -107,19 +107,19 @@ public class UserController {
 		
 		model.addAttribute("message", "Changed User Profile " + user.getUserName());
 		
-		return "forward:/userProfile";
+		return "forward:/user/profile";
 	}
 	
-	@RequestMapping(value = "/userUpload", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/upload", method = RequestMethod.GET)
 	public String showUserUploadForm(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
 
 		model.addAttribute("user", user);
-		return "uploadUserImage";
+		return "/user/upload";
 	}
 
-	@RequestMapping(value = "/userUpload", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/upload", method = RequestMethod.POST)
 	public String uploadUserImage(Model model, Principal principal,
 			@RequestParam("myFile") MultipartFile file) {
 
@@ -147,10 +147,10 @@ public class UserController {
 			model.addAttribute("errorMessage", "Error:" + e.getMessage());
 		}
 
-		return "forward:/userProfile";
+		return "forward:/user/profile";
 	}
 
-	@RequestMapping("/userImage")
+	@RequestMapping("/user/image")
 	public void downloadUser(@RequestParam("id") int imageId, HttpServletResponse response) {
 
 		Optional<UserImage> imgOpt = userImageDao.findById(imageId);

@@ -12,7 +12,7 @@
 
 		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
-				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="userUpload">
+				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="upload">
 					<fieldset>
 						<legend th:text="'Upload Image for User ' + ${user.userName}"></legend>
 
@@ -27,7 +27,7 @@
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-2">
 								<button type="submit" class="btn btn-primary">Upload</button>
-								<a href="list">
+								<a href="profile">
 									<button type="button" class="btn btn-default">Cancel</button>
 								</a>
 							</div>

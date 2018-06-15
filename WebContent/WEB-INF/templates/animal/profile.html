@@ -30,7 +30,7 @@
 			<!--   message ----------------------------------------------------------- -->
 		</div>
 
-
+		<a th:href="@{/animal/petbook}" class="btn btn-danger">Back</a>
 
 
 		<p th:text="${animal.id}"></p>
@@ -60,7 +60,7 @@
 		</a>
 
 		<div th:each="image : ${images}">
-			<img th:src="@{animalImage(id=${image.id})}" height="200" width="200">
+			<img th:src="@{image(id=${image.id})}" height="200" width="200">
 		</div>
 
 	</div>
