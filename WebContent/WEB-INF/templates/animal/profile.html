@@ -31,8 +31,13 @@
 		</div>
 
 		<a th:href="@{/animal/petbook}" class="btn btn-danger">Back</a>
+		<a th:href="@{/animal/images(id=${animal.id})}" class="btn btn-danger">Edit Images</a>
 		<a th:href="@{/favourite(id=${animal.id})}" class="btn btn-danger">Add Favourite</a>
 
+
+		<div th:each="image : ${images}" th:if="${image.profile}">
+			<img th:src="@{image(id=${image.id})}" height="200" width="200" >
+		</div>
 
 		<p th:text="${animal.id}"></p>
 		<p th:text="${animal.name}"></p>
@@ -60,8 +65,8 @@
 			</button>
 		</a>
 
-		<div th:each="image : ${images}">
-			<img th:src="@{image(id=${image.id})}" height="200" width="200">
+		<div th:each="image : ${images}" th:if="${!image.profile}">
+			<img class="img-thumbnail" th:src="@{image(id=${image.id})}" height="200" width="200" >
 		</div>
 
 	</div>
