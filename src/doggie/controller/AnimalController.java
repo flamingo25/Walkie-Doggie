@@ -166,7 +166,6 @@ public class AnimalController {
 			animalRepository.save(newAnimalModel);
 
 			model.addAttribute("message", "New Animal " + newAnimalModel.getId() + " added.");
-
 		}
 
 		return "forward:/animal/petbook";

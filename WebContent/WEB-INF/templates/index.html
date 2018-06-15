@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-	>
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
@@ -13,13 +12,46 @@
 
 		<div class="page-header">
 			<h1>Default Index</h1>
+
+			<!--  Error message ----------------------------------------------------------- -->
+			<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+				class="alert alert-danger" role="alert"></div>
+			<!--  Error message ----------------------------------------------------------- -->
+
+			<!--  Warning message ----------------------------------------------------------- -->
+			<div th:unless="${warningMessage} == null"
+				th:utext="${warningMessage}" class="alert alert-warning"
+				role="warning"></div>
+			<!--  Warning message ----------------------------------------------------------- -->
+
+			<!--   message ----------------------------------------------------------- -->
+			<div th:unless="${message} == null" th:utext="${message}"
+				class="alert alert-success" role="warning"></div>
+			<!--   message ----------------------------------------------------------- -->
 		</div>
-		
-		<a th:href="@{/animal/petbook}" class="btn btn-danger">Petbook</a>
-		<a th:href="@{/fill}" class="btn btn-danger">Fill </a>
-		<a th:href="@{/user/profile}" class="btn btn-danger">Profile </a>
-		<a th:href="@{/logout}" class="btn btn-danger">Logout </a>
-		
+
+		<a th:href="@{/animal/petbook}" class="btn btn-danger">Petbook</a> <a
+			th:href="@{/user/profile}" class="btn btn-danger">Profile </a> <a
+			th:href="@{/logout}" class="btn btn-danger">Logout </a>
+
+		<h1>Your Favourites</h1>
+
+		<div th:each="favourite : ${favourites}">
+			<a th:href="@{/favourite(id=${favourite.id}, rm=true)}"
+				class="btn btn-danger">Remove Favourite</a>
+			<p th:text="${favourite.id}"></p>
+			<a th:text="${favourite.name}"
+				th:href="@{/animal/profile(id=${favourite.id})}"></a>
+			<p th:text="${favourite.description}"></p>
+
+			<p th:text="${favourite.species.name}"></p>
+			<p></p>
+			<p></p>
+			<p></p>
+
+
+		</div>
+
 	</div>
 	<!--  End of container -->
 	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
