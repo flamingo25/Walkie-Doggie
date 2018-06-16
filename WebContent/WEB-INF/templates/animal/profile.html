@@ -33,6 +33,7 @@
 		<a th:href="@{/animal/petbook}" class="btn btn-danger">Back</a>
 		<a th:href="@{/animal/images(id=${animal.id})}" class="btn btn-danger">Edit Images</a>
 		<a th:href="@{/favourite(id=${animal.id})}" class="btn btn-danger">Add Favourite</a>
+		<a th:href="@{/calendar/animal(id=${animal.id})}" class="btn btn-danger">Show Calendar</a>
 
 
 		<div th:each="image : ${images}" th:if="${image.profile}">

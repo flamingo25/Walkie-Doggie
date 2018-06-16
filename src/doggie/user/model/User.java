@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,6 +23,7 @@ import org.hibernate.annotations.CascadeType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import doggie.animals.model.AnimalModel;
+import doggie.walkie.model.CalendarModel;
 
 @Entity
 @Table(name = "users")
@@ -40,6 +42,10 @@ public class User implements java.io.Serializable {
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 
+	
+	
+	//Relationship
+	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private Set<UserRole> userRoles;
@@ -53,6 +59,13 @@ public class User implements java.io.Serializable {
 			@JoinColumn(name = "animal_id") })
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private List<AnimalModel> favourites;
+	
+	@OneToMany(mappedBy="user")
+	@Cascade(CascadeType.SAVE_UPDATE)
+	private Set<CalendarModel> events;
+	
+	
+	//Constructor
 
 	public User() {
 	}
@@ -136,4 +149,20 @@ public class User implements java.io.Serializable {
 		}
 		favourites.add(animal);
 	}
+
+	public Set<CalendarModel> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<CalendarModel> events) {
+		this.events = events;
+	}
+	
+	public void addEvent(CalendarModel event) {
+		if (events == null) {
+			events = new HashSet<CalendarModel>();
+		}
+		events.add(event);
+	}
+	
 }

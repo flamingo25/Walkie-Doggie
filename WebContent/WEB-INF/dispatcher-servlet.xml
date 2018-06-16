@@ -41,6 +41,8 @@
 
 	<!-- looks up Spring Data repositories -->
 	<jpa:repositories base-package="doggie" />
+	
+	<mvc:resources mapping="/resources/**" location="/resources/" />
 
 	<!-- JSR-303/JSR-349 support will be detected on classpath and enabled automatically -->
 	<mvc:annotation-driven />
@@ -55,6 +57,7 @@
 		<property name="templateMode" value="HTML" />
 		<property name="cacheable" value="false" />
 	</bean>
+	
 
 	<bean id="templateEngine"
 		class="org.thymeleaf.spring5.SpringTemplateEngine">

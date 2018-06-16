@@ -1,12 +1,13 @@
 package doggie.controller;
 
+import java.util.Calendar;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import doggie.animals.dao.AnimalRepository;
 import doggie.animals.dao.CompatibilityRepository;
@@ -21,6 +22,8 @@ import doggie.user.dao.UserDao;
 import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserRole;
+import doggie.walkie.dao.CalendarRepository;
+import doggie.walkie.model.CalendarModel;
 
 @Controller
 public class StartController {
@@ -45,6 +48,9 @@ public class StartController {
 
 	@Autowired
 	ImageRepository imageRepository;
+	
+	@Autowired
+	CalendarRepository calendarRepository;
 	
 	
 	@PostConstruct
@@ -152,5 +158,45 @@ public class StartController {
 		animalRepository.save(chris);
 		animalRepository.save(patrik);
 		animalRepository.save(tom);
+	}
+	
+	@PostConstruct
+	@Transactional
+	public void iniEvents() {
+		
+		List<AnimalModel> animals = animalRepository.findAll();
+		List<User> users = userDao.findAll();
+		
+		CalendarModel event1 = new CalendarModel();	
+		Calendar cal = Calendar.getInstance();
+		cal.set(2018, 05, 18);
+		event1.setEvent(cal.getTime());
+		event1.setUser(users.get(0));
+		event1.setAnimal(animals.get(0));
+		calendarRepository.save(event1);
+		
+		CalendarModel event2 = new CalendarModel();	
+		Calendar cal1 = Calendar.getInstance();
+		cal1.set(2018, 05, 18);
+		event2.setEvent(cal1.getTime());
+		event2.setUser(users.get(0));
+		event2.setAnimal(animals.get(0));
+		calendarRepository.save(event2);
+		
+		CalendarModel event3 = new CalendarModel();	
+		Calendar cal2 = Calendar.getInstance();
+		cal2.set(2018, 05, 18);
+		event3.setEvent(cal2.getTime());
+		event3.setUser(users.get(1));
+		event3.setAnimal(animals.get(0));
+		calendarRepository.save(event3);
+		
+		CalendarModel event4 = new CalendarModel();	
+		Calendar cal3 = Calendar.getInstance();
+		cal3.set(2018, 05, 18);
+		event4.setEvent(cal3.getTime());
+		event4.setUser(users.get(1));
+		event4.setAnimal(animals.get(0));
+		calendarRepository.save(event4);
 	}
 }

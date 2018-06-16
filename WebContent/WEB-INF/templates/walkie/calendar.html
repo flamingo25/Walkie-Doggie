@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset='utf-8' />
+<link href='../resources/fullcalendar.css' rel='stylesheet' />
+<script src='../resources/lib/moment.min.js'></script>
+<script src='../resources/lib/jquery.min.js'></script>
+<script src='../resources/fullcalendar.js'></script>
+<script src='../resources/de.js'></script>
+<script th:inline="javascript">
+	$(document).ready(function() {
+
+		$('#calendar').fullCalendar({
+			header : {
+				left : 'prev,next today',
+				center : 'title',
+				right : 'month,basicWeek,basicDay'
+			},
+			navLinks : true,
+			editable : false,
+			eventLimit : true,
+			events : [ 
+				
+				[# th:each="event : ${events}"]
+				
+				{
+				title : '[(${event.animal.name})]',
+				start : '[(${event.event})]',
+				allDay : true
+			},
+			[/]
+			
+			
+			]
+		});
+
+	});
+</script>
+<style>
+body {
+	margin: 40px 10px;
+	padding: 0;
+	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+	font-size: 14px;
+}
+
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+
+	<div id='calendar'></div>
+
+</body>
+</html>
