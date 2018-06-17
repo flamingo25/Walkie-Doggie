@@ -78,10 +78,9 @@ public class StartController {
 		user.encryptPassword();
 		user.addUserRole(userRole);
 		userDao.save(user);
+		iniAnimals();
 	}
 	
-	@PostConstruct
-	@Transactional
 	public void iniAnimals() {
 
 		Species art1 = new Species("Hund");
@@ -158,10 +157,9 @@ public class StartController {
 		animalRepository.save(chris);
 		animalRepository.save(patrik);
 		animalRepository.save(tom);
+		iniEvents();
 	}
 	
-	@PostConstruct
-	@Transactional
 	public void iniEvents() {
 		
 		List<AnimalModel> animals = animalRepository.findAll();

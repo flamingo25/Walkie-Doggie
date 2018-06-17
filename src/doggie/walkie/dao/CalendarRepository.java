@@ -1,5 +1,6 @@
 package doggie.walkie.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -18,4 +19,6 @@ public interface CalendarRepository extends JpaRepository<CalendarModel, Integer
 	List<CalendarModel> findAllByAnimal(AnimalModel animal);
 	
 	List<CalendarModel> findAllByUser(User user);
+
+	List<CalendarModel> findAllByEventAndAnimal(Date date, AnimalModel animal);
 }

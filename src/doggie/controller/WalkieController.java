@@ -1,13 +1,19 @@
 package doggie.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import doggie.animals.dao.AnimalRepository;
@@ -42,6 +48,7 @@ public class WalkieController {
 		List<CalendarModel> events = calendarRepository.findAllByAnimal(animal);
 		
 		model.addAttribute("events", events);
+		model.addAttribute("animal", animal);
 		
 		return "/walkie/calendar";
 	}
@@ -60,5 +67,57 @@ public class WalkieController {
 		model.addAttribute("events", events);
 		
 		return "/walkie/calendar";
+	}
+	
+	@RequestMapping(value = "/calendar/addEvent", method = RequestMethod.GET)
+	public String showAddEvent(Model model,
+			@RequestParam String date,
+			@RequestParam int id) {
+		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
+
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + id);
+
+		AnimalModel animal = animalOpt.get();
+		
+		model.addAttribute("animal", animal);
+		model.addAttribute("date", date);
+		
+		return "/walkie/add";
+	}
+	
+	@RequestMapping(value = "/calendar/addEvent", method = RequestMethod.POST)
+	public String addEvent(Model model, Principal principal,
+			@RequestParam String date,
+			@RequestParam int id) {
+		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
+
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + id);
+
+		AnimalModel animal = animalOpt.get();
+		
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+		
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			cal.setTime(sdf.parse(date));
+		} catch (ParseException e) {				
+			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+		}
+		Date date1 = cal.getTime();
+		if (CollectionUtils.isEmpty(calendarRepository.findAllByEventAndAnimal(date1, animal))) {
+		
+		CalendarModel event = new CalendarModel();
+		event.setEvent(cal.getTime());
+		event.setAnimal(animal);
+		event.setUser(user);
+		calendarRepository.save(event);
+		}
+		
+		return "forward:/calendar/animal";
 	}
 }

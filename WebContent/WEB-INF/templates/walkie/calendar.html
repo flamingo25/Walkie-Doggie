@@ -13,6 +13,14 @@
 	$(document).ready(function() {
 
 		$('#calendar').fullCalendar({
+			
+			[# th:if="${animal}"]		
+			dayClick: function(date, jsEvent, view){	
+			
+				$(location).attr('href', ('addEvent?date=' + date.format() + '&id=[(${animal.id})]'))
+			},
+			[/]	
+		
 			header : {
 				left : 'prev,next today',
 				center : 'title',
@@ -28,6 +36,7 @@
 				{
 				title : '[(${event.animal.name})]',
 				start : '[(${event.event})]',
+				url : 'addEvent?date=[(${event.event})]&id=[(${event.animal.id})]',
 				allDay : true
 			},
 			[/]
