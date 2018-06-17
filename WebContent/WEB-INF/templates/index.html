@@ -1,60 +1,141 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
 <div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
 </head>
-<body>
-	<div class="container" role="main">
 
-		<div class="page-header">
-			<h1>Default Index</h1>
+<body class="grey lighten-3">
 
-			<!--  Error message ----------------------------------------------------------- -->
-			<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
-				class="alert alert-danger" role="alert"></div>
-			<!--  Error message ----------------------------------------------------------- -->
+	<!--Main Navigation-->
+	<header>
 
-			<!--  Warning message ----------------------------------------------------------- -->
-			<div th:unless="${warningMessage} == null"
-				th:utext="${warningMessage}" class="alert alert-warning"
-				role="warning"></div>
-			<!--  Warning message ----------------------------------------------------------- -->
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side}"></div>
+		<!-- Sidebar -->
 
-			<!--   message ----------------------------------------------------------- -->
-			<div th:unless="${message} == null" th:utext="${message}"
-				class="alert alert-success" role="warning"></div>
-			<!--   message ----------------------------------------------------------- -->
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+	<main class="pt-5 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn">
+			<div class="card-body d-sm-flex justify-content-between">
+				<div class="col-md-12 mb-6">
+
+
+					<!-- Titel -->
+					<h1>Wilkommen User!</h1>
+					<hr>
+
+
+					<!-- Text -->
+					<p>Wir freuen uns sehr darüber, dass du wieder da bist! Schaue
+						in unser News Feed, um die neusten Updates unserer Homepage und
+						unseres Tierheims zu erfahren! Natürlich kannst du unsere
+						liebevollen Tiere zum spazieren gehen mitnehmen oder gar
+						adoptieren! Viel Spaß auf der Website!</p>
+
+				</div>
+			</div>
+			<hr>
+
+
+			<!-- Cards -->
+			<div class="row wow fadeIn">
+
+				<div class="col-md-12 mb-8">
+
+					<div class="card-deck">
+
+						<!-- Card 1 -->
+						<div class="card text-center" style="width: 22rem;">
+							<div class="card-header success-color white-text">Breaking
+								News!</div>
+							<div class="card-body">
+								<h4 class="card-title"
+									th:if="${animals[0].species.name.equals('Kleintier')}">Neues
+									Kleintier</h4>
+								<h4 class="card-title"
+									th:if="${animals[0].species.name.equals('Hund')}">Neuer
+									Hund</h4>
+								<h4 class="card-title"
+									th:if="${animals[0].species.name.equals('Katze')}">Neue
+									Katze</h4>
+								<h4 class="card-title" th:text="${animals[0].name}">Name</h4>
+
+
+								<p class="card-text text-justify"
+									th:text="${animals[0].description}">Beschreibung</p>
+
+								<img th:if="${image1}" th:src="@{/animal/image(id=${image1[0].id})}"
+									class="img-fluid z-depth-2">
+							</div>
+						</div>
+
+						<!-- Card 2 -->
+						<div class="card text-center" style="width: 22rem;">
+							<div class="card-header info-color white-text">Breaking
+								News!</div>
+							<div class="card-body">
+								<h4 class="card-title"
+									th:if="${animals[1].species.name.equals('Kleintier')}">Neues
+									Kleintier</h4>
+								<h4 class="card-title"
+									th:if="${animals[1].species.name.equals('Hund')}">Neuer
+									Hund</h4>
+								<h4 class="card-title"
+									th:if="${animals[1].species.name.equals('Katze')}">Neue
+									Katze</h4>
+								<h4 class="card-title" th:text="${animals[1].name}">Name</h4>
+
+
+								<p class="card-text text-justify"
+									th:text="${animals[1].description}">Beschreibung</p>
+
+								<img th:if="${image2}"
+									th:src="@{/animal/image(id=${image2[0].id})}"
+									class="img-fluid z-depth-2">
+							</div>
+						</div>
+
+						<!-- Card 3 -->
+						<div class="card text-center" style="width: 22rem;">
+							<div class="card-header danger-color white-text">Breaking
+								News!</div>
+							<div class="card-body">
+								<h4 class="card-title"
+									th:if="${animals[2].species.name.equals('Kleintier')}">Neues
+									Kleintier</h4>
+								<h4 class="card-title"
+									th:if="${animals[2].species.name.equals('Hund')}">Neuer
+									Hund</h4>
+								<h4 class="card-title"
+									th:if="${animals[2].species.name.equals('Katze')}">Neue
+									Katze</h4>
+								<h4 class="card-title" th:text="${animals[2].name}">Name</h4>
+
+
+								<p class="card-text text-justify"
+									th:text="${animals[2].description}">Beschreibung</p>
+
+								<img th:if="${image3}" th:src="@{/animal/image(id=${image3[0].id})}"
+									class="img-fluid z-depth-2">
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
 		</div>
-
-		<a th:href="@{/animal/petbook}" class="btn btn-danger">Petbook</a> <a
-			th:href="@{/user/profile}" class="btn btn-danger">Profile </a> <a
-			th:href="@{/logout}" class="btn btn-danger">Logout </a> <a
-			th:href="@{/calendar/user}" class="btn btn-danger">View Calendar </a>
-
-		<h1>Your Favourites</h1>
-
-		<div th:each="favourite : ${favourites}">
-			<a th:href="@{/favourite(id=${favourite.id}, rm=true)}"
-				class="btn btn-danger">Remove Favourite</a>
-			<p th:text="${favourite.id}"></p>
-			<a th:text="${favourite.name}"
-				th:href="@{/animal/profile(id=${favourite.id})}"></a>
-			<p th:text="${favourite.description}"></p>
-
-			<p th:text="${favourite.species.name}"></p>
-			<p></p>
-			<p></p>
-			<p></p>
-
-
-		</div>
-
-	</div>
-	<!--  End of container -->
-	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
+
 </html>
