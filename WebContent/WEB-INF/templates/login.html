@@ -8,50 +8,45 @@
 <div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
 </head>
 <body class="grey lighten-3">
-	<main class="mt-5">
-	<div class="container-fluid">
-		<div>
-			<div class="col-md-3 mb-4"
-				style="display: block; margin-left: auto; margin-right: auto;">
-				<div class="card">
-					<div class="card-body">
-						<form th:action="@{/login}" method="post">
-							<p class="h4 text-center mt-4">
-								<b>Login</b>
-							</p>
+	<div class="row mt-5">
+		<div class="center-block col-md-3 mb-4">
+			<div class="card">
+				<div class="card-body">
+					<form th:action="@{/login}" method="post">
+						<a class="logo waves-effect" center-block> <img src="resources/Bild.png" class="center-block"
+							style="width: 80%; height: 80%;">
+						</a>
+						<hr>
 
-							<!-- Material input username -->
-							<div class="md-form">
-								<i class="fa fa-user prefix grey-text"></i> <input type="text"
-									id="username" class="form-control" name="username" required
-									autofocus placeholder="Your username">
-							</div>
+						<!-- Material input username -->
+						<div class="md-form">
+							<i class="fa fa-user prefix grey-text"></i> <input type="text"
+								id="username" class="form-control" name="username" required
+								autofocus placeholder="Your username">
+						</div>
 
-							<!-- Material input password -->
-							<div class="md-form">
-								<i class="fa fa-lock prefix grey-text"></i> <input
-									type="password" id="password" class="form-control"
-									name="password" placeholder="Your password">
-							</div>
+						<!-- Material input password -->
+						<div class="md-form">
+							<i class="fa fa-lock prefix grey-text"></i> <input
+								type="password" id="password" class="form-control"
+								name="password" placeholder="Your password">
+						</div>
 
-							<div class="text-center mt-4">
-								<button class="btn btn-info" type="submit">Login</button>
-							</div>
-							<hr>
-							<p class="h6 text-center mt-4">
-								Noch kein Konto?<br>Dann <b>registrieren</b> Sie sich!
-							</p>
-							<div class="text-center mt-4">
-								<a th:href="@{/signUp}" class="btn btn-primary">Registrieren</a>
-							</div>
-						</form>
+						<div class="text-center mt-4">
+							<button class="btn btn-info" type="submit">Login</button>
+						</div>
+						<hr>
+						<p class="h6 text-center mt-4">
+							Noch kein Konto?<br>Dann <b>registrieren</b> Sie sich!
+						</p>
+						<div class="text-center mt-4">
+							<a th:href="@{/signUp}" class="btn btn-primary">Registrieren</a>
+						</div>
+					</form>
 
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	</main>
-	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>
