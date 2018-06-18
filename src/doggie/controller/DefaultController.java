@@ -33,8 +33,10 @@ public class DefaultController {
 	ImageRepository imageRepository;
 		
 	@RequestMapping(value = "/")
-	public String index(Model model) {
-
+	public String index(Model model, Principal principal) {
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+		model.addAttribute("user", user);
 		
 		List<AnimalModel> animals = animalRepository.findTop3ByOrderByIdDesc();
 		
