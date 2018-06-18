@@ -23,6 +23,7 @@ import org.hibernate.annotations.CascadeType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import doggie.animals.model.AnimalModel;
+import doggie.walkie.model.AdoptionModel;
 import doggie.walkie.model.CalendarModel;
 
 @Entity
@@ -63,6 +64,10 @@ public class User implements java.io.Serializable {
 	@OneToMany(mappedBy="user")
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private Set<CalendarModel> events;
+	
+	@OneToMany(mappedBy="user")
+	@Cascade(CascadeType.SAVE_UPDATE)
+	private Set<AdoptionModel> adoptions;
 	
 	
 	//Constructor
@@ -163,6 +168,21 @@ public class User implements java.io.Serializable {
 			events = new HashSet<CalendarModel>();
 		}
 		events.add(event);
+	}
+
+	public Set<AdoptionModel> getAdoptions() {
+		return adoptions;
+	}
+
+	public void setAdoptions(Set<AdoptionModel> adoptions) {
+		this.adoptions = adoptions;
+	}
+	
+	public void addAdoption(AdoptionModel adoption) {
+		if (adoptions == null) {
+			adoptions = new HashSet<AdoptionModel>();
+		}
+		adoptions.add(adoption);
 	}
 	
 }

@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import doggie.user.model.User;
+import doggie.walkie.model.AdoptionModel;
 import doggie.walkie.model.CalendarModel;
 
 @Entity
@@ -75,6 +76,9 @@ public class AnimalModel implements java.io.Serializable {
 	
 	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE)
 	private Set<CalendarModel> events;
+	
+	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE)
+	private Set<AdoptionModel> adoptions;
 
 	@Version
 	long version;
@@ -249,5 +253,20 @@ public class AnimalModel implements java.io.Serializable {
 			events = new HashSet<CalendarModel>();
 		}
 		events.add(event);
+	}
+
+	public Set<AdoptionModel> getAdoptions() {
+		return adoptions;
+	}
+
+	public void Adoption(Set<AdoptionModel> adoptions) {
+		this.adoptions = adoptions;
+	}
+	
+	public void addEvent(AdoptionModel adoption) {
+		if (adoptions == null) {
+			adoptions = new HashSet<AdoptionModel>();
+		}
+		adoptions.add(adoption);
 	}
 }
