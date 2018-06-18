@@ -17,5 +17,7 @@ public interface AnimalRepository extends JpaRepository<AnimalModel, Integer> {
 	List<AnimalModel> findAllByFUser(User user);
 
 	List<AnimalModel> findTop3ByOrderByIdDesc();
+
+	List<AnimalModel> findByNameContainingOrBreedContainingOrSpeciesNameContainingAllIgnoreCase(String name, String breed, String speciesName);
 	
 }

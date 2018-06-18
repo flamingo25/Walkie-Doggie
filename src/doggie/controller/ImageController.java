@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,7 +54,8 @@ public class ImageController {
 			image.setContentType(file.getContentType());
 			image.setFilename(file.getOriginalFilename());
 			image.setName(file.getOriginalFilename());
-			image.setProfile(false);
+			if (CollectionUtils.isEmpty(imageRepository.findAllByAnimalAndProfile(animal, true)))
+			image.setProfile(true); else image.setProfile(false);
 			image.setAnimal(animal);
 			animal.addImage(image);
 			imageRepository.save(image);
@@ -73,6 +75,28 @@ public class ImageController {
 			throw new IllegalArgumentException("No image with id " + imageId);
 
 		AnimalImage img = imgOpt.get();
+
+		try {
+			OutputStream out = response.getOutputStream();
+			response.setContentType(img.getContentType());
+			out.write(img.getContent());
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/animal/profileImage")
+	public void downloadProfile(@RequestParam("id") int animalId, HttpServletResponse response) {
+		
+		Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + animalId);
+
+		AnimalModel animal = animalOpt.get();
+
+		List<AnimalImage> imgOpt = imageRepository.findAllByAnimalAndProfile(animal, true);
+		AnimalImage img = imgOpt.get(0);
 
 		try {
 			OutputStream out = response.getOutputStream();

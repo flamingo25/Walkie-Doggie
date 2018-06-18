@@ -14,7 +14,7 @@
 	<header>
 
 		<!-- Sidebar -->
-		<div th:replace="~{includes/sideNav :: side}"></div>
+		<div th:replace="~{includes/sideNav :: side(actual='index')}"></div>
 		<!-- Sidebar -->
 
 		<!-- Navbar -->
@@ -31,7 +31,7 @@
 
 
 					<!-- Titel -->
-					<h1 th:text="'Wilkommen ' + ${user.userName}">Wilkommen User!</h1>
+					<h1 th:text="'Wilkommen ' + ${user.userName} + '!'">Wilkommen User!</h1>
 					<hr>
 
 
@@ -74,8 +74,9 @@
 								<p class="card-text text-justify"
 									th:text="${animals[0].description}">Beschreibung</p>
 
-								<img th:if="${image1}" th:src="@{/animal/image(id=${image1[0].id})}"
-									class="img-fluid z-depth-2">
+								<img th:src="@{profileImage(id=${animals[0].id})}"
+									class="img-fluid z-depth-2"
+									onerror="this.src='resources/default.jpg'">
 							</div>
 						</div>
 
@@ -99,9 +100,9 @@
 								<p class="card-text text-justify"
 									th:text="${animals[1].description}">Beschreibung</p>
 
-								<img th:if="${image2}"
-									th:src="@{/animal/image(id=${image2[0].id})}"
-									class="img-fluid z-depth-2">
+								<img th:src="@{profileImage(id=${animals[1].id})}"
+									class="img-fluid z-depth-2"
+									onerror="this.src='resources/default.jpg'">
 							</div>
 						</div>
 
@@ -125,15 +126,16 @@
 								<p class="card-text text-justify"
 									th:text="${animals[2].description}">Beschreibung</p>
 
-								<img th:if="${image3}" th:src="@{/animal/image(id=${image3[0].id})}"
-									class="img-fluid z-depth-2">
+								<img th:src="@{profileImage(id=${animals[2].id})}"
+									class="img-fluid z-depth-2"
+									onerror="this.src='resources/default.jpg'">
 							</div>
 						</div>
 					</div>
-</div>
 				</div>
 			</div>
 		</div>
+	</div>
 	</main>
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

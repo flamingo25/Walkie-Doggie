@@ -56,6 +56,16 @@ public class AnimalController {
 
 		return "/animal/petbook";
 	}
+	
+	@RequestMapping(value = "/animal/search")
+	public String search(Model model, @RequestParam String searchString) {
+
+		List<AnimalModel> animals = animalRepository.findByNameContainingOrBreedContainingOrSpeciesNameContainingAllIgnoreCase(searchString, searchString, searchString);
+
+		model.addAttribute("animals", animals);
+
+		return "/animal/petbook";
+	}
 
 	@RequestMapping(value = { "/animal/profile" })
 	public String profil(Model model, @RequestParam int id) {
