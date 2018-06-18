@@ -40,18 +40,6 @@ public class DefaultController {
 		
 		List<AnimalModel> animals = animalRepository.findTop3ByOrderByIdDesc();
 		
-		List<AnimalImage> image1 = imageRepository.findAllByAnimalAndProfile(animals.get(0), true);
-		if (!CollectionUtils.isEmpty(image1))
-		model.addAttribute("image1", image1);
-		
-		List<AnimalImage> image2 = imageRepository.findAllByAnimalAndProfile(animals.get(1), true);
-		if (!CollectionUtils.isEmpty(image2))
-		model.addAttribute("image2", image2);
-		
-		List<AnimalImage> image3 = imageRepository.findAllByAnimalAndProfile(animals.get(2), true);
-		if (!CollectionUtils.isEmpty(image3))
-		model.addAttribute("image3", image3);
-		
 		model.addAttribute("animals", animals);
 		return "index";
 	}

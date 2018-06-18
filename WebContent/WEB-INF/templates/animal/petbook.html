@@ -1,58 +1,93 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
-<div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
 </head>
-<body>
-	<div class="container" role="main">
 
-		<div class="page-header">
-			<h1>Petbook</h1>
+<body class="grey lighten-3">
+
+	<!--Main Navigation-->
+	<header>
+
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
+		<!-- Sidebar -->
+
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+
+
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
+			<div class="row col-md-12 center-block py-3">
+				<div class="row">
+					<div class="col-md-6">
+						<h1 class="font-weight-bold">Petbook</h1>
+					</div>
+					<div class="col-md-6">
+						<form class="form-horizontal" method="post"
+							th:action="@{/animal/search}">
+							<div class="input-group">
+								<input class="form-control" id="searchString" type="text"
+									name="searchString" placeholder="Nach Tieren suchen">
+								<div class="input-group-append">
+									<button type="submit" class="btn btn-warning m-0">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="col-md-12 center-block">
+				<div class="row">
+					<div class="mb-4 col-md-4 p-3" th:each="animal : ${animals}">
+						<div class="card">
+							<!--Card image-->
+							<div class="view overlay">
+								<img class="card-img-top"
+									th:src="@{profileImage(id=${animal.id})}" alt="Card image cap"
+									onerror="this.src='../resources/default.jpg'"> <a
+									th:href="@{profile(id=${animal.id})}">
+									<div class="mask rgba-white-slight"></div>
+								</a>
+							</div>
+
+							<!--Card content-->
+							<div class="card-body">
+
+								<!--Title-->
+								<h4 class="card-title" th:text="${animal.name}">Name</h4>
+								<!--Text-->
+								<p class="card-text"
+									th:text="${'Tierart: ' + animal.species.name}">Tierart</p>
+								<hr>
+								<p class="card-text"
+									th:text="'Rasse: ' + ${animal.breed}">Rasse</p>
+								<hr>
+								<p class="card-text" th:text="'Alter: ' + ${animal.age}">Alter</p>
+								<div class="btn-group" role="group" aria-label="Basic example">
+									<a th:href="@{edit(id=${animal.id})}" class="btn btn-warning">
+										Bearbeiten</a> <a th:href="@{delete(id=${animal.id})}"
+										class="btn btn-danger">Löschen</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<!--  Error message ----------------------------------------------------------- -->
-		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
-			class="alert alert-danger" role="alert"></div>
-		<!--  Error message ----------------------------------------------------------- -->
-
-		<!--  Warning message ----------------------------------------------------------- -->
-		<div th:unless="${warningMessage} == null"
-			th:utext="${warningMessage}" class="alert alert-warning"
-			role="warning"></div>
-		<!--  Warning message ----------------------------------------------------------- -->
-
-		<!--   message ----------------------------------------------------------- -->
-		<div th:unless="${message} == null" th:utext="${message}"
-			class="alert alert-success" role="warning"></div>
-		<!--   message ----------------------------------------------------------- -->
 	</div>
-
-	<a th:href="@{add}" class="btn btn-danger">Add Animal </a>
-
-	<!-- list all profiles -->
-
-	<div th:each="animal : ${animals}">
-		<p th:text="${animal.id}"></p>
-		<a th:text="${animal.name}" th:href="@{profile(id=${animal.id})}"></a>
-		<p th:text="${animal.description}"></p>
-
-		<p th:text="${animal.species.name}"></p>
-		<p></p>
-		<a th:href="@{edit(id=${animal.id})}" class="btn btn-danger">Edit
-			Animal </a> <a th:href="@{delete(id=${animal.id})}"
-			class="btn btn-danger">Delete Animal </a>
-		<p></p>
-
-	</div>
-
-	<!-- end of profiles -->
-
-	</div>
-	<!--  End of container -->
-	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>
