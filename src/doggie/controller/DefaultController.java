@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import doggie.animals.dao.AnimalRepository;
+import doggie.animals.dao.ImageRepository;
+import doggie.animals.model.AnimalImage;
 import doggie.animals.model.AnimalModel;
 import doggie.user.dao.UserDao;
 import doggie.user.model.User;
@@ -26,15 +28,29 @@ public class DefaultController {
 	
 	@Autowired
 	AnimalRepository animalRepository;
+	
+	@Autowired
+	ImageRepository imageRepository;
 		
 	@RequestMapping(value = "/")
-	public String index(Model model, Principal principal) {
-		List<User> userOpt = userDao.findByUserName(principal.getName());
-		User user = userOpt.get(0);
+	public String index(Model model) {
+
 		
-		List<AnimalModel> favourites = animalRepository.findAllByFUser(user);
+		List<AnimalModel> animals = animalRepository.findTop3ByOrderByIdDesc();
 		
-		model.addAttribute("favourites", favourites);
+		List<AnimalImage> image1 = imageRepository.findAllByAnimalAndProfile(animals.get(0), true);
+		if (!CollectionUtils.isEmpty(image1))
+		model.addAttribute("image1", image1);
+		
+		List<AnimalImage> image2 = imageRepository.findAllByAnimalAndProfile(animals.get(1), true);
+		if (!CollectionUtils.isEmpty(image2))
+		model.addAttribute("image2", image2);
+		
+		List<AnimalImage> image3 = imageRepository.findAllByAnimalAndProfile(animals.get(2), true);
+		if (!CollectionUtils.isEmpty(image3))
+		model.addAttribute("image3", image3);
+		
+		model.addAttribute("animals", animals);
 		return "index";
 	}
 	

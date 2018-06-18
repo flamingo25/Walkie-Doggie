@@ -1,25 +1,21 @@
-<nav th:fragment="search" class="navbar navbar-default">
-	<div class="container-fluid">
+<nav th:fragment="search" class="navbar navbar-expand-lg navbar-light Green scrolling-navbar">
+            <div class="container-fluid">
 
-		<!-- Button to fill the list-->
-		<a href="fillData" class="btn btn-default navbar-btn">
-			Fill List
-		</a>
-
-		<form class="navbar-form navbar-right" th:action="@{/logout}" method="post" >
-      		<input class="btn btn-danger" type="submit" value="Sign Out"/>
-   		</form> 
+                <!-- Brand -->
+                <a class="navbar-brand waves-effect" href="#" target="_blank">
+                    <strong class="black-text"><b> Walkie-Doggie - Wir lieben Tiere! </b></strong>
+                </a>
 
 
-
-		<!-- HTML form with search textbox and submit button-->
-		<form class="navbar-form navbar-right" role="search" method="post" action="searchEmployees">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search for..." name="searchString">
-				<span class="input-group-btn">
-					<button class="btn btn-default" type="submit">Go!</button>
-				</span>
-			</div>
-		</form>
-	</div>
-</nav>
+                <!-- Right -->
+				<div class="topnavright">
+                    <ul class="navbar-nav nav-flex-icons">
+                        <li class="nav-item">
+                            <a th:href="@{/logout}" class="nav-link border border-light white rounded waves-effect">
+                               <b> Ausloggen </b>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>

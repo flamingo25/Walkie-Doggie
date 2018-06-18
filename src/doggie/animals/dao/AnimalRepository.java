@@ -15,5 +15,7 @@ import doggie.user.model.User;
 public interface AnimalRepository extends JpaRepository<AnimalModel, Integer> {
 	
 	List<AnimalModel> findAllByFUser(User user);
+
+	List<AnimalModel> findTop3ByOrderByIdDesc();
 	
 }
