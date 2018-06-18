@@ -1,6 +1,7 @@
 package doggie.controller;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +23,9 @@ import doggie.user.dao.UserDao;
 import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserRole;
+import doggie.walkie.dao.AdoptionRepository;
 import doggie.walkie.dao.CalendarRepository;
+import doggie.walkie.model.AdoptionModel;
 import doggie.walkie.model.CalendarModel;
 
 @Controller
@@ -52,6 +55,8 @@ public class StartController {
 	@Autowired
 	CalendarRepository calendarRepository;
 	
+	@Autowired
+	AdoptionRepository adoptionRepository;
 	
 	@PostConstruct
 	@Transactional
@@ -164,6 +169,7 @@ public class StartController {
 		
 		List<AnimalModel> animals = animalRepository.findAll();
 		List<User> users = userDao.findAll();
+		Date date = new Date();
 		
 		CalendarModel event1 = new CalendarModel();	
 		Calendar cal = Calendar.getInstance();
@@ -196,5 +202,11 @@ public class StartController {
 		event4.setUser(users.get(1));
 		event4.setAnimal(animals.get(0));
 		calendarRepository.save(event4);
+		
+		AdoptionModel adopt1 = new AdoptionModel(date, false);
+		adopt1.setAnimal(animals.get(2));
+		adopt1.setUser(users.get(1));
+		adoptionRepository.save(adopt1);
+		
 	}
 }

@@ -21,7 +21,9 @@ import doggie.animals.model.AnimalModel;
 import doggie.user.dao.UserDao;
 import doggie.user.model.User;
 import doggie.user.model.UserProfile;
+import doggie.walkie.dao.AdoptionRepository;
 import doggie.walkie.dao.CalendarRepository;
+import doggie.walkie.model.AdoptionModel;
 import doggie.walkie.model.CalendarModel;
 
 @Controller
@@ -35,6 +37,9 @@ public class WalkieController {
 	
 	@Autowired
 	AnimalRepository animalRepository;
+	
+	@Autowired
+	AdoptionRepository adoptionRepository;
 	
 	@RequestMapping(value = "/calendar/animal")
 	public String animalCalendar(Model model, @RequestParam int id) {
@@ -119,5 +124,47 @@ public class WalkieController {
 		}
 		
 		return "forward:/calendar/animal";
+	}
+	
+	@RequestMapping(value = "/adopt/new", method = RequestMethod.GET)
+	public String showAdopt(Model model, @RequestParam int id) {		
+		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
+
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + id);
+
+		AnimalModel animal = animalOpt.get();
+		
+		model.addAttribute("animal", animal);
+		
+		return "/walkie/adopt";
+	}
+	
+	@RequestMapping(value = "/adopt/new", method = RequestMethod.POST)
+	public String adopt(Model model, Principal principal, @RequestParam int id) {
+		
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+		
+		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
+
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + id);
+
+		AnimalModel animal = animalOpt.get();
+		
+		Date date = new Date();
+		
+		if (CollectionUtils.isEmpty(adoptionRepository.findByUserAndAnimal(user, animal))) {
+			
+		AdoptionModel adopt = new AdoptionModel(date, false);
+		adopt.setAnimal(animal);
+		adopt.setUser(user);
+		
+		adoptionRepository.save(adopt);
+		} else
+		model.addAttribute("errorMessage", "Error: There is already a adoption in progress");
+		
+		return "redirect:/animal/petbook";
 	}
 }

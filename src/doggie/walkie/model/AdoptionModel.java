@@ -20,7 +20,7 @@ import doggie.animals.model.AnimalModel;
 import doggie.user.model.User;
 
 @Entity
-@Table(name = "calendar")
+@Table(name = "adoption")
 public class AdoptionModel implements java.io.Serializable {
 	
 	@Id
