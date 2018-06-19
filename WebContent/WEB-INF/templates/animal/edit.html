@@ -3,182 +3,214 @@
 	xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<div th:include="~{includes/bootstrap :: bootstrapMeta}" th:remove="tag" />
+<div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
-<div th:include="~{includes/bootstrap :: bootstrapCSS}" th:remove="tag" />
-<link
-	href="http://www.malot.fr/bootstrap-datetimepicker/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css"
-	rel="stylesheet">
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
 </head>
 
-<body>
-	<div class="container" role="main">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<form class="form-horizontal" method="post"
-					th:action="${animal} ? @{/animal/edit(id=${animal.id})} : @{/animal/add}">
-					<fieldset>
-						<legend th:text="${animal}? 'Change Animal' : 'New Animal'">New
-							Animal</legend>
+<body class="grey lighten-3">
 
-						<!--  ----------------  id ---------------- -->
-						<div class="form-group" th:if="${animal}">
-							<label for="inputID" class="col-md-2 control-label">ID</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputID" type="text" name="id"
-									th:value="${animal} ? ${animal.id}" th:readonly="${animal}">
-							</div>
+	<!--Main Navigation-->
+	<header>
+
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
+		<!-- Sidebar -->
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
+
+			<div class="row">
+				<div class="col-md-6">
+					<form class="form-horizontal" method="post"
+						th:action="${animal} ? @{/animal/edit(id=${animal.id})} : @{/animal/add}">
+						<fieldset>
+							<legend class="mb-5"
+								th:text="${animal}? 'Tier-Profil ändern' : 'Neues Tier anlegen'">
+								Neues Tier anlegen </legend>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-6">
+					<!--  ----------------  id ---------------- -->
+					<div class="form-group" th:if="${animal}">
+						<label for="inputID" class="col-md-2 control-label">ID</label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputID" type="text" name="id"
+								th:value="${animal} ? ${animal.id}" th:readonly="${animal}">
 						</div>
+					</div>
 
-						<!-- --------------  name ---------------- -->
-						<div class="form-group">
-							<label for="inputName" class="col-md-2 control-label">Name
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputName" type="text"
-									name="name" th:value="${animal} ? ${animal.name}"
-									required="required">
-							</div>
+					<!-- --------------  name ---------------- -->
+					<div class="form-group">
+						<label for="inputName" class="col-md-2 control-label">
+							Name </label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputName" type="text"
+								name="name" th:value="${animal} ? ${animal.name}"
+								required="required">
 						</div>
+					</div>
 
-						<!-- --------------  breed ---------------- -->
-						<div class="form-group">
-							<label for="inputBreed" class="col-md-2 control-label">Breed
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputBreed" type="text"
-									name="breed" th:value="${animal} ? ${animal.breed}"
-									required="required">
-							</div>
+					<!-- --------------  breed ---------------- -->
+					<div class="form-group">
+						<label for="inputBreed" class="col-md-2 control-label">
+							Rasse </label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputBreed" type="text"
+								name="breed" th:value="${animal} ? ${animal.breed}"
+								required="required">
 						</div>
+					</div>
 
-						<!-- --------------  color ---------------- -->
-						<div class="form-group">
-							<label for="inputColor" class="col-md-2 control-label">Color
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputColor" type="text"
-									name="color" th:value="${animal} ? ${animal.color}"
-									required="required">
-							</div>
+					<!-- --------------  color ---------------- -->
+					<div class="form-group">
+						<label for="inputColor" class="col-md-2 control-label">
+							Farbe </label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputColor" type="text"
+								name="color" th:value="${animal} ? ${animal.color}"
+								required="required">
 						</div>
+					</div>
 
-						<!-- --------------  age ---------------- -->
-						<div class="form-group">
-							<label for="inputAge" class="col-md-2 control-label">Age</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputAge" type="number" min="0"
-									step="1" name="age" th:value="${animal} ? ${animal.age}"
-									required="required">
-							</div>
+					<!-- --------------  age ---------------- -->
+					<div class="form-group">
+						<label for="inputAge" class="col-md-2 control-label">Alter</label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputAge" type="number" min="0"
+								step="1" name="age" th:value="${animal} ? ${animal.age}"
+								required="required">
 						</div>
+					</div>
 
-						<!-- --------------  gender ---------------- -->
-						<div class="form-group">
-							<label for="inputGender" class="col-md-2 control-label">Gender
-							</label>
-							<div class="col-md-10">
-								<select class="form-control" id="inputGender" name="gender">
-									<option th:value="Männlich" th:text="Männlich"
-										th:selected="${animal} ? ${animal.gender.equals('Männlich')}"></option>
+					<!-- --------------  gender ---------------- -->
+					<div class="form-group">
+						<label for="inputGender" class="col-md-6 control-label">
+							Geschlecht </label>
+						<div class="col-md-10">
+							<select class="form-control" id="inputGender" name="gender">
+								<option th:value="Männlich" th:text="Männlich"
+									th:selected="${animal} ? ${animal.gender.equals('Männlich')}"></option>
 
-									<option th:value="Weiblich" th:text="Weiblich"
-										th:selected="${animal} ? ${animal.gender.equals('Weiblich')}"></option>
-								</select>
-							</div>
+								<option th:value="Weiblich" th:text="Weiblich"
+									th:selected="${animal} ? ${animal.gender.equals('Weiblich')}"></option>
+							</select>
 						</div>
+					</div>
+				</div>
 
+				<div class="col-md-6">
+					<!-- --------------  Description ---------------- -->
+					<div class="form-group">
+						<label for="inputDescription" class="col-md-6 control-label">
+							Beschreibung </label>
+						<div class="col-md-10">
+							<input class="form-control" id="inputDescription" type="text"
+								name="description" th:value="${animal} ? ${animal.description}"
+								required="required">
+						</div>
+					</div>
+
+					<!-- --------------  Species ---------------- -->
+					<div class="form-group">
+						<label for="inputSpecies" class="col-md-6 control-label">
+							Spezies </label>
+						<div class="col-md-10">
+							<select class="form-control" id="inputSpecies" name="species">
+								<option th:if="${animal}" th:each="specie : ${species}"
+									th:value="${specie.id}" th:text="${specie.name}"
+									th:selected="${specie.name.equals(animal.species.name)}"></option>
+								<option th:if="${animal == null}" th:each="specie : ${species}"
+									th:value="${specie.id}" th:text="${specie.name}"></option>
+							</select>
+						</div>
+					</div>
+
+					<!-- --------------  Compatibility ---------------- -->
+					<div class="form-group">
+						<label for="inputCompatibility" class="col-md-6 control-label">
+							Verträglichkeiten </label>
+						<div class="col-md-10">
+							<select multiple="multiple" class="form-control"
+								id="inputCompatibility" name="compatibility">
+								<option th:each="ac : ${acs}" th:value="${ac.id}"
+									th:text="${ac.name}"
+									th:selected="${selectedAcs.contains(ac.id)}"></option>
+							</select>
+						</div>
+					</div>
+
+					<!-- --------------  Vaccination ---------------- -->
+					<div class="form-group">
+						<label for="inputVaccination" class="col-md-6 control-label">
+							Impfungen </label>
+						<div class="col-md-10">
+							<select multiple="multiple" class="form-control"
+								id="inputVaccination" name="vaccination">
+								<option th:each="vaccination : ${vaccinations}"
+									th:value="${vaccination.id}" th:text="${vaccination.name}"
+									th:selected="${selectedV.contains(vaccination.id)}"></option>
+							</select>
+						</div>
+					</div>
+
+					<!-- Checkbox row / nesting -->
+					<div class="row pl-3 pt-2">
 						<!-- --------------  castrated ---------------- -->
 						<div class="form-group">
-							<label for="inputCastrated" class="col-md-2 control-label">Castrated</label>
-							<div class="col-md-10">
+							<div class="col col-md-6 ml-4">
 								<input th:checked="${animal} ? ${animal.castrated}"
 									type="checkbox" name="castrated" class="form-check-input"
 									id="inputCastrated"> <input type="hidden" value="on"
-									name="_castrated" />
-
+									name="_castrated" /> <label for="inputCastrated"
+									class="pl-2 control-label">Kastriert</label>
 							</div>
+
+
 						</div>
 
 						<!-- --------------  chipped ---------------- -->
 						<div class="form-group">
-							<label for="inputChipped" class="col-md-2 control-label">Chipped</label>
-							<div class="col-md-10">
+							<div class="col col-md-6 ml-4">
 								<input th:checked="${animal} ? ${animal.chipped}"
 									type="checkbox" name="chipped" class="form-check-input"
 									id="inputChipped"> <input type="hidden" value="on"
-									name="_chipped" />
+									name="_chipped" /> <label for="inputChipped"
+									class="pl-2 control-label">Gechipped</label>
 							</div>
+
 						</div>
 
-						<!-- --------------  Description ---------------- -->
-						<div class="form-group">
-							<label for="inputDescription" class="col-md-2 control-label">Description
-							</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputDescription" type="text"
-									name="description" th:value="${animal} ? ${animal.description}"
-									required="required">
-							</div>
-						</div>
-
-						<!-- --------------  Species ---------------- -->
-						<div class="form-group">
-							<label for="inputSpecies" class="col-md-2 control-label">Species
-							</label>
-							<div class="col-md-10">
-								<select class="form-control" id="inputSpecies" name="species">
-									<option th:if="${animal}" th:each="specie : ${species}"
-										th:value="${specie.id}" th:text="${specie.name}"
-										th:selected="${specie.name.equals(animal.species.name)}"></option>
-									<option th:if="${animal == null}" th:each="specie : ${species}"
-										th:value="${specie.id}" th:text="${specie.name}"></option>
-								</select>
-							</div>
-						</div>
-
-						<!-- --------------  Compatibility ---------------- -->
-						<div class="form-group">
-							<label for="inputCompatibility" class="col-md-2 control-label">Compatibility
-							</label>
-							<div class="col-md-10">
-								<select multiple="multiple" class="form-control"
-									id="inputCompatibility" name="compatibility">
-									<option th:each="ac : ${acs}" th:value="${ac.id}"
-										th:text="${ac.name}"
-										th:selected="${selectedAcs.contains(ac.id)}"></option>
-								</select>
-							</div>
-						</div>
-
-						<!-- --------------  Vaccination ---------------- -->
-						<div class="form-group">
-							<label for="inputVaccination" class="col-md-2 control-label">Vaccination
-							</label>
-							<div class="col-md-10">
-								<select multiple="multiple" class="form-control"
-									id="inputVaccination" name="vaccination">
-									<option th:each="vaccination : ${vaccinations}"
-										th:value="${vaccination.id}" th:text="${vaccination.name}"
-										th:selected="${selectedV.contains(vaccination.id)}"></option>
-								</select>
-							</div>
-						</div>
-
-
-						<!-- --------------  buttons ---------------- -->
-						<div class="form-group">
-							<div class="col-md-10 col-md-offset-2">
-								<button type="submit" class="btn btn-primary">Submit</button>
-								<a href="petbook" class="btn btn-default"> Cancel </a>
-							</div>
-						</div>
-					</fieldset>
-				</form>
+					</div>
+				</div>
 			</div>
+
+			<div class="row ml-1">
+				<!-- --------------  buttons ---------------- -->
+				<div class="form-group">
+					<div class="col-md-12">
+						<hr>
+						<button type="submit" class="btn btn-primary">Speichern</button>
+						<a href="petbook" class="btn btn-warning">Abbrechen </a>
+					</div>
+				</div>
+			</div>
+			</fieldset>
+			</form>
 		</div>
-
 	</div>
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
-
 </html>
+
+
