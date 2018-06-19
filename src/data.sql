@@ -26,18 +26,18 @@ INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (1, 1);
 INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (1, 2);
 INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (1, 3);
 /* User EMPLOYEE */
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (2, 1);
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (2, 2);
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (3, 1);
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (3, 2);
 /* User USER */
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (3, 3);
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (2, 1);
 /* User TINA */
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (4, 3);
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (4, 1);
 /* User SVEN */
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (5, 1);
 INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (5, 2);
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (5, 3);
 /* User BIRGIT */
+INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (6, 1);
 INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (6, 2);
-INSERT INTO users_user_roles (users_id, userRoles_id) VALUES (6, 3);
 
 
 

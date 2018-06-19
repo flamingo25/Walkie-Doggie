@@ -47,7 +47,7 @@ public class User implements java.io.Serializable {
 	
 	//Relationship
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private Set<UserRole> userRoles;
 

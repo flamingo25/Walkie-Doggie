@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -82,28 +83,27 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/user/promote")
-	public String promoteUser(Model model, @RequestParam int id, @RequestParam boolean admin) {
+	public String promoteUser(Model model, @RequestParam int id) {
 		Optional<User> userOpt = userDao.findById(id);
 		User user = userOpt.get();
 		
 		if (!userOpt.isPresent())
 			throw new IllegalArgumentException("No User with id " + id);
 		
-		if (!admin) {
 		UserRole role = userRoleDao.findByRole("ROLE_EMPLOYEE");
+		
+		List<User> userOpti = userDao.findByIdAndUserRoles(user.getId(), role);
+		if (CollectionUtils.isEmpty(userOpti)) {
+			
+		
 		user.addUserRole(role);
 		userDao.save(user);
 		
-		model.addAttribute("message", "User " + user.getUserName() + "zu Mitarbeiter erhöht!");
-		} else {
-			UserRole role = userRoleDao.findByRole("ROLE_ADMIN");
-			user.addUserRole(role);
-			userDao.save(user);
-			
-			model.addAttribute("message", "User " + user.getUserName() + "zu Admin erhöht!");
-		}
-		
-		return "/user/profile";
+		model.addAttribute("message", "User " + user.getUserName() + " zu Mitarbeiter erhöht!");
+		} else 
+		model.addAttribute("errorMessage", "User " + user.getUserName() + " ist bereits Mitarbeiter!");
+
+		return "forward:/user/listUsers";
 	}
 	
 	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)

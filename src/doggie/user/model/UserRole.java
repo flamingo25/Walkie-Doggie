@@ -20,7 +20,7 @@ public class UserRole implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
  
-	@ManyToMany(mappedBy = "userRoles", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "userRoles", fetch = FetchType.EAGER)
 	private Set<User> users;
  
 	@Column(name = "role", nullable = false, length = 45)

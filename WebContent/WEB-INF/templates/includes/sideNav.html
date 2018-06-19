@@ -73,16 +73,16 @@
                  <hr>
                  
                  
-                <a th:if="${actual.equals('user')}" href="#" class="list-group-item active waves-effect">
+                <a th:if="${actual.equals('user')}" th:href="@{/user/listUsers}" class="list-group-item active waves-effect">
                     <i class="fa fa-users mr-3"></i>Benutzer</a>
-                <a th:if="${!actual.equals('user')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('user')}" th:href="@{/user/listUsers}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-users mr-3"></i>Benutzer</a>
                     
                     
-				<a th:if="${actual.equals('control')}" href="#" class="list-group-item active waves-effect">
+				<a th:if="${actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item active waves-effect">
                     <i class="fa fa-users mr-3"></i>Personal
                 </a>
-                <a th:if="${!actual.equals('control')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-users mr-3"></i>Personal
                 </a>
             </div>
