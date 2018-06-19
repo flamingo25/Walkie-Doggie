@@ -1,80 +1,165 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
-<div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
 </head>
-<body>
-	<div class="container" role="main">
 
-		<div class="page-header">
-			<h1>Profil</h1>
+<body class="grey lighten-3">
 
-			<!--  Error message ----------------------------------------------------------- -->
-			<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
-				class="alert alert-danger" role="alert"></div>
-			<!--  Error message ----------------------------------------------------------- -->
+	<!--Main Navigation-->
+	<header>
 
-			<!--  Warning message ----------------------------------------------------------- -->
-			<div th:unless="${warningMessage} == null"
-				th:utext="${warningMessage}" class="alert alert-warning"
-				role="warning"></div>
-			<!--  Warning message ----------------------------------------------------------- -->
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
+		<!-- Sidebar -->
 
-			<!--   message ----------------------------------------------------------- -->
-			<div th:unless="${message} == null" th:utext="${message}"
-				class="alert alert-success" role="warning"></div>
-			<!--   message ----------------------------------------------------------- -->
-		</div>
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
 
-		<a th:href="@{/animal/petbook}" class="btn btn-danger">Back</a>
-		<a th:href="@{/adopt/new(id=${animal.id})}" class="btn btn-danger">Adopt</a>
-		<a th:href="@{/animal/images(id=${animal.id})}" class="btn btn-danger">Edit Images</a>
-		<a th:href="@{/favourite(id=${animal.id})}" class="btn btn-danger">Add Favourite</a>
-		<a th:href="@{/calendar/animal(id=${animal.id})}" class="btn btn-danger">Show Calendar</a>
+	</header>
+	<!--Main layout-->
 
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
 
-		<div th:each="image : ${images}" th:if="${image.profile}">
-			<img th:src="@{image(id=${image.id})}" height="200" width="200" >
-		</div>
+			<div>
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
 
-		<p th:text="${animal.id}"></p>
-		<p th:text="${animal.name}"></p>
-		<p th:text="${animal.breed}"></p>
-		<p th:text="${animal.color}"></p>
-		<p th:text="${animal.age}"></p>
-		<p th:text="${animal.gender}"></p>
-		<p th:text="${animal.castrated}"></p>
-		<p th:text="${animal.chipped}"></p>
-		<p th:text="${animal.description}"></p>
-		<p th:text="${animal.species.name}"></p>
-		<div th:each="vaccination : ${vaccinations}">
-			<p th:text="${vaccination.name}"></p>
-		</div>
-		
-		<div th:each="ac : ${acs}">
-			<p th:text="${ac.name}"></p>
-		</div>
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
+
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
 
 
-		<a th:href="@{upload(id=${animal.id})}">
-			<button type="button" class="btn btn-xs btn-success">
-				<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-				Upload
-			</button>
-		</a>
+			<div class="col-md-12 center-block">
+				<div class="row">
+					<div class="col-3">
+						<a th:href="@{profileImage(id=${animal.id})}" class="logo waves-effect pb-4"> <img
+							th:src="@{profileImage(id=${animal.id})}"
+							onerror="this.src='../resources/default.jpg'"
+							class="img-thumbnail" style="width: 100%; height: 100%;" alt="">
+						</a>
+						<div class="button-group">
+							<a th:href="@{upload(id=${animal.id})}" class="btn btn-block btn-primary mb-2"><i class="fa fa-upload mr-3"></i>Bild hochladen </a>
+							<a th:href="@{/animal/images(id=${animal.id})}" class="btn btn-block btn-primary mb-2"><i class="fa fa-file-image-o mr-3"></i>Bilder ändern </a>
+							<a th:href="@{/calendar/animal(id=${animal.id})}" class="btn btn-block btn-primary mb-2"><i class="fa fa-calendar mr-3"></i>Termin buchen </a>
+							<a th:href="@{/adopt/new(id=${animal.id})}" class="btn btn-block btn-primary mb-2"><i class="fa fa-file-text-o mr-3"></i>Adoption starten </a>
+							<br>
+							<a th:href="@{edit(id=${animal.id})}" class="btn btn-block btn-primary mb-2"><i class="fa fa-pencil mr-3"></i>Profil bearbeiten </a>
+							
+							<table class="table table-user-information">
+							<tbody>
+								<tr th:each="ac : ${acs}">
+									<td th:text="${ac.name}">Name AC</td>
+									<td><i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></td>
+								</tr>
+							</tbody>
+						</table>
 
-		<div th:each="image : ${images}" th:if="${!image.profile}">
-			<img class="img-thumbnail" th:src="@{image(id=${image.id})}" height="200" width="200" >
-		</div>
+						</div>
+					</div>
+					<div class="col-7">
+						<table class="table table-user-information">
+							<h3>Name</h3>
+							<br>
+							<tbody>
+								<tr>
+									<td>ID:</td>
+									<td th:text="${animal.id}"></td>
+								</tr>
+								<tr>
+									<td>Name:</td>
+									<td th:text="${animal.name}"></td>
+								</tr>
+								<tr>
+									<td>Tierart:</td>
+									<td th:text="${animal.species.name} + ' / ' + ${animal.gender}"></td>
+								</tr>
+								<tr>
+									<td>Rasse:</td>
+									<td th:text="${animal.breed}"></td>
+								</tr>
 
-	</div>
+								<tr>
+								<tr>
+									<td>Farbe:</td>
+									<td th:text="${animal.color}"></td>
+								</tr>
+								<tr>
+									<td>Alter:</td>
+									<td th:text="${animal.age}"></td>
+								</tr>
+								<tr>
+									<td>Kastriert</td>
+									<td><i class="fa fa-check-square-o fa-lg" aria-hidden="true" th:if="${animal.castrated}"></i>
+									</td>
+								</tr>
+								<tr>
+									<td>Gechippt</td>
+									<td><i class="fa fa-check-square-o fa-lg" aria-hidden="true" th:if="${animal.chipped}"></i>
+									</td>
+								</tr>
+								<tr>
+									<td>Impfungen:</td>
+									<td><div th:each="vaccination : ${vaccinations}"><span th:text="${vaccination.name}"></span></div></td>
+								</tr>
+								<tr>
+									<td>Beschreibung:</td>
+									<td th:text="${animal.description}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<hr>
+					<div class="col-2">
+					<a th:href="@{/favourite(id=${animal.id})}" class="btn btn-sm btn-warning text-center float-right"><i class="fa fa-star mr-3"></i>Favorit</a>
+					</div>
+					<div class="container-fluid mt-5">
+						<div class="card mb-4 wow fadeIn pt-3"
+							style="background-color: #ffac4d">
+							<div class="col-md-12 center-block">
+								<h4 style="color: white">
+									<b> Fotografien: </b>
+								</h4>
+								<hr>
+								<div class="row">
 
-	</div>
-	<!--  End of container -->
-	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
+									<div class="col-3" th:each="image : ${images}" th:if="${!image.profile}">
+										<a th:href="@{image(id=${image.id})}" class="logo waves-effect pb-2"> <img
+											th:src="@{image(id=${image.id})}"
+											onerror="this.src='../resources/default.jpg'"
+											class="img-thumbnail" style="width: 100%; height: 100%;"
+											alt="">
+										</a>
+									</div>
+								</div>
+
+							</div>
+
+
+
+						</div>
+
+					</div>
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>
+
+

@@ -71,7 +71,7 @@ public class DefaultController {
 				model.addAttribute("message", "Animal " + animal.getName() + " added to favourites");
 			} else model.addAttribute("message", "Animal " + animal.getName() + " is already favourites");
 			
-			return "forward:/animal/profile";
+			return "redirect:/animal/profile?id=" + user.getId();
 		} else {
 			user.getFavourites().removeIf(a -> a.getId() == animal.getId());
 			userDao.save(user);

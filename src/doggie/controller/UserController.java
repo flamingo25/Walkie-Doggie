@@ -43,6 +43,13 @@ public class UserController {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
 		
+		if (user.getUserProfile() == null) {
+			UserImage image = new UserImage();
+			UserProfile profile = new UserProfile();
+			profile.setImage(image);
+			user.setUserProfile(profile);
+		}
+		
 		model.addAttribute("user", user);
 		
 		return "/user/profile";
@@ -54,9 +61,11 @@ public class UserController {
 		User user = userOpt.get(0);
 		
 		if (user.getUserProfile() == null) {
-			user.setUserProfile(new UserProfile());
+			UserImage image = new UserImage();
+			UserProfile profile = new UserProfile();
+			profile.setImage(image);
+			user.setUserProfile(profile);
 		}
-
 		model.addAttribute("user", user);
 		
 		return "/user/edit";
@@ -70,7 +79,7 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
-				errorMessage += fieldError.getField() + " is invalid<br>";
+				errorMessage += fieldError.getField() + " ist ungültig<br>";
 			}
 			model.addAttribute("errorMessage", errorMessage);
 			return "forward:/user/profile";
@@ -80,7 +89,10 @@ public class UserController {
 		User user = userOpt.get(0);
 		
 		if (user.getUserProfile() == null) {
-			user.setUserProfile(new UserProfile());
+			UserImage image = new UserImage();
+			UserProfile profile = new UserProfile();
+			profile.setImage(image);
+			user.setUserProfile(profile);
 		}
 		
 		UserProfile profile = user.getUserProfile();
@@ -98,14 +110,27 @@ public class UserController {
 		try {
 			cal.setTime(sdf.parse(date));
 		} catch (ParseException e) {				
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
 		}
 		Date dayOfBirth = cal.getTime();
 		profile.setDayOfBirth(dayOfBirth);
 		
 		userDao.save(user);
 		
-		model.addAttribute("message", "Changed User Profile " + user.getUserName());
+		model.addAttribute("message", "Profil " + user.getUserName() + " wurde geändert!");
+		
+		return "forward:/user/profile";
+	}
+	
+	@RequestMapping(value = "/user/reset")
+	public String reset(Model model, Principal principal) {
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+		
+		user.setPassword("password");
+		user.encryptPassword();
+
+		model.addAttribute("errorMessage", "Passwort wurde zurückgesetzt!");
 		
 		return "forward:/user/profile";
 	}
@@ -144,7 +169,7 @@ public class UserController {
 			userDao.save(user);
 
 		} catch (Exception e) {
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
+			model.addAttribute("errorMessage", "Error: " + e.getMessage());
 		}
 
 		return "forward:/user/profile";
