@@ -25,9 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import doggie.user.dao.UserDao;
 import doggie.user.dao.UserImageDao;
+import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserImage;
 import doggie.user.model.UserProfile;
+import doggie.user.model.UserRole;
 
 @Controller
 public class UserController {
@@ -37,6 +39,9 @@ public class UserController {
 	
 	@Autowired
 	UserImageDao userImageDao;
+	
+	@Autowired
+	UserRoleDao userRoleDao;
 
 	@RequestMapping(value = {"/user/profile", "/user/"})
 	public String userProfile(Model model, Principal principal) {
@@ -51,6 +56,52 @@ public class UserController {
 		}
 		
 		model.addAttribute("user", user);
+		
+		return "/user/profile";
+	}
+	
+	@RequestMapping(value = "/user/show")
+	public String userProfile(Model model, @RequestParam int id) {
+		Optional<User> userOpt = userDao.findById(id);
+		User user = userOpt.get();
+		
+		if (!userOpt.isPresent())
+			throw new IllegalArgumentException("No User with id " + id);
+		
+		if (user.getUserProfile() == null) {
+			UserImage image = new UserImage();
+			UserProfile profile = new UserProfile();
+			profile.setImage(image);
+			user.setUserProfile(profile);
+		}
+		
+		model.addAttribute("user", user);
+		model.addAttribute("view", true);
+		
+		return "/user/profile";
+	}
+	
+	@RequestMapping(value = "/user/promote")
+	public String promoteUser(Model model, @RequestParam int id, @RequestParam boolean admin) {
+		Optional<User> userOpt = userDao.findById(id);
+		User user = userOpt.get();
+		
+		if (!userOpt.isPresent())
+			throw new IllegalArgumentException("No User with id " + id);
+		
+		if (!admin) {
+		UserRole role = userRoleDao.findByRole("ROLE_EMPLOYEE");
+		user.addUserRole(role);
+		userDao.save(user);
+		
+		model.addAttribute("message", "User " + user.getUserName() + "zu Mitarbeiter erhöht!");
+		} else {
+			UserRole role = userRoleDao.findByRole("ROLE_ADMIN");
+			user.addUserRole(role);
+			userDao.save(user);
+			
+			model.addAttribute("message", "User " + user.getUserName() + "zu Admin erhöht!");
+		}
 		
 		return "/user/profile";
 	}
@@ -192,6 +243,30 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping("/user/listUsers")
+	public String listUser(Model model) {
+
+		UserRole userRole = userRoleDao.findByRole("ROLE_USER");
+		List<User> users = userDao.findAllByUserRoles(userRole);
+		
+		model.addAttribute("users", users);
+		model.addAttribute("actual", "Mitglieder");
+		
+		return "/user/list";
+	}
+	
+	@RequestMapping("/user/listAdmins")
+	public String listAdmins(Model model) {
+
+		UserRole userRole = userRoleDao.findByRole("ROLE_EMPLOYEE");
+		List<User> users = userDao.findAllByUserRoles(userRole);
+		
+		model.addAttribute("users", users);
+		model.addAttribute("actual", "Mitarbeiter");
+		
+		return "/user/list";
 	}
 	
 	
