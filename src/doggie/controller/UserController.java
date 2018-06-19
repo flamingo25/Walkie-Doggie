@@ -229,11 +229,12 @@ public class UserController {
 	@RequestMapping("/user/image")
 	public void downloadUser(@RequestParam("id") int imageId, HttpServletResponse response) {
 
-		Optional<UserImage> imgOpt = userImageDao.findById(imageId);
-		if (!imgOpt.isPresent())
+		Optional<User> userOpt = userDao.findById(imageId);
+		if (!userOpt.isPresent())
 			throw new IllegalArgumentException("No image with id " + imageId);
 
-		UserImage img = imgOpt.get();
+		User user = userOpt.get();
+		UserImage img = userImageDao.findByUserProfile(user.getUserProfile());
 
 		try {
 			OutputStream out = response.getOutputStream();
