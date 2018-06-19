@@ -54,7 +54,7 @@
 						onerror="this.src='../resources/default.jpg'"
 						class="img-thumbnail" style="width: 100%; height: 100%;">
 					</a>
-					<div class="button-group">
+					<div th:if="${view == null}"class="button-group">
 						<a th:href="@{upload}" class="btn btn-block btn-primary mb-2"><i
 							class="fa fa-upload mr-3"></i>Bild hochladen </a> <a
 							th:href="@{edit}" class="btn btn-block btn-primary mb-2"><i

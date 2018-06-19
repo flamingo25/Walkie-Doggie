@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
+<title>Walkie-Doggie</title>
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
+</head>
+
+<body class="grey lighten-3">
+
+	<!--Main Navigation-->
+	<header>
+
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='user')}"></div>
+		<!-- Sidebar -->
+
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+
+
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 class="font-weight-bold" th:text="'Übersicht der ' + ${actual}">Übersicht</h1>
+				</div>
+			</div>
+			<br />
+
+			<!--Table-->
+
+			<table class="table table-hover">
+
+
+				<!--Table head-->
+				<thead>
+					<tr class="row">
+						<th class="col-md-1 center-block" scope="col">ID</th>
+						<th class="col-md-2 center-block" scope="col">Username</th>
+						<th class="col-md-2 center-block" scope="col">Vorname</th>
+						<th class="col-md-2 center-block" scope="col">Nachname</th>
+						<th class="col-md-2 center-block" scope="col">Geburtsdatum</th>
+						<th class="col-md-3 center-block" scope="col">Aktion</th>
+					</tr>
+				</thead>
+				<!--Table head-->
+
+				<!--Table body-->
+				<tbody>
+					<tr class="row" th:each="user : ${users}">
+
+						<td class="col-md-1 center-block p-2" scope="row"
+							th:text="${user.id}">1</td>
+						<td class="col-md-2 center-block p-2" th:text="${user.userName}"></td>
+						<td class="col-md-2 center-block p-2"
+							th:text="${user.userProfile.firstName}">Max</td>
+						<td class="col-md-2 center-block p-2"
+							th:text="${user.userProfile.surName}">Mustermann</td>
+						<td class="col-md-2 center-block p-2"
+							th:text="${user.userProfile.dayOfBirth}">1.1.2018</td>
+
+						<td class="col-md-3 center-block p-2"><a
+							class="btn btn-sm btn-success" th:href="@{show(id=${user.id})}">Zu
+								Profil</a> <a th:if="${actual.equals('Mitglieder')}" th:href="@{promote(id=${user.id})}" type="button"
+							class="btn btn-sm btn-danger mr-2">Befördern!</a></td>
+
+					</tr>
+
+
+				</tbody>
+				<!--Table body-->
+
+			</table>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>
