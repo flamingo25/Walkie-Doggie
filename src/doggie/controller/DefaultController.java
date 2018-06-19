@@ -49,6 +49,11 @@ public class DefaultController {
 		return "login";
 	}
 	
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	public String handleAbout() {
+		return "about";
+	}
+	
 	@RequestMapping(value = "/favourite")
 	public String favourite(Model model, Principal principal,
 			@RequestParam int id,

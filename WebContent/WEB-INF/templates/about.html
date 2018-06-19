@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
+<title>Walkie-Doggie</title>
+<div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+</head>
+
+<body class="grey lighten-3">
+
+	<!--Main Navigation-->
+	<header>
+
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='about')}"></div>
+		<!-- Sidebar -->
+
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+
+
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
+			<div class="row col-md-12 center-block py-3">
+
+				<div class="row">
+					<div class="col-md-12 mb-6">
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/1/1d/FH_JOANNEUM_Logo.svg"
+							align="right">
+						<!-- Titel -->
+						<h1>Über uns</h1>
+						<hr>
+
+
+						<!-- Text -->
+						<p class="center-block">
+							Diese Webseite wurde im Rahmen einer Projektarbeit der
+							Lehrveranstaltung "Software Engineering Advanced" von
+							Studierenden des Studiengangs Informationsmanagement 2016 auf der
+							<b>FH JOANNEUM</b> Graz entwickelt. Dieses Projekt wird nur für
+							akademische Zwecke verwendet, es bestehen keine komerziellen
+							Tätigkeiten.
+						</p>
+						<hr>
+						<br>
+
+						<!--Patrik-->
+						<div class="card mb-3 text-center"
+							style="background-color: #e6f0ff">
+							<div class="card-body">
+								<!--Grid row-->
+								<div class="row">
+
+									<!--Grid column-->
+									<div class="col-md-3 offset-md-1 mx-3 my-3">
+										<!--Featured image-->
+										<div class="view overlay">
+											<img
+												src="https://avatars1.githubusercontent.com/u/32922890?s=400&v=4"
+												class="img-fluid center-block"
+												style="height: 80%; width: 80%">
+										</div>
+									</div>
+									<!--Grid column-->
+
+									<!--Grid column-->
+									<div class="col-md-7 text-left ml-3 mt-3">
+										<!--Excerpt-->
+										<a href="https://github.com/Celyca" target="_blank"
+											class="blue-text">
+											<h6 class="font-bold pb-1">
+												<i class="fa fa-cubes"></i> Master Brain
+											</h6>
+										</a>
+										<h4 class="mb-4">
+											<strong>Patrik Rauchenschwandtner alias Celyca</strong>
+										</h4>
+										<p>Als unser Head of Development war Herr
+											Rauchenschwandtner maßgeblich für die Umsetzung der Idee
+											hinter der Applikation verantwortlich. Seiner Koordination,
+											seiner Leistungsbereitschaft und nicht zuletzt auch seinem
+											tiefgehenden fachlichen Know-how haben wir es zu verdanken,
+											Ihnen diese Web-Applikation präsentieren zu dürfen.</p>
+									</div>
+									<!--Grid column-->
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--Patrik-->
+				<br>
+				<!--Chris-->
+				<div class="card mb-3 text-center" style="background-color: #f5ccff">
+					<div class="card-body">
+						<!--Grid row-->
+						<div class="row">
+
+							<!--Grid column-->
+							<div class="col-md-3 offset-md-1 mx-3 my-3">
+								<!--Featured image-->
+								<div class="view overlay">
+									<img
+										src="https://avatars1.githubusercontent.com/u/32922886?s=400&v=4"
+										class="img-fluid center-block" style="height: 80%; width: 80%">
+								</div>
+							</div>
+							<!--Grid column-->
+
+							<!--Grid column-->
+							<div class="col-md-7 text-left ml-3 mt-3">
+								<!--Excerpt-->
+								<a href="https://github.com/GlitchBasket" target="_blank"
+									class="purple-text">
+									<h6 class="font-bold pb-1">
+										<i class="fa fa-desktop"></i> Coding Genius
+									</h6>
+								</a>
+								<h4 class="mb-4">
+									<strong>Christian Lach alias GlitchBasket</strong>
+								</h4>
+								<p>Sed ut perspiciatis unde omnis iste natus error sit
+									voluptatem accusantium doloremque, totam rem aperiam, eaque
+									ipsa quae ab illo inventore veritatis et quasi architecto
+									beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+									quia voluptas sit aspernatur.</p>
+							</div>
+							<!--Grid column-->
+						</div>
+
+					</div>
+				</div>
+				<!--Chris-->
+				<br>
+				<!-- Sue -->
+				<div class="card mb-3 text-center" style="background-color: #ffccdd">
+					<div class="card-body">
+						<!--Grid row-->
+						<div class="row">
+
+							<!--Grid column-->
+							<div class="col-md-3 offset-md-1 mx-3 my-3">
+								<!--Featured image-->
+								<div class="view overlay">
+									<img
+										src="https://avatars2.githubusercontent.com/u/32923059?s=400&v=4"
+										class="img-fluid center-block" style="height: 80%; width: 80%">
+								</div>
+							</div>
+							<!--Grid column-->
+
+							<!--Grid column-->
+							<div class="col-md-7 text-left ml-3 mt-3">
+								<!--Excerpt-->
+								<a href="https://github.com/cookiemonster25" target="_blank"
+									class="pink-text">
+									<h6 class="font-bold pb-1">
+										<i class="fa fa-database"></i> Database Queen
+									</h6>
+								</a>
+								<h4 class="mb-4">
+									<strong>Susanne Hütter alias cookiemonster25</strong>
+								</h4>
+								<p>Sed ut perspiciatis unde omnis iste natus error sit
+									voluptatem accusantium doloremque, totam rem aperiam, eaque
+									ipsa quae ab illo inventore veritatis et quasi architecto
+									beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+									quia voluptas sit aspernatur.</p>
+							</div>
+							<!--Grid column-->
+						</div>
+
+					</div>
+				</div>
+				<!--Sue-->
+				<br>
+				<!--Eli-->
+				<div class="card mb-3 text-center" style="background-color: #ffe6cc">
+					<div class="card-body">
+						<!--Grid row-->
+						<div class="row">
+
+							<!--Grid column-->
+							<div class="col-md-3 offset-md-1 mx-3 my-3">
+								<!--Featured image-->
+								<div class="view overlay">
+									<img
+										src="https://avatars0.githubusercontent.com/u/32923155?s=400&v=4"
+										class="img-fluid center-block"
+										style="height: 80%; width: 80%;">
+								</div>
+							</div>
+							<!--Grid column-->
+
+							<!--Grid column-->
+							<div class="col-md-7 text-left ml-3 mt-3">
+								<!--Excerpt-->
+								<a href="https://github.com/flamingo25" target="_blank"
+									class="orange-text">
+									<h6 class="font-bold pb-1">
+										<i class="fa fa-magic"></i> Design Magician
+									</h6>
+								</a>
+								<h4 class="mb-4">
+									<strong>Eliska Krnavkova alias flamingo25</strong>
+								</h4>
+								<p>Sed ut perspiciatis unde omnis iste natus error sit
+									voluptatem accusantium doloremque, totam rem aperiam, eaque
+									ipsa quae ab illo inventore veritatis et quasi architecto
+									beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem
+									quia voluptas sit aspernatur.</p>
+							</div>
+							<!--Grid column-->
+						</div>
+
+					</div>
+				</div>
+				<!--Eli-->
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>
+

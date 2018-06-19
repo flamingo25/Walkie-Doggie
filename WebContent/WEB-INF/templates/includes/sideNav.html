@@ -62,10 +62,10 @@
                 </a>
                     
                     
-                <a th:if="${actual.equals('about')}" href="#" class="list-group-item active waves-effect">
+                <a th:if="${actual.equals('about')}" th:href="@{/about}" class="list-group-item active waves-effect">
                     <i class="fa fa-child mr-3"></i>Über uns
                 </a>
-                <a th:if="${!actual.equals('about')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('about')}" th:href="@{/about}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-child mr-3"></i>Über uns
                 </a>
                     
