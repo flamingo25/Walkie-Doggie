@@ -138,21 +138,6 @@ public class ImageController {
 		return "/animal/images";
 	}
 
-	@RequestMapping(value = "/animal/images/update")
-	public String updateImage(Model model, @RequestParam int id, @RequestParam String description) {
-
-		Optional<AnimalImage> imageOpt = imageRepository.findById(id);
-
-		if (!imageOpt.isPresent())
-			throw new IllegalArgumentException("No Image with id " + id);
-
-		AnimalImage image = imageOpt.get();
-		image.setName(description);
-		imageRepository.save(image);
-
-		return "redirect:/animal/images?id=" + image.getAnimal().getId();
-	}
-
 	@RequestMapping(value = "/animal/images/delete")
 	public String deleteImage(Model model, @RequestParam int id) {
 
@@ -171,6 +156,8 @@ public class ImageController {
 			newProfile.setProfile(true);
 			imageRepository.save(newProfile);
 		}
+		
+		model.addAttribute("errorMessage", "Das Bild " + image.getId() + " wurde gelöscht!");
 
 		return "redirect:/animal/images?id=" + image.getAnimal().getId();
 	}
@@ -190,6 +177,8 @@ public class ImageController {
 		image.setProfile(true);
 		animal.setImage(images);
 		animalRepository.save(animal);
+		
+		model.addAttribute("message", "Das Bild " + image.getId() + " wurde als Profilbild eingestellt!");
 
 		return "redirect:/animal/images?id=" + animal.getId();
 	}

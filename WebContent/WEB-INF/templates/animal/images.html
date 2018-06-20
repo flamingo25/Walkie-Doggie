@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-       xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
@@ -10,71 +10,93 @@
 
 <body class="grey lighten-3">
 
-       <!--Main Navigation-->
-       <header>
+	<!--Main Navigation-->
+	<header>
 
-             <!-- Sidebar -->
-             <div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
-             <!-- Sidebar -->
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
+		<!-- Sidebar -->
 
-             <!-- Navbar -->
-             <nav th:replace="~{includes/searchNav :: search}"></nav>
-             <!-- Navbar -->
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
 
-       </header>
-       <!--Main layout-->
+	</header>
+	<!--Main layout-->
 
 
-       <main class="pt-2 mx-lg-5">
-       <div class="container-fluid mt-5">
-             <div class="card mb-4 wow fadeIn p-5">
-                    <div class="row col-md-12 center-block py-3">
-                          <div class="row">
-                                 <div class="col-md-12 mb-6">
-                                       <a class="btn btn-outline-warning waves-effect" th:href="@{profile(id=${animal.id})}"  style="float: right;">
-                                       <i class="fa fa-lg fa-arrow-circle-left mr-2" style="color:#ff8800" aria-hidden="true"></i>Zurück zum Profil</a>
-                                       <!-- Titel -->
-                                       <h1>Bildergalerie</h1>
-                          </div>
-                    </div>
-                    <hr>
-                    <div class="col-md-12 center-block">
-                          <div class="row">
-                                 <div class="mb-4 col-md-4">
-                                       <div class="card">
-                                              <!--Card image-->
-                                              <div class="view overlay">
-                                                    <img class="card-img-top"
-                                                           th:src="@{profileImage(id=${animal.id})}" alt="Card image cap"
-                                                           onerror="this.src='../resources/default.jpg'"> <a
-                                                           th:href="@{profile(id=${animal.id})}">
-                                                           <div class="mask rgba-white-slight"></div>
-                                                    </a>
-                                              </div>
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
 
-                                              <!--Card content-->
-                                              <div class="card-body">
+			<div>
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
 
-                                                    <!--Title-->
-                                                    <h4 class="card-title">Name</h4>
-                                                    <!--Buttons-->
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                           <a class="btn btn-info font-weight-bold">Bestätigen</a> 
-                                                           <a class="btn btn-warning font-weight-bold">Löschen</a></div>
-                                                           <br>
-                                                    <div class="row py-0.5">
-                                                           <a class="btn btn-primary font-weight-bold center-block">Als Profilbild wählen</a> 
-                                                    </div>
-                                                    </div>
-                                              </div>
-                                       </div>
-                                 </div>
-                          </div>
-                    </div>
-             </div>
-       </div>
-       </main>
-       <footer th:replace="~{includes/footer :: footer}"></footer>
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
+
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
+
+			<div class="row col-md-12 center-block py-3">
+				<div class="row">
+					<div class="col-md-12 mb-6">
+						<a class="btn btn-outline-primary waves-effect"
+							th:href="@{profile(id=${animal.id})}" style="float: right;">
+							<i class="fa fa-lg fa-arrow-circle-left mr-2"
+							style="color: #0062cc" aria-hidden="true"></i>Zurück zum Profil
+						</a>
+						<!-- Titel -->
+						<h1>Bildergalerie</h1>
+					</div>
+				</div>
+				<hr>
+				<div class="col-md-12 center-block">
+					<div class="row">
+						<div class="mb-4 col-md-4" th:each="image : ${images}">
+							<div class="card">
+								<!--Card image-->
+								<img class="img-thumbnail card-img-top p-3"
+									th:src="@{image(id=${image.id})}" alt="Card image cap">
+								<div class="card-body">
+									<div>
+										<div class="row text-center center-block col-12">
+											<h6>
+												<span th:if="${image.profile}" aria-hidden="true"
+													class="badge green darken-2 center-block">Aktuelles
+													Profilbild</span>
+											</h6>
+										</div>
+										<p></p>
+										<div class="row text-center center-block">
+											<a th:href="@{/animal/images/profile(id=${image.id})}"
+												class="btn btn-primary">Profil</a> <a
+												th:href="@{/animal/images/delete(id=${image.id})}"
+												class="btn deep-orange darken-4">Delete</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>
+
+
+
 

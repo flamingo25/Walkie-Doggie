@@ -74,12 +74,12 @@ public class SecurityController {
 			
 			user.setUserProfile(newUserProfile);
 			userDao.save(user);
-			model.addAttribute("message", "User " + username + " created!");
+			model.addAttribute("message", "User " + username + " wurde erstellt!");
 			} else {
-				model.addAttribute("errorMessage", "Error: Passwords doesn't match!");
+				model.addAttribute("errorMessage", "Passwörter stimmen nicht überein!");
 			}
 		} else {
-			model.addAttribute("errorMessage", "Error: " + username + " already exists!");
+			model.addAttribute("errorMessage", username + " existiert bereits!");
 		}
 		return "signUp";
 	}

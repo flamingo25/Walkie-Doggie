@@ -35,6 +35,9 @@ public class AdoptionModel implements java.io.Serializable {
 	@Column(name = "accepted", nullable = false)
 	private boolean accepted;
 	
+	@Column(name = "processed", nullable = false)
+	private boolean processed;
+	
 	@ManyToOne
 	@Cascade(CascadeType.SAVE_UPDATE)
 	private AnimalModel animal;
@@ -49,10 +52,11 @@ public class AdoptionModel implements java.io.Serializable {
 	public AdoptionModel() {
 	}
 
-	public AdoptionModel(Date date, boolean accepted) {
+	public AdoptionModel(Date date, boolean accepted, boolean processed) {
 		super();
 		this.date = date;
 		this.accepted = accepted;
+		this.processed = processed;
 	}
 
 	public int getId() {
@@ -93,5 +97,13 @@ public class AdoptionModel implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 }

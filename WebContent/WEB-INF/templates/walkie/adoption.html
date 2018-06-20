@@ -79,12 +79,12 @@
 				<!--Table head-->
 				<!--Table body-->
 				<tbody>
-					<tr class="row">
+					<tr class="row" th:each="adoption : ${adoptions}">
 
-						<td class="col-md-1 center-block p-2" scope="row">id</td>
-						<td class="col-md-2 center-block p-2">username</td>
-						<td class="col-md-2 center-block p-2">animal</td>
-						<td class="col-md-3 center-block p-2">status</td>
+						<td class="col-md-1 center-block p-2" scope="row" th:text="${adoption.id}">id</td>
+						<td class="col-md-2 center-block p-2"><a th:text="${adoption.user.userName}" th:href="@{/user/show(id=${adoption.user.id})}">username</a></td>
+						<td class="col-md-2 center-block p-2"><a th:text="${adoption.animal.name}" th:href="@{/animal/profile(id=${adoption.animal.id})}">username</a></td>
+						<td class="col-md-3 center-block p-2"><i th:if="${adoption.accepted}" class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></td>
 
 						<td class="col-md-4 center-block p-2">
 						<button class="btn btn-sm btn-success font-weight-bold" type="submit"><i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Akzeptieren</button> 
