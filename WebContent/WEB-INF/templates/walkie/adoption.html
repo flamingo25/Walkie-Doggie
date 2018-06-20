@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
+<title>Walkie-Doggie</title>
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
+</head>
+
+<body class="grey lighten-3">
+
+	<!--Main Navigation-->
+	<header>
+
+		<!-- Sidebar -->
+		<div th:replace="~{includes/sideNav :: side(actual='adoption')}"></div>
+		<!-- Sidebar -->
+
+		<!-- Navbar -->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+		<!-- Navbar -->
+
+	</header>
+	<!--Main layout-->
+
+
+	<main class="pt-2 mx-lg-5">
+	<div class="container-fluid mt-5">
+		<div class="card mb-4 wow fadeIn p-5">
+						<div>
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
+
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
+
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<h1 class="font-weight-bold">Übersicht der Adoptionen</h1>
+				</div>
+			</div>
+			<br />
+
+						<!-- Text -->
+						<p class="center-block">
+							In der folgenden Tabelle finden Sie die wichtigsten Informationen über Ihre ausstehenden Adoptionen. Über das Feld
+							<b>Status</b> können Sie jederzeit nachschauen, ob Ihre Adoption angenommen oder abgelehnt wurde. Unsere
+							kleinen Freunde freuen sich, dass Sie ihnen ein neues Zuhause anbieten können. Viel Vergnügen!
+						</p>
+						<hr>
+					
+					<!--Table-->
+
+			<table class="table table-hover">
+
+
+				<!--Table head-->
+				<thead>
+					<tr class="row">
+						<th class="col-md-1 center-block" scope="col">ID</th>
+						<th class="col-md-2 center-block" scope="col">Benutzername</th>
+						<th class="col-md-2 center-block" scope="col">Tiername</th>
+						<th class="col-md-3 center-block" scope="col">Status der Adoption</th>
+						<th class="col-md-4 center-block" scope="col">Aktion</th>
+					</tr>
+				</thead>
+				<!--Table head-->
+				<!--Table body-->
+				<tbody>
+					<tr class="row">
+
+						<td class="col-md-1 center-block p-2" scope="row">id</td>
+						<td class="col-md-2 center-block p-2">username</td>
+						<td class="col-md-2 center-block p-2">animal</td>
+						<td class="col-md-3 center-block p-2">status</td>
+
+						<td class="col-md-4 center-block p-2">
+						<button class="btn btn-sm btn-success font-weight-bold" type="submit"><i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Akzeptieren</button> 
+						<button class="btn btn-sm btn-danger font-weight-bold"><i class="fa fa-lg fa-frown-o mr-2" aria-hidden="true"></i>Ablehnen</button>
+						</td>
+					</tr>
+
+
+				</tbody>
+				<!--Table body-->
+
+			</table>
+		</div>
+		</div>		
+	</main>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

@@ -33,7 +33,16 @@ public class ImageController {
 
 	@RequestMapping(value = "/animal/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam("id") int animalId) {
-		model.addAttribute("animalId", animalId);
+		
+		Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + animalId);
+
+		AnimalModel animal = animalOpt.get();
+
+		
+		model.addAttribute("animal", animal);
+		
 		return "/animal/upload";
 	}
 

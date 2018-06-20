@@ -74,7 +74,7 @@
 								<p class="card-text text-justify"
 									th:text="${animals[0].description}">Beschreibung</p>
 
-								<img th:src="@{profileImage(id=${animals[0].id})}"
+								<img th:src="@{/animal/profileImage(id=${animals[0].id})}"
 									class="img-fluid z-depth-2"
 									onerror="this.src='resources/default.jpg'">
 							</div>
@@ -100,7 +100,7 @@
 								<p class="card-text text-justify"
 									th:text="${animals[1].description}">Beschreibung</p>
 
-								<img th:src="@{profileImage(id=${animals[1].id})}"
+								<img th:src="@{/animal/profileImage(id=${animals[1].id})}"
 									class="img-fluid z-depth-2"
 									onerror="this.src='resources/default.jpg'">
 							</div>
@@ -126,7 +126,7 @@
 								<p class="card-text text-justify"
 									th:text="${animals[2].description}">Beschreibung</p>
 
-								<img th:src="@{profileImage(id=${animals[2].id})}"
+								<img th:src="@{/animal/profileImage(id=${animals[2].id})}"
 									class="img-fluid z-depth-2"
 									onerror="this.src='resources/default.jpg'">
 							</div>

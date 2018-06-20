@@ -38,18 +38,18 @@
                 </a>
                     
                     
-                <a th:if="${actual.equals('adoption')}" href="#" class="list-group-item active waves-effect">
+                <a th:if="${actual.equals('adoption')}" th:href="@{/adopt/adoption}" class="list-group-item active waves-effect">
                     <i class="fa fa-table mr-3"></i>Adoption
                 </a>
-                <a th:if="${!actual.equals('adoption')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('adoption')}" th:href="@{/adopt/adoption}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-table mr-3"></i>Adoption
                 </a>
                     
                     
-				<a th:if="${actual.equals('walks')}" href="#" class="list-group-item active waves-effect">
+				<a th:if="${actual.equals('walks')}" th:href="@{/calendar/user}" class="list-group-item active waves-effect">
                     <i class="fa fa-blind mr-3"></i>Spaziergänge
                 </a>
-                <a th:if="${!actual.equals('walks')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('walks')}" th:href="@{/calendar/user}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-blind mr-3"></i>Spaziergänge
                 </a>
                     

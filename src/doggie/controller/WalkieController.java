@@ -167,4 +167,12 @@ public class WalkieController {
 		
 		return "redirect:/animal/petbook";
 	}
+	
+	@RequestMapping(value = { "/adopt/adoption", "/adopt/" })
+	public String animalCalendar(Model model) {
+
+		
+		return "/walkie/adoption";
+	}
+
 }

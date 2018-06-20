@@ -14,9 +14,9 @@
 			<div class="col-md-8 col-md-offset-2">
 				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="upload">
 					<fieldset>
-						<legend th:text="'Upload Document for animal ' + ${animalId}"></legend>
+						<legend th:text="'Upload Document for animal ' + ${animal.name}"></legend>
 
-						<input type="hidden" name="id" th:value="${animalId}">
+						<input type="hidden" name="id" th:value="${animal.id}">
 
 						<div class="form-group">
 							<label for="inputFile" class="col-md-2 control-label">File:</label>
