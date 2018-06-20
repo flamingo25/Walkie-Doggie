@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -37,80 +38,105 @@ public class UserController {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
 	UserImageDao userImageDao;
-	
+
 	@Autowired
 	UserRoleDao userRoleDao;
 
-	@RequestMapping(value = {"/user/profile", "/user/"})
+	@RequestMapping(value = { "/user/profile", "/user/" })
 	public String userProfile(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
-		
+
 		if (user.getUserProfile() == null) {
 			UserImage image = new UserImage();
 			UserProfile profile = new UserProfile();
 			profile.setImage(image);
 			user.setUserProfile(profile);
 		}
-		
+
 		model.addAttribute("user", user);
-		
+
 		return "/user/profile";
 	}
-	
+
 	@RequestMapping(value = "/user/show")
 	public String userProfile(Model model, @RequestParam int id) {
 		Optional<User> userOpt = userDao.findById(id);
 		User user = userOpt.get();
-		
+
 		if (!userOpt.isPresent())
 			throw new IllegalArgumentException("No User with id " + id);
-		
+
 		if (user.getUserProfile() == null) {
 			UserImage image = new UserImage();
 			UserProfile profile = new UserProfile();
 			profile.setImage(image);
 			user.setUserProfile(profile);
 		}
-		
+
 		model.addAttribute("user", user);
 		model.addAttribute("view", true);
-		
+
 		return "/user/profile";
 	}
-	
+
 	@RequestMapping(value = "/user/promote")
 	public String promoteUser(Model model, @RequestParam int id) {
 		Optional<User> userOpt = userDao.findById(id);
 		User user = userOpt.get();
-		
+
 		if (!userOpt.isPresent())
 			throw new IllegalArgumentException("No User with id " + id);
-		
+
 		UserRole role = userRoleDao.findByRole("ROLE_EMPLOYEE");
-		
+
 		List<User> userOpti = userDao.findByIdAndUserRoles(user.getId(), role);
 		if (CollectionUtils.isEmpty(userOpti)) {
-			
-		
-		user.addUserRole(role);
-		userDao.save(user);
-		
-		model.addAttribute("message", "User " + user.getUserName() + " zu Mitarbeiter erhöht!");
-		} else 
-		model.addAttribute("errorMessage", "User " + user.getUserName() + " ist bereits Mitarbeiter!");
+
+			user.addUserRole(role);
+			userDao.save(user);
+
+			model.addAttribute("message", "User " + user.getUserName() + " zu Mitarbeiter erhöht!");
+		} else
+			model.addAttribute("errorMessage", "User " + user.getUserName() + " ist bereits Mitarbeiter!");
 
 		return "forward:/user/listUsers";
 	}
-	
+
+	@RequestMapping(value = "/user/demote")
+	public String demoteUser(Model model, @RequestParam int id) {
+		Optional<User> userOpt = userDao.findById(id);
+		User user = userOpt.get();
+
+		if (!userOpt.isPresent())
+			throw new IllegalArgumentException("No User with id " + id);
+
+		UserRole role = userRoleDao.findByRole("ROLE_EMPLOYEE");
+
+		List<User> userOpti = userDao.findByIdAndUserRoles(user.getId(), role);
+		if (!CollectionUtils.isEmpty(userOpti)) {
+
+			Set<UserRole> roles = user.getUserRoles();
+			roles.removeIf(v -> v.getRole().equals("ROLE_EMPLOYEE"));
+
+			user.setUserRoles(roles);
+			userDao.save(user);
+
+			model.addAttribute("message", "User " + user.getUserName() + " zu Mitglied zurückgestuft!");
+		} else
+			model.addAttribute("errorMessage", "User " + user.getUserName() + " ist nicht Mitarbeiter!");
+
+		return "forward:/user/listAdmins";
+	}
+
 	@RequestMapping(value = "/user/edit", method = RequestMethod.GET)
 	public String showEditProfile(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
-		
+
 		if (user.getUserProfile() == null) {
 			UserImage image = new UserImage();
 			UserProfile profile = new UserProfile();
@@ -118,15 +144,14 @@ public class UserController {
 			user.setUserProfile(profile);
 		}
 		model.addAttribute("user", user);
-		
+
 		return "/user/edit";
 	}
-	
+
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST)
-	public String editProfile(@Valid UserProfile newUserProfile,
-			Model model, Principal principal, BindingResult bindingResult,
-			@RequestParam("date") String date) {
-		
+	public String editProfile(@Valid UserProfile newUserProfile, Model model, Principal principal,
+			BindingResult bindingResult, @RequestParam("date") String date) {
+
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -135,17 +160,17 @@ public class UserController {
 			model.addAttribute("errorMessage", errorMessage);
 			return "forward:/user/profile";
 		}
-		
+
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
-		
+
 		if (user.getUserProfile() == null) {
 			UserImage image = new UserImage();
 			UserProfile profile = new UserProfile();
 			profile.setImage(image);
 			user.setUserProfile(profile);
 		}
-		
+
 		UserProfile profile = user.getUserProfile();
 		profile.setFirstName(newUserProfile.getFirstName());
 		profile.setSurName(newUserProfile.getSurName());
@@ -154,38 +179,38 @@ public class UserController {
 		profile.setCity(newUserProfile.getCity());
 		profile.setAddress(newUserProfile.getAddress());
 		profile.setPhone(newUserProfile.getPhone());
-		
+
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		try {
 			cal.setTime(sdf.parse(date));
-		} catch (ParseException e) {				
+		} catch (ParseException e) {
 			model.addAttribute("errorMessage", "Error: " + e.getMessage());
 		}
 		Date dayOfBirth = cal.getTime();
 		profile.setDayOfBirth(dayOfBirth);
-		
+
 		userDao.save(user);
-		
+
 		model.addAttribute("message", "Profil " + user.getUserName() + " wurde geändert!");
-		
+
 		return "forward:/user/profile";
 	}
-	
+
 	@RequestMapping(value = "/user/reset")
 	public String reset(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
-		
+
 		user.setPassword("password");
 		user.encryptPassword();
 
 		model.addAttribute("errorMessage", "Passwort wurde zurückgesetzt!");
-		
+
 		return "forward:/user/profile";
 	}
-	
+
 	@RequestMapping(value = "/user/upload", method = RequestMethod.GET)
 	public String showUserUploadForm(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
@@ -196,34 +221,37 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/user/upload", method = RequestMethod.POST)
-	public String uploadUserImage(Model model, Principal principal,
-			@RequestParam("myFile") MultipartFile file) {
+	public String uploadUserImage(Model model, Principal principal, @RequestParam("myFile") MultipartFile file) {
 
-		try {
-			List<User> userOpt = userDao.findByUserName(principal.getName());
-			User user = userOpt.get(0);	
-			UserProfile profile = user.getUserProfile();
-			
-			if (profile.getImage() != null) {
-				userImageDao.delete(profile.getImage());
-				profile.setImage(null);
+		if (!(file.getSize() == 0 || file.getSize() > 100000)) {
+
+			try {
+				List<User> userOpt = userDao.findByUserName(principal.getName());
+				User user = userOpt.get(0);
+				UserProfile profile = user.getUserProfile();
+
+				if (profile.getImage() != null) {
+					userImageDao.delete(profile.getImage());
+					profile.setImage(null);
+				}
+
+				UserImage image = new UserImage();
+				image.setContent(file.getBytes());
+				image.setContentType(file.getContentType());
+				image.setFilename(file.getOriginalFilename());
+				image.setName(file.getName());
+				image.setUserProfile(profile);
+				profile.setImage(image);
+				user.setUserProfile(profile);
+				userDao.save(user);
+				model.addAttribute("message", "Bild wurde hochgeladen!");
+
+			} catch (Exception e) {
+				model.addAttribute("errorMessage", "Error: " + e.getMessage());
 			}
+		} else model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
 
-			UserImage image = new UserImage();
-			image.setContent(file.getBytes());
-			image.setContentType(file.getContentType());
-			image.setFilename(file.getOriginalFilename());
-			image.setName(file.getName());
-			image.setUserProfile(profile);
-			profile.setImage(image);
-			user.setUserProfile(profile);
-			userDao.save(user);
-
-		} catch (Exception e) {
-			model.addAttribute("errorMessage", "Error: " + e.getMessage());
-		}
-
-		return "forward:/user/profile";
+			return "forward:/user/profile";
 	}
 
 	@RequestMapping("/user/image")
@@ -245,33 +273,31 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping("/user/listUsers")
 	public String listUser(Model model) {
 
 		UserRole userRole = userRoleDao.findByRole("ROLE_USER");
 		List<User> users = userDao.findAllByUserRoles(userRole);
-		
+
 		model.addAttribute("users", users);
 		model.addAttribute("actual", "Mitglieder");
-		
+
 		return "/user/list";
 	}
-	
+
 	@RequestMapping("/user/listAdmins")
 	public String listAdmins(Model model) {
 
 		UserRole userRole = userRoleDao.findByRole("ROLE_EMPLOYEE");
 		List<User> users = userDao.findAllByUserRoles(userRole);
-		
+
 		model.addAttribute("users", users);
 		model.addAttribute("actual", "Mitarbeiter");
-		
+
 		return "/user/list";
 	}
-	
-	
-	
+
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(Exception ex) {
 		return "error";

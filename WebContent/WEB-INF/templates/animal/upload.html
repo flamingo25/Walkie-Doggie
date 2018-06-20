@@ -5,42 +5,58 @@
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
 <title>Walkie-Doggie</title>
-<div th:replace="~{includes/bootstrap :: bootstrapCSS}" />
+<div th:replace="~{includes/bootstrap :: bootstrapCSSRelative}" />
 </head>
-<body>
-	<div class="container" role="main">
+<body class="grey lighten-3">
+	<div class="row mt-5">
+		<div class="center-block col-md-6 mb-4">
+			<div class="card">
+				<div class="card-body">
 
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<form class="form-horizontal" enctype="multipart/form-data" method="post" action="upload">
-					<fieldset>
-						<legend th:text="'Upload Document for animal ' + ${animal.name}"></legend>
+					<div class="row">
+						<div class="col-md-12">
+							<form class="form-horizontal" enctype="multipart/form-data"
+								method="post" action="upload">
+								<fieldset>
+									<legend class="pb-4 ml-3 text-center"
+										style="color: #0066ff; font-weight: bold;"
+										th:text="'Bild für ' + ${animal.name} + ' hochladen'"></legend>
 
-						<input type="hidden" name="id" th:value="${animal.id}">
+									<input type="hidden" name="id" th:value="${animal.id}">
 
-						<div class="form-group">
-							<label for="inputFile" class="col-md-2 control-label">File:</label>
-							<div class="col-md-10">
-								<input class="form-control" id="inputFile" type="file" name="myFile" accept="image/*">
-							</div>
+									<div class="text-center">
+										Wählen Sie ein Bild von Ihrem lokalen Speicher aus<br>
+										und laden Sie dieses auf Walkie-Doggie hoch!
+									</div>
+									<hr>
+
+									<div class="form-group">
+										<label for="inputFile" class="col-md-10 control-label"><h6>Datei:</h6></label>
+										<div class="col-md-12 pb-4">
+											<input class="form-control" id="inputFile" type="file"
+												name="myFile" accept="image/*">
+										</div>
+									</div>
+									<hr>
+									<div class="form-group">
+										<div class="row text-center center-block">
+											<button type="submit" class="btn btn-primary">
+												<i class="fa fa-upload mr-2" aria-hidden="true"></i>Hochladen
+											</button>
+											<a th:href="@{profile(id=${animal.id})}" class="btn btn-danger"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Abbrechen
+											</a>
+										</div>
+									</div>
+
+								</fieldset>
+							</form>
 						</div>
-						<div class="form-group">
-							<div class="col-md-10 col-md-offset-2">
-								<button type="submit" class="btn btn-primary">Upload</button>
-								<a href="list">
-									<button type="button" class="btn btn-default">Cancel</button>
-								</a>
-							</div>
-						</div>
+					</div>
 
-					</fieldset>
-				</form>
+				</div>
 			</div>
 		</div>
-
 	</div>
-	<!--  End of container -->
-	<div th:replace="~{includes/bootstrap :: bootstrapJS}" />
-
 </body>
 </html>
+

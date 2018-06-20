@@ -28,11 +28,31 @@
 	<main class="pt-2 mx-lg-5">
 	<div class="container-fluid mt-5">
 		<div class="card mb-4 wow fadeIn p-5">
+
+			<div>
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
+
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
+
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
+
 			<div class="row col-md-12 center-block py-3">
 				<div class="row">
 					<div class="col-md-6">
 						<h1 class="font-weight-bold">Petbook</h1>
-						<a th:href="@{/animal/add}" class="btn-sm btn-warning mb-2"><I class="fa fa-plus-square mr-2"></i>Tier hinzufügen</a>
+						<a th:href="@{/animal/add}" class="btn-sm btn-warning mb-2"><I
+							class="fa fa-plus-square mr-2"></i>Tier hinzufügen</a>
 					</div>
 					<div class="col-md-6">
 						<form class="form-horizontal" method="post"
@@ -72,8 +92,7 @@
 								<p class="card-text"
 									th:text="${'Tierart: ' + animal.species.name}">Tierart</p>
 								<hr>
-								<p class="card-text"
-									th:text="'Rasse: ' + ${animal.breed}">Rasse</p>
+								<p class="card-text" th:text="'Rasse: ' + ${animal.breed}">Rasse</p>
 								<hr>
 								<p class="card-text" th:text="'Alter: ' + ${animal.age}">Alter</p>
 								<div class="btn-group" role="group" aria-label="Basic example">

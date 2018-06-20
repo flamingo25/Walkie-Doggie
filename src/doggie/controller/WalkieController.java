@@ -121,7 +121,8 @@ public class WalkieController {
 		event.setAnimal(animal);
 		event.setUser(user);
 		calendarRepository.save(event);
-		}
+		model.addAttribute("message", "Termin für " + animal.getName() + " wurde hinzugefügt!");
+		} else model.addAttribute("errorMessage", animal.getName() + " hat an diesem Tag bereits einen Termin!");
 		
 		return "forward:/calendar/animal";
 	}
@@ -162,10 +163,11 @@ public class WalkieController {
 		adopt.setUser(user);
 		
 		adoptionRepository.save(adopt);
+		model.addAttribute("message", "Adoption wurde beantragt!");
 		} else
-		model.addAttribute("errorMessage", "Error: There is already a adoption in progress");
+		model.addAttribute("errorMessage", "Es wurde bereits eine Adoption beantragt!");
 		
-		return "redirect:/animal/petbook";
+		return "forward:/animal/profile";
 	}
 	
 	@RequestMapping(value = { "/adopt/adoption", "/adopt/" })

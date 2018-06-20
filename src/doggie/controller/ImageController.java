@@ -33,16 +33,15 @@ public class ImageController {
 
 	@RequestMapping(value = "/animal/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam("id") int animalId) {
-		
+
 		Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
 		if (!animalOpt.isPresent())
 			throw new IllegalArgumentException("No animal with id " + animalId);
 
 		AnimalModel animal = animalOpt.get();
 
-		
 		model.addAttribute("animal", animal);
-		
+
 		return "/animal/upload";
 	}
 
@@ -50,28 +49,34 @@ public class ImageController {
 	public String uploadDocument(Model model, @RequestParam("id") int animalId,
 			@RequestParam("myFile") MultipartFile file) {
 
-		try {
+		if (!(file.getSize() == 0 || file.getSize() > 100000)) {
 
-			Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
-			if (!animalOpt.isPresent())
-				throw new IllegalArgumentException("No animal with id " + animalId);
+			try {
 
-			AnimalModel animal = animalOpt.get();
+				Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
+				if (!animalOpt.isPresent())
+					throw new IllegalArgumentException("No animal with id " + animalId);
 
-			AnimalImage image = new AnimalImage();
-			image.setContent(file.getBytes());
-			image.setContentType(file.getContentType());
-			image.setFilename(file.getOriginalFilename());
-			image.setName(file.getOriginalFilename());
-			if (CollectionUtils.isEmpty(imageRepository.findAllByAnimalAndProfile(animal, true)))
-			image.setProfile(true); else image.setProfile(false);
-			image.setAnimal(animal);
-			animal.addImage(image);
-			imageRepository.save(image);
+				AnimalModel animal = animalOpt.get();
 
-		} catch (Exception e) {
-			model.addAttribute("errorMessage", "Error:" + e.getMessage());
-		}
+				AnimalImage image = new AnimalImage();
+				image.setContent(file.getBytes());
+				image.setContentType(file.getContentType());
+				image.setFilename(file.getOriginalFilename());
+				image.setName(file.getOriginalFilename());
+				if (CollectionUtils.isEmpty(imageRepository.findAllByAnimalAndProfile(animal, true)))
+					image.setProfile(true);
+				else
+					image.setProfile(false);
+				image.setAnimal(animal);
+				animal.addImage(image);
+				imageRepository.save(image);
+				model.addAttribute("message", "Bild wurde hochgeladen!");
+
+			} catch (Exception e) {
+				model.addAttribute("errorMessage", "Error:" + e.getMessage());
+			}
+		} else model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
 
 		return "forward:/animal/profile";
 	}
@@ -94,10 +99,10 @@ public class ImageController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping("/animal/profileImage")
 	public void downloadProfile(@RequestParam("id") int animalId, HttpServletResponse response) {
-		
+
 		Optional<AnimalModel> animalOpt = animalRepository.findById(animalId);
 		if (!animalOpt.isPresent())
 			throw new IllegalArgumentException("No animal with id " + animalId);
@@ -144,7 +149,7 @@ public class ImageController {
 		AnimalImage image = imageOpt.get();
 		image.setName(description);
 		imageRepository.save(image);
-		
+
 		return "redirect:/animal/images?id=" + image.getAnimal().getId();
 	}
 
@@ -155,16 +160,16 @@ public class ImageController {
 
 		if (!imageOpt.isPresent())
 			throw new IllegalArgumentException("No Image with id " + id);
-		
+
 		AnimalImage image = imageOpt.get();
 		AnimalModel animal = image.getAnimal();
-		
+
 		imageRepository.deleteById(id);
-		
-		if (image.isProfile()) {		
-		AnimalImage newProfile = imageRepository.findAllByAnimal(animal).get(0);
-		newProfile.setProfile(true);
-		imageRepository.save(newProfile);
+
+		if (image.isProfile()) {
+			AnimalImage newProfile = imageRepository.findAllByAnimal(animal).get(0);
+			newProfile.setProfile(true);
+			imageRepository.save(newProfile);
 		}
 
 		return "redirect:/animal/images?id=" + image.getAnimal().getId();

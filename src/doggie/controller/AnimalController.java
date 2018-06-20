@@ -91,7 +91,7 @@ public class AnimalController {
 	public String deleteAnimal(Model model, @RequestParam int id) {
 
 		animalRepository.deleteById(id);
-		model.addAttribute("errorMessage", "Animal " + id + " deleted<br>");
+		model.addAttribute("errorMessage", "Tier " + id + " wurde gelöscht!");
 
 		return "forward:/animal/petbook";
 	}
@@ -175,7 +175,7 @@ public class AnimalController {
 
 			animalRepository.save(newAnimalModel);
 
-			model.addAttribute("message", "New Animal " + newAnimalModel.getId() + " added.");
+			model.addAttribute("message", newAnimalModel.getName() + " wurde hinzugefügt!.");
 		}
 
 		return "forward:/animal/petbook";
@@ -199,7 +199,7 @@ public class AnimalController {
 		Optional<AnimalModel> animalOpt = animalRepository.findById(changedAnimalModel.getId());
 
 		if (!animalOpt.isPresent())
-			model.addAttribute("errorMessage", "Animal does not exist!<br>");
+			model.addAttribute("errorMessage", "Das Tier existiert nicht!");
 		else {
 
 			AnimalModel animal = animalOpt.get();
@@ -222,7 +222,7 @@ public class AnimalController {
 				animal.setCompatibilities(compatibilityRepository.findByIdIn(compatibility));
 			animalRepository.save(animal);
 
-			model.addAttribute("message", "Changed animal " + changedAnimalModel.getId());
+			model.addAttribute("message", changedAnimalModel.getName() + " wurde geändert!");
 		}
 		return "forward:/animal/petbook";
 	}

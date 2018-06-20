@@ -54,7 +54,7 @@ public class DefaultController {
 		return "about";
 	}
 	
-	@RequestMapping(value = "/favourite")
+	@RequestMapping(value = "/animal/favourite")
 	public String favourite(Model model, Principal principal,
 			@RequestParam int id,
 			@RequestParam(required = false, name = "rm") boolean rm) {
@@ -73,14 +73,14 @@ public class DefaultController {
 			if (CollectionUtils.isEmpty(animalOp)) {
 				user.addFavourite(animal);
 				userDao.save(user);
-				model.addAttribute("message", "Animal " + animal.getName() + " added to favourites");
-			} else model.addAttribute("message", "Animal " + animal.getName() + " is already favourites");
+				model.addAttribute("message", animal.getName() + " wurde zu deinen Favoriten hinzugefügt!");
+			} else model.addAttribute("errorMessage", animal.getName() + " befindet sich bereits in deinen Favoriten!");
 			
-			return "redirect:/animal/profile?id=" + user.getId();
+			return "forward:/animal/profile";
 		} else {
 			user.getFavourites().removeIf(a -> a.getId() == animal.getId());
 			userDao.save(user);
-			model.addAttribute("errorMessage", "Animal " + animal.getName() + " removed from favourites");
+			model.addAttribute("errorMessage", animal.getName() + " wurde von deinen Favoriten entfernt!");
 			
 			return "forward:/";
 		}

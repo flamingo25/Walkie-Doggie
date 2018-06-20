@@ -91,7 +91,10 @@
 							class="btn btn-sm btn-success" th:href="@{show(id=${user.id})}">Zu
 								Profil</a> <a th:if="${actual.equals('Mitglieder')}"
 							th:href="@{promote(id=${user.id})}" type="button"
-							class="btn btn-sm btn-danger mr-2">Befördern!</a></td>
+							class="btn btn-sm btn-danger mr-2">Befördern!</a>
+							<a th:if="${actual.equals('Mitarbeiter')}"
+							th:href="@{demote(id=${user.id})}" type="button"
+							class="btn btn-sm btn-danger mr-2">Abstufen!</a></td>
 
 					</tr>
 
