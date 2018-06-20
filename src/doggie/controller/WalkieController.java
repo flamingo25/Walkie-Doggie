@@ -203,17 +203,23 @@ public class WalkieController {
 
 		AdoptionModel adoption = adoptionOpt.get();
 
-		adoption.setProcessed(true);
+		if (!adoption.isProcessed()) {
+			adoption.setProcessed(true);
 
-		if (accept) {
-			adoption.setAccepted(false);
-			model.addAttribute("message", "Antrag " + id + " wurde akzeptiert!");
+			if (accept) {
+				adoption.setAccepted(true);
+				model.addAttribute("message", "Antrag " + id + " wurde akzeptiert!");
+			} else {
+				adoption.setAccepted(false);
+				model.addAttribute("errorMessage", "Antrag " + id + " wurde abgelehnt!");
+			}
+
+			adoptionRepository.save(adoption);
 		} else {
-			adoption.setAccepted(false);
-			model.addAttribute("errorMessage", "Antrag " + id + " wurde abgelehnt!");
+			model.addAttribute("errorMessage", "Antrag " + id + " wurde bereits bearbeitet!");
 		}
 
-		return "/walkie/adoption";
+		return "forward:/adopt/adoption";
 	}
 
 }

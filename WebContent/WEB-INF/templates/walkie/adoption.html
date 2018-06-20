@@ -28,7 +28,7 @@
 	<main class="pt-2 mx-lg-5">
 	<div class="container-fluid mt-5">
 		<div class="card mb-4 wow fadeIn p-5">
-						<div>
+			<div>
 				<!--  Error message ----------------------------------------------------------- -->
 				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
 					class="alert alert-danger" role="alert"></div>
@@ -53,15 +53,17 @@
 			</div>
 			<br />
 
-						<!-- Text -->
-						<p class="center-block">
-							In der folgenden Tabelle finden Sie die wichtigsten Informationen über Ihre ausstehenden Adoptionen. Über das Feld
-							<b>Status</b> können Sie jederzeit nachschauen, ob Ihre Adoption angenommen oder abgelehnt wurde. Unsere
-							kleinen Freunde freuen sich, dass Sie ihnen ein neues Zuhause anbieten können. Viel Vergnügen!
-						</p>
-						<hr>
-					
-					<!--Table-->
+			<!-- Text -->
+			<p class="center-block">
+				In der folgenden Tabelle finden Sie die wichtigsten Informationen
+				über Ihre ausstehenden Adoptionen. Über das Feld <b>Status</b>
+				können Sie jederzeit nachschauen, ob Ihre Adoption angenommen oder
+				abgelehnt wurde. Unsere kleinen Freunde freuen sich, dass Sie ihnen
+				ein neues Zuhause anbieten können. Viel Vergnügen!
+			</p>
+			<hr>
+
+			<!--Table-->
 
 			<table class="table table-hover">
 
@@ -72,7 +74,8 @@
 						<th class="col-md-1 center-block" scope="col">ID</th>
 						<th class="col-md-2 center-block" scope="col">Benutzername</th>
 						<th class="col-md-2 center-block" scope="col">Tiername</th>
-						<th class="col-md-3 center-block" scope="col">Status der Adoption</th>
+						<th class="col-md-3 center-block" scope="col">Status der
+							Adoption</th>
 						<th class="col-md-4 center-block" scope="col">Aktion</th>
 					</tr>
 				</thead>
@@ -81,14 +84,38 @@
 				<tbody>
 					<tr class="row" th:each="adoption : ${adoptions}">
 
-						<td class="col-md-1 center-block p-2" scope="row" th:text="${adoption.id}">id</td>
-						<td class="col-md-2 center-block p-2"><a th:text="${adoption.user.userName}" th:href="@{/user/show(id=${adoption.user.id})}">username</a></td>
-						<td class="col-md-2 center-block p-2"><a th:text="${adoption.animal.name}" th:href="@{/animal/profile(id=${adoption.animal.id})}">username</a></td>
-						<td class="col-md-3 center-block p-2"><i th:if="${adoption.accepted}" class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></td>
+						<td class="col-md-1 center-block p-2" scope="row"
+							th:text="${adoption.id}">id</td>
+						<td class="col-md-2 center-block p-2"><a
+							th:text="${adoption.user.userName}"
+							th:href="@{/user/show(id=${adoption.user.id})}">username</a></td>
+						<td class="col-md-2 center-block p-2"><a
+							th:text="${adoption.animal.name}"
+							th:href="@{/animal/profile(id=${adoption.animal.id})}">username</a></td>
+						<td class="col-md-3 center-block p-2">
+						
+						<span th:if="${!adoption.processed}">IN BEARBEITUNG</span>
+						
+						<span th:if="${adoption.processed}">
+						
+						<i th:if="${adoption.accepted}" class="fa fa-check-square-o fa-lg"
+								aria-hidden="true"></i>
+								
+						<i th:if="${!adoption.accepted}"
+								class="fa fa-times fa-lg" aria-hidden="true"></i>
+								
+						</span>
+						</td>
 
 						<td class="col-md-4 center-block p-2">
-						<button class="btn btn-sm btn-success font-weight-bold" type="submit"><i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Akzeptieren</button> 
-						<button class="btn btn-sm btn-danger font-weight-bold"><i class="fa fa-lg fa-frown-o mr-2" aria-hidden="true"></i>Ablehnen</button>
+						<div th:if="${!adoption.processed}">
+							<a th:href="@{accept(id=${adoption.id}, accept=true)}" class="btn btn-sm btn-success font-weight-bold">
+											<i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Akzeptieren</a>
+											
+							<a th:href="@{accept(id=${adoption.id}, accept=false)}" class="btn btn-sm btn-danger font-weight-bold">
+											<i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Ablehnen</a>
+										
+						</div>
 						</td>
 					</tr>
 
@@ -98,7 +125,7 @@
 
 			</table>
 		</div>
-		</div>		
+	</div>
 	</main>
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
