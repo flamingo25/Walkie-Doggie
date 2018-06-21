@@ -59,7 +59,7 @@ public class User implements java.io.Serializable {
 	@JoinTable(name = "favourites", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "animal_id") })
 	@Cascade(CascadeType.SAVE_UPDATE)
-	private List<AnimalModel> favourites;
+	private Set<AnimalModel> favourites;
 	
 	@OneToMany(mappedBy="user")
 	@Cascade(CascadeType.SAVE_UPDATE)
@@ -140,17 +140,17 @@ public class User implements java.io.Serializable {
 		this.userProfile = userProfile;
 	}
 
-	public List<AnimalModel> getFavourites() {
+	public Set<AnimalModel> getFavourites() {
 		return favourites;
 	}
 
-	public void setFavourites(List<AnimalModel> favourites) {
+	public void setFavourites(Set<AnimalModel> favourites) {
 		this.favourites = favourites;
 	}
 
 	public void addFavourite(AnimalModel animal) {
 		if (favourites == null) {
-			favourites = new ArrayList<AnimalModel>();
+			favourites = new HashSet<AnimalModel>();
 		}
 		favourites.add(animal);
 	}

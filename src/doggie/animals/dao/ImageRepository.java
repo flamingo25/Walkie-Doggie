@@ -17,5 +17,6 @@ public interface ImageRepository extends JpaRepository<AnimalImage, Integer> {
 	List<AnimalImage> findAllByAnimal(AnimalModel animal);
 
 	List<AnimalImage> findAllByAnimalAndProfile(AnimalModel animalModel, boolean profile);
-
+	
+	void deleteAllByAnimalId(Integer id);
 }

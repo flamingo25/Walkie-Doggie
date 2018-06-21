@@ -18,4 +18,6 @@ public interface AdoptionRepository extends JpaRepository<AdoptionModel, Integer
 	List<AdoptionModel> findByUserAndAnimal(User user, AnimalModel animal);
 	
 	List<AdoptionModel> findByUser(User user);
+
+	List<AdoptionModel> findAllByAnimal(AnimalModel animal);
 }

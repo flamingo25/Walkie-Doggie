@@ -14,7 +14,7 @@
 	<header>
 
 		<!-- Sidebar -->
-		<div th:replace="~{includes/sideNav :: side(actual='petbook')}"></div>
+		<div th:replace="~{includes/sideNav :: side(actual='favourites')}"></div>
 		<!-- Sidebar -->
 
 		<!-- Navbar -->
@@ -49,41 +49,40 @@
 
 			<div class="row col-md-12 center-block py-3">
 				<div class="row">
-					<div class="col-md-12 mb-6">
-						<a class="btn btn-outline-primary waves-effect"
-							th:href="@{/animal/profile(id=${animal.id})}" style="float: right;">
-							<i class="fa fa-lg fa-arrow-circle-left mr-2"
-							style="color: #0062cc" aria-hidden="true"></i>Zurück zum Profil
-						</a>
-						<!-- Titel -->
-						<h1>Bildergalerie</h1>
+					<div class="col-md-6">
+						<h3 class="font-weight-bold">Favoriten</h3>
 					</div>
 				</div>
-				<hr>
-				<div class="col-md-12 center-block">
-					<div class="row">
-						<div class="mb-4 col-md-4" th:each="image : ${images}">
-							<div class="card">
-								<!--Card image-->
-								<img class="img-thumbnail card-img-top p-3"
-									th:src="@{/animal/image(id=${image.id})}" alt="Card image cap">
-								<div class="card-body">
-									<div>
-										<div class="row text-center center-block col-12">
-											<h6>
-												<span th:if="${image.profile}" aria-hidden="true"
-													class="badge green darken-2 center-block">Aktuelles
-													Profilbild</span>
-											</h6>
-										</div>
-										<p></p>
-										<div class="row text-center center-block">
-											<a th:href="@{/animal/images/profile(id=${image.id})}"
-												class="btn btn-primary">Profil</a> <a
-												th:href="@{/animal/images/delete(id=${image.id})}"
-												class="btn deep-orange darken-4">Delete</a>
-										</div>
-									</div>
+			</div>
+			<hr>
+			<div class="col-md-12 center-block">
+				<div class="row">
+					<div class="mb-4 col-md-4 p-3" th:each="animal : ${animals}">
+						<div class="card">
+							<!--Card image-->
+							<div class="view overlay">
+								<img class="card-img-top"
+									th:src="@{/animal/profileImage(id=${animal.id})}" alt="Card image cap"
+									onerror="this.src='../resources/default.jpg'"> <a
+									th:href="@{/animal/profile(id=${animal.id})}">
+									<div class="mask rgba-white-slight"></div>
+								</a>
+							</div>
+
+							<!--Card content-->
+							<div class="card-body">
+
+								<!--Title-->
+								<h4 class="card-title" th:text="${animal.name}">Name</h4>
+								<!--Text-->
+								<p class="card-text"
+									th:text="${'Tierart: ' + animal.species.name}">Tierart</p>
+								<hr>
+								<p class="card-text" th:text="'Rasse: ' + ${animal.breed}">Rasse</p>
+								<hr>
+								<p class="card-text" th:text="'Alter: ' + ${animal.age}">Alter</p>
+								<div class="btn-group" role="group" aria-label="Basic example">
+									<a th:href="@{/animal/favourite(id=${animal.id}, rm=true)}" class="btn btn-danger">Von Favoriten löschen</a>
 								</div>
 							</div>
 						</div>
@@ -96,7 +95,4 @@
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>
-
-
-
 

@@ -41,8 +41,9 @@
 
 	<!-- looks up Spring Data repositories -->
 	<jpa:repositories base-package="doggie" />
-	
-	<mvc:resources mapping="/resources/**" location="/resources/" />
+
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" />
 
 	<!-- JSR-303/JSR-349 support will be detected on classpath and enabled automatically -->
 	<mvc:annotation-driven />
@@ -57,7 +58,13 @@
 		<property name="templateMode" value="HTML" />
 		<property name="cacheable" value="false" />
 	</bean>
-	
+
+	<bean class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="location">
+			<value>/WEB-INF/spring-views.xml</value>
+		</property>
+	</bean>
+
 
 	<bean id="templateEngine"
 		class="org.thymeleaf.spring5.SpringTemplateEngine">
@@ -76,7 +83,7 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the several properties available; the maximum file size in 
 			bytes -->
-		<property name="maxUploadSizePerFile" value="15242880" />
+		<property name="maxUploadSizePerFile" value="5242880" />
 	</bean>
 
 	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
@@ -100,7 +107,6 @@
 				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
 				<prop key="hibernate.hbm2ddl.import_files">data.sql</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
 	</bean>

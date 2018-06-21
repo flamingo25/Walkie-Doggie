@@ -16,7 +16,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<form class="form-horizontal" enctype="multipart/form-data"
-								method="post" action="upload">
+								method="post" th:action="@{/animal/upload}">
 								<fieldset>
 									<legend class="pb-4 ml-3 text-center"
 										style="color: #0066ff; font-weight: bold;"
@@ -43,7 +43,9 @@
 											<button type="submit" class="btn btn-primary">
 												<i class="fa fa-upload mr-2" aria-hidden="true"></i>Hochladen
 											</button>
-											<a th:href="@{profile(id=${animal.id})}" class="btn btn-danger"><i class="fa fa-ban mr-2" aria-hidden="true"></i>Abbrechen
+											<a th:href="@{/animal/profile(id=${animal.id})}"
+												class="btn btn-danger"> <i class="fa fa-ban mr-2"
+												aria-hidden="true"></i>Abbrechen
 											</a>
 										</div>
 									</div>

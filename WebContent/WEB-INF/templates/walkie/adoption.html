@@ -109,12 +109,17 @@
 
 						<td class="col-md-4 center-block p-2">
 						<div th:if="${!adoption.processed}">
-							<a th:href="@{accept(id=${adoption.id}, accept=true)}" class="btn btn-sm btn-success font-weight-bold">
+							<a th:href="@{/adopt/accept(id=${adoption.id}, accept=true)}" class="btn btn-sm btn-success font-weight-bold">
 											<i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Akzeptieren</a>
 											
-							<a th:href="@{accept(id=${adoption.id}, accept=false)}" class="btn btn-sm btn-danger font-weight-bold">
+							<a th:href="@{/adopt/accept(id=${adoption.id}, accept=false)}" class="btn btn-sm btn-danger font-weight-bold">
 											<i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Ablehnen</a>
 										
+						</div><div th:if="${adoption.processed && adoption.accepted}">
+							<a th:href="@{/adopt/report(id=${adoption.id})}" class="btn btn-sm btn-warning font-weight-bold">
+											<i class="fa fa-lg fa-smile-o mr-2" aria-hidden="true"></i>Download</a>
+						
+						
 						</div>
 						</td>
 					</tr>

@@ -207,14 +207,26 @@ public class WalkieController {
 			adoption.setProcessed(true);
 
 			if (accept) {
+				List<AdoptionModel> adoptions = adoptionRepository.findAllByAnimal(adoption.getAnimal());
+				adoptions.removeIf(v -> v.getId() == adoption.getId());
+				adoptions.forEach(v -> v.setAccepted(false));
+				adoptions.forEach(v -> v.setProcessed(true));
 				adoption.setAccepted(true);
+				adoptions.add(adoption);
+				
+				adoptionRepository.saveAll(adoptions);
+				
+
 				model.addAttribute("message", "Antrag " + id + " wurde akzeptiert!");
+				
+
 			} else {
 				adoption.setAccepted(false);
 				model.addAttribute("errorMessage", "Antrag " + id + " wurde abgelehnt!");
+				adoptionRepository.save(adoption);
 			}
 
-			adoptionRepository.save(adoption);
+
 		} else {
 			model.addAttribute("errorMessage", "Antrag " + id + " wurde bereits bearbeitet!");
 		}

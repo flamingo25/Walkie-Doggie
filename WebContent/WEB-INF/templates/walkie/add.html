@@ -16,7 +16,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<form class="form-horizontal" method="post"
-								th:action="@{/adopt/new}">
+								th:action="@{/calendar/addEvent}">
 								<fieldset>
 									<legend class="py-4 text-center" style="color: #0066ff;">
 										<h3>Spaziergang beantragen</h3>
@@ -60,7 +60,7 @@
 											</button>
 
 											<a class="btn btn-danger font-weight-bold"
-												th:href="@{../calendar/user}"> <i
+												th:href="@{/calendar/animal(id=${animal.id})}"> <i
 												class="fa fa-lg fa-thumbs-o-down mr-2 font-weight-bold"
 												aria-hidden="true"></i>Abbrechen
 											</a>

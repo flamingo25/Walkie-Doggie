@@ -1,8 +1,10 @@
 package doggie.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -28,6 +30,8 @@ import doggie.animals.model.AnimalModel;
 import doggie.animals.model.Compatibility;
 import doggie.animals.model.Species;
 import doggie.animals.model.Vaccination;
+import doggie.user.dao.UserDao;
+import doggie.user.model.User;
 
 @Controller
 public class AnimalController {
@@ -47,6 +51,9 @@ public class AnimalController {
 	@Autowired
 	ImageRepository imageRepository;
 
+	@Autowired
+	UserDao userDao;
+
 	@RequestMapping(value = { "/animal/petbook", "/animal/" })
 	public String petbook(Model model) {
 
@@ -56,11 +63,13 @@ public class AnimalController {
 
 		return "/animal/petbook";
 	}
-	
+
 	@RequestMapping(value = "/animal/search")
 	public String search(Model model, @RequestParam String searchString) {
 
-		List<AnimalModel> animals = animalRepository.findByNameContainingOrBreedContainingOrSpeciesNameContainingAllIgnoreCase(searchString, searchString, searchString);
+		List<AnimalModel> animals = animalRepository
+				.findByNameContainingOrBreedContainingOrSpeciesNameContainingAllIgnoreCase(searchString, searchString,
+						searchString);
 
 		model.addAttribute("animals", animals);
 
@@ -90,7 +99,20 @@ public class AnimalController {
 	@RequestMapping(value = "/animal/delete")
 	public String deleteAnimal(Model model, @RequestParam int id) {
 
+		AnimalModel animal = animalRepository.findById(id).get();
+
+		List<User> users = userDao.findByFavourites(animal);
+
+		for (User user : users) {
+			Set<AnimalModel> favourites = user.getFavourites();
+			favourites.removeIf(v -> v.getId() == id);
+			user.setFavourites(favourites);
+			userDao.save(user);
+		}
+
+		imageRepository.deleteAllByAnimalId(id);
 		animalRepository.deleteById(id);
+
 		model.addAttribute("errorMessage", "Tier " + id + " wurde gelöscht!");
 
 		return "forward:/animal/petbook";
@@ -131,7 +153,7 @@ public class AnimalController {
 
 		List<Vaccination> selectedVaccinations = vaccinationRepository.findAllByAnimals(animal);
 		List<Integer> selectedV = selectedVaccinations.stream().map(v -> v.getId()).collect(Collectors.toList());
-		
+
 		model.addAttribute("selectedV", selectedV);
 
 		List<Compatibility> acs = compatibilityRepository.findAll();
@@ -139,7 +161,7 @@ public class AnimalController {
 
 		List<Compatibility> selectedCompatibility = compatibilityRepository.findAllByAnimals(animal);
 		List<Integer> selectedAcs = selectedCompatibility.stream().map(v -> v.getId()).collect(Collectors.toList());
-		
+
 		model.addAttribute("selectedAcs", selectedAcs);
 
 		return "/animal/edit";
@@ -225,6 +247,44 @@ public class AnimalController {
 			model.addAttribute("message", changedAnimalModel.getName() + " wurde geändert!");
 		}
 		return "forward:/animal/petbook";
+	}
+
+	@RequestMapping(value = "/animal/favourite")
+	public String favourite(Model model, Principal principal, @RequestParam int id,
+			@RequestParam(required = false, name = "rm") boolean rm) {
+
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+
+		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
+
+		if (!animalOpt.isPresent())
+			throw new IllegalArgumentException("No animal with id " + id);
+
+		AnimalModel animal = animalOpt.get();
+
+		Set<AnimalModel> favourites = user.getFavourites();
+
+		if (!rm) {
+			List<AnimalModel> fav = animalRepository.findAllByFUser(user);
+			fav.removeIf(v -> v.getId() != id);
+			if (CollectionUtils.isEmpty(fav)) {
+				
+				user.addFavourite(animal);
+				userDao.save(user);
+				
+				model.addAttribute("message", animal.getName() + " wurde zu deinen Favoriten hinzugefügt!");
+			} else
+				model.addAttribute("errorMessage", animal.getName() + " befindet sich bereits in deinen Favoriten!");
+			return "forward:/animal/profile";
+		} else {
+			favourites.removeIf(v -> v.getId() == id);
+			userDao.save(user);
+			
+			model.addAttribute("errorMessage", animal.getName() + " wurde von deinen Favoriten entfernt!");
+			
+			return "forward:/user/favourites";
+		}
 	}
 
 	@ExceptionHandler(Exception.class)

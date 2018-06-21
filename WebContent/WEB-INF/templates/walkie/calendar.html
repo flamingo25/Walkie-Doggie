@@ -19,50 +19,51 @@
 	src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js'></script>
 <script
 	src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/de.js'></script>
-<script
-	src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<link 
-	href='https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css' rel='stylesheet'/>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link
+	href='https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css'
+	rel='stylesheet' />
 
 <script th:inline="javascript">
 
-	$(document).ready(function() {
+       $(document).ready(function() {
 
-		$('#calendar').fullCalendar({
-			
-			[# th:if="${animal}"]		
-			dayClick: function(date, jsEvent, view){	
-			
-				$(location).attr('href', ('addEvent?date=' + date.format() + '&id=[(${animal.id})]'))
-			},
-			[/]	
-		
-			header : {
-				left : 'prev,next today',
-				center : 'title',
-				right : 'month,basicWeek,basicDay'
-			},
-			themeSystem:"jquery-ui",
-			navLinks : true,
-			editable : false,
-			eventLimit : true,
-			events : [ 
-				
-				[# th:each="event : ${events}"]
-				
-				{
-				title : '[(${event.animal.name})]',
-				start : '[(${event.event})]',
-				url : 'addEvent?date=[(${event.event})]&id=[(${event.animal.id})]',
-				allDay : true
-			},
-			[/]
-			
-			
-			]
-		});
+             $('#calendar').fullCalendar({
 
-	});
+                    [# th:if="${animal}"]           
+                    dayClick: function(date, jsEvent, view){     
+                    
+                          $(location).attr('href', ('addEvent?date=' + date.format() + '&id=[(${animal.id})]'))
+                    },
+                    [/]   
+                          
+                    
+                    header : {
+                          left : 'prev,next today',
+                          center : 'title',
+                          right : 'month,basicWeek,basicDay,listYear'
+
+                    },
+                    themeSystem:"jquery-ui",
+                    navLinks : true,
+                    editable : false,
+                    eventLimit : true,
+                    events : [ 
+                          
+                          [# th:each="event : ${events}"]
+                          
+                          {
+                          title : '[(${event.animal.name})]',
+                          start : '[(${event.event})]',
+                          allDay : true
+                    },
+                    [/]
+                    
+                    
+                    ]
+             });
+
+       });
 </script>
 <style>
 body {
@@ -75,9 +76,6 @@ body {
 	margin: 0 auto;
 }
 </style>
-</head>
-
-
 <body class="grey lighten-3">
 
 	<!--Main Navigation-->
@@ -96,13 +94,43 @@ body {
 	<main class="pt-2 mx-lg-5">
 	<div class="container-fluid mt-5">
 		<div class="card mb-4 wow fadeIn p-5">
-			<div class="row"></div>
-			<br />
+			<div>
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
 
-			<div id='calendar'></div>
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
 
-		</div>
-		<br />
-		<div id='calendar'></div>
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
+			<div class="row col-md-12 center-block py-3">
+
+				<div class="row">
+					<div class="col-md-12 mb-6">
+						<!-- Titel -->
+						<h1>Kalender</h1>
+						<hr>
+						Lieber Nutzer, in diesem Kalender findest du alle Spaziergänge,
+						die du bereits absolviert hast aber auch diejenigen, auf welche du
+						dich noch freuen kannst! Einen neuen Spaziergang können Sie
+						einfach starten, indem Sie:<br> 1.) Über den Katalog das
+						gewünschte Tier auswählen<br> 2.) Termin buchen<br> 3.)
+						Im Kalender den passenden Tag aussuchen und anklicken<br>
+						<hr>
+						<br />
+
+						<div id='calendar'></div>
+
+					</div>
+					<br />
+					<div id='calendar'></div>
 </body>
 </html>

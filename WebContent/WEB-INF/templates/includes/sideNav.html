@@ -39,10 +39,10 @@
                     
                     
                 <a th:if="${actual.equals('adoption')}" th:href="@{/adopt/adoption}" class="list-group-item active waves-effect">
-                    <i class="fa fa-table mr-3"></i>Adoption
+                    <i class="fa fa-handshake-o mr-3"></i>Adoption
                 </a>
                 <a th:if="${!actual.equals('adoption')}" th:href="@{/adopt/adoption}" class="list-group-item list-group-item-action waves-effect">
-                    <i class="fa fa-table mr-3"></i>Adoption
+                    <i class="fa fa-handshake-o mr-3"></i>Adoption
                 </a>
                     
                     
@@ -54,10 +54,10 @@
                 </a>
                     
                     
-                <a th:if="${actual.equals('favourites')}" href="#" class="list-group-item active waves-effect">
+                <a th:if="${actual.equals('favourites')}" th:href="@{/user/favourites}" class="list-group-item active waves-effect">
                     <i class="fa fa-star mr-3"></i>Favoriten
                 </a>
-                <a th:if="${!actual.equals('favourites')}" href="#" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('favourites')}" th:href="@{/user/favourites}" class="list-group-item list-group-item-action waves-effect">
                     <i class="fa fa-star mr-3"></i>Favoriten
                 </a>
                     

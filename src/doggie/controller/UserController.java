@@ -25,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import doggie.animals.dao.AnimalRepository;
+import doggie.animals.model.AnimalModel;
 import doggie.user.dao.UserDao;
 import doggie.user.dao.UserImageDao;
+import doggie.user.dao.UserProfileDao;
 import doggie.user.dao.UserRoleDao;
 import doggie.user.model.User;
 import doggie.user.model.UserImage;
@@ -41,9 +44,15 @@ public class UserController {
 
 	@Autowired
 	UserImageDao userImageDao;
+	
+	@Autowired
+	UserProfileDao userProfileDao;
 
 	@Autowired
 	UserRoleDao userRoleDao;
+	
+	@Autowired
+	AnimalRepository animalRepository;
 
 	@RequestMapping(value = { "/user/profile", "/user/" })
 	public String userProfile(Model model, Principal principal) {
@@ -150,7 +159,9 @@ public class UserController {
 
 	@RequestMapping(value = { "/user/edit" }, method = RequestMethod.POST)
 	public String editProfile(@Valid UserProfile newUserProfile, Model model, Principal principal,
-			BindingResult bindingResult, @RequestParam("date") String date) {
+			BindingResult bindingResult, @RequestParam("date") String date,
+			@RequestParam(required = false, name = "password") String password,
+			@RequestParam(required = false, name = "password2") String password2) {
 
 		if (bindingResult.hasErrors()) {
 			String errorMessage = "";
@@ -191,6 +202,12 @@ public class UserController {
 		Date dayOfBirth = cal.getTime();
 		profile.setDayOfBirth(dayOfBirth);
 
+		if (password.equals(password2)) {
+			user.setPassword(password);
+			user.encryptPassword();
+		}
+		
+		
 		userDao.save(user);
 
 		model.addAttribute("message", "Profil " + user.getUserName() + " wurde geändert!");
@@ -205,6 +222,8 @@ public class UserController {
 
 		user.setPassword("password");
 		user.encryptPassword();
+		
+		userDao.save(user);
 
 		model.addAttribute("errorMessage", "Passwort wurde zurückgesetzt!");
 
@@ -223,46 +242,47 @@ public class UserController {
 	@RequestMapping(value = "/user/upload", method = RequestMethod.POST)
 	public String uploadUserImage(Model model, Principal principal, @RequestParam("myFile") MultipartFile file) {
 
-		if (!(file.getSize() == 0 || file.getSize() > 100000)) {
+		if (file.getSize() < 2400000 && file.getSize() > 100 ) {
 
 			try {
 				List<User> userOpt = userDao.findByUserName(principal.getName());
 				User user = userOpt.get(0);
 				UserProfile profile = user.getUserProfile();
-
+				
 				if (profile.getImage() != null) {
-					userImageDao.delete(profile.getImage());
 					profile.setImage(null);
 				}
-
-				UserImage image = new UserImage();
-				image.setContent(file.getBytes());
-				image.setContentType(file.getContentType());
-				image.setFilename(file.getOriginalFilename());
-				image.setName(file.getName());
-				image.setUserProfile(profile);
-				profile.setImage(image);
+				
+				
+				UserImage newImage = new UserImage();
+				newImage.setContent(file.getBytes());
+				newImage.setContentType(file.getContentType());
+				newImage.setFilename(file.getOriginalFilename());
+				newImage.setName(file.getName());
+				newImage.setUserProfile(profile);
+				profile.setImage(newImage);
 				user.setUserProfile(profile);
 				userDao.save(user);
+				
 				model.addAttribute("message", "Bild wurde hochgeladen!");
 
 			} catch (Exception e) {
 				model.addAttribute("errorMessage", "Error: " + e.getMessage());
 			}
-		} else model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
+		} else
+			model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
 
-			return "forward:/user/profile";
+		return "forward:/user/profile";
 	}
 
 	@RequestMapping("/user/image")
-	public void downloadUser(@RequestParam("id") int imageId, HttpServletResponse response) {
+	public void downloadUser(@RequestParam("id") int userId, HttpServletResponse response) {
 
-		Optional<User> userOpt = userDao.findById(imageId);
-		if (!userOpt.isPresent())
-			throw new IllegalArgumentException("No image with id " + imageId);
-
+		Optional<User> userOpt = userDao.findById(userId);
 		User user = userOpt.get();
-		UserImage img = userImageDao.findByUserProfile(user.getUserProfile());
+		UserProfile profile = user.getUserProfile();
+		
+		UserImage img = profile.getImage();
 
 		try {
 			OutputStream out = response.getOutputStream();
@@ -296,6 +316,18 @@ public class UserController {
 		model.addAttribute("actual", "Mitarbeiter");
 
 		return "/user/list";
+	}
+	
+	@RequestMapping(value = "/user/favourites")
+	public String handleFavourites(Model model, Principal principal) {
+		List<User> userOpt = userDao.findByUserName(principal.getName());
+		User user = userOpt.get(0);
+		
+		List<AnimalModel> animals = animalRepository.findAllByFUser(user);
+		
+		model.addAttribute("animals", animals);
+		
+		return "/user/favourites";
 	}
 
 	@ExceptionHandler(Exception.class)

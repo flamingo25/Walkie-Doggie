@@ -31,7 +31,8 @@
 
 
 					<!-- Titel -->
-					<h1 th:text="'Wilkommen ' + ${user.userName} + '!'">Wilkommen User!</h1>
+					<h1 th:text="'Wilkommen ' + ${user.userName} + '!'">Wilkommen
+						User!</h1>
 					<hr>
 
 
@@ -74,9 +75,11 @@
 								<p class="card-text text-justify"
 									th:text="${animals[0].description}">Beschreibung</p>
 
-								<img th:src="@{/animal/profileImage(id=${animals[0].id})}"
+								<a th:href="@{/animal/profile(id=${animals[0].id})}"
+									class="logo waves-effect pb-4"> <img
+									th:src="@{/animal/profileImage(id=${animals[0].id})}"
 									class="img-fluid z-depth-2"
-									onerror="this.src='resources/default.jpg'">
+									onerror="this.src='resources/default.jpg'"></a>
 							</div>
 						</div>
 
@@ -100,9 +103,11 @@
 								<p class="card-text text-justify"
 									th:text="${animals[1].description}">Beschreibung</p>
 
-								<img th:src="@{/animal/profileImage(id=${animals[1].id})}"
+								<a th:href="@{/animal/profile(id=${animals[1].id})}"
+									class="logo waves-effect pb-4"> <img
+									th:src="@{/animal/profileImage(id=${animals[1].id})}"
 									class="img-fluid z-depth-2"
-									onerror="this.src='resources/default.jpg'">
+									onerror="this.src='resources/default.jpg'"></a>
 							</div>
 						</div>
 
@@ -126,9 +131,11 @@
 								<p class="card-text text-justify"
 									th:text="${animals[2].description}">Beschreibung</p>
 
-								<img th:src="@{/animal/profileImage(id=${animals[2].id})}"
+								<a th:href="@{/animal/profile(id=${animals[2].id})}"
+									class="logo waves-effect pb-4"> <img
+									th:src="@{/animal/profileImage(id=${animals[2].id})}"
 									class="img-fluid z-depth-2"
-									onerror="this.src='resources/default.jpg'">
+									onerror="this.src='resources/default.jpg'"></a>
 							</div>
 						</div>
 					</div>

@@ -88,12 +88,12 @@
 							th:text="${user.userProfile.dayOfBirth}">1.1.2018</td>
 
 						<td class="col-md-3 center-block p-2"><a
-							class="btn btn-sm btn-success" th:href="@{show(id=${user.id})}">Zu
+							class="btn btn-sm btn-success" th:href="@{/user/show(id=${user.id})}">Zu
 								Profil</a> <a th:if="${actual.equals('Mitglieder')}"
-							th:href="@{promote(id=${user.id})}" type="button"
+							th:href="@{/user/promote(id=${user.id})}" type="button"
 							class="btn btn-sm btn-danger mr-2">Befördern!</a>
 							<a th:if="${actual.equals('Mitarbeiter')}"
-							th:href="@{demote(id=${user.id})}" type="button"
+							th:href="@{/user/demote(id=${user.id})}" type="button"
 							class="btn btn-sm btn-danger mr-2">Abstufen!</a></td>
 
 					</tr>

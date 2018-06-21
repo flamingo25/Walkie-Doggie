@@ -49,18 +49,18 @@
 		<div class="col-md-12 center-block">
 			<div class="row">
 				<div class="col-3">
-					<a th:href="@{image(id=${user.id})}" class="logo waves-effect pb-4"> <img
-						th:src="@{image(id=${user.id})}"
+					<a th:href="@{/user/image(id=${user.id})}" class="logo waves-effect pb-4"> <img
+						th:src="@{/user/image(id=${user.id})}"
 						onerror="this.src='../resources/default.jpg'"
 						class="img-thumbnail" style="width: 100%; height: 100%;">
 					</a>
 					<div th:if="${view == null}"class="button-group">
-						<a th:href="@{upload}" class="btn btn-block btn-primary mb-2"><i
+						<a th:href="@{/user/upload}" class="btn btn-block btn-primary mb-2"><i
 							class="fa fa-upload mr-3"></i>Bild hochladen </a> <a
-							th:href="@{edit}" class="btn btn-block btn-primary mb-2"><i
-							class="fa fa-upload mr-3"></i>Profil bearbeiten </a> <a
-							th:href="@{reset}" class="btn btn-block btn-primary mb-2"><i
-							class="fa fa-upload mr-3"></i>Passwort zurücksetzen </a>
+							th:href="@{/user/edit}" class="btn btn-block btn-primary mb-2"><i
+							class="fa fa-pencil mr-3"></i>Profil bearbeiten </a> <a
+							th:href="@{/user/reset}" class="btn btn-block btn-primary mb-2"><i
+							class="fa fa-undo mr-3"></i>Passwort zurücksetzen </a>
 					</div>
 				</div>
 				<div class="col-8">

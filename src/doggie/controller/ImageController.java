@@ -49,7 +49,7 @@ public class ImageController {
 	public String uploadDocument(Model model, @RequestParam("id") int animalId,
 			@RequestParam("myFile") MultipartFile file) {
 
-		if (!(file.getSize() == 0 || file.getSize() > 100000)) {
+		if (file.getSize() < 2400000 && file.getSize() > 100) {
 
 			try {
 
@@ -76,7 +76,8 @@ public class ImageController {
 			} catch (Exception e) {
 				model.addAttribute("errorMessage", "Error:" + e.getMessage());
 			}
-		} else model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
+		} else
+			model.addAttribute("errorMessage", "Bild kann nicht hochgeladen werden!");
 
 		return "forward:/animal/profile";
 	}
@@ -152,14 +153,17 @@ public class ImageController {
 		imageRepository.deleteById(id);
 
 		if (image.isProfile()) {
-			AnimalImage newProfile = imageRepository.findAllByAnimal(animal).get(0);
-			newProfile.setProfile(true);
-			imageRepository.save(newProfile);
+			List<AnimalImage> newProfile = imageRepository.findAllByAnimal(animal);
+			if (!CollectionUtils.isEmpty(newProfile)) {
+				AnimalImage img = newProfile.get(0);
+				img.setProfile(true);
+				imageRepository.save(img);
+			}
 		}
-		
+
 		model.addAttribute("errorMessage", "Das Bild " + image.getId() + " wurde gelöscht!");
 
-		return "redirect:/animal/images?id=" + image.getAnimal().getId();
+		return "redirect:/animal/images?id=" + animal.getId();
 	}
 
 	@RequestMapping(value = "/animal/images/profile")
@@ -177,7 +181,7 @@ public class ImageController {
 		image.setProfile(true);
 		animal.setImage(images);
 		animalRepository.save(animal);
-		
+
 		model.addAttribute("message", "Das Bild " + image.getId() + " wurde als Profilbild eingestellt!");
 
 		return "redirect:/animal/images?id=" + animal.getId();

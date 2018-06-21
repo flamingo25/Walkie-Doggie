@@ -66,7 +66,7 @@ public class AnimalModel implements java.io.Serializable {
 	private List<Vaccination> vaccinations;
 	
 	@ManyToMany(mappedBy = "favourites",fetch=FetchType.LAZY)
-	private List<User> fUser;
+	private Set<User> fUser;
 	
 	@ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.MERGE)
 	private List<Compatibility> compatibilities;
@@ -74,10 +74,10 @@ public class AnimalModel implements java.io.Serializable {
 	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Set<AnimalImage> image;
 	
-	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy="animal", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private Set<CalendarModel> events;
 	
-	@OneToMany(mappedBy="animal", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy="animal", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private Set<AdoptionModel> adoptions;
 
 	@Version
@@ -232,11 +232,11 @@ public class AnimalModel implements java.io.Serializable {
 		image.add(newImage);
 	}
 
-	public List<User> getfUser() {
+	public Set<User> getfUser() {
 		return fUser;
 	}
 
-	public void setfUser(List<User> fUser) {
+	public void setfUser(Set<User> fUser) {
 		this.fUser = fUser;
 	}
 	

@@ -61,7 +61,7 @@
 								<input class="form-control" id="searchString" type="text"
 									name="searchString" placeholder="Nach Tieren suchen">
 								<div class="input-group-append">
-									<button type="submit" class="btn btn-warning m-0">Submit</button>
+									<button type="submit" class="btn btn-warning m-0"><i class="fa fa-search"></i></button>
 								</div>
 							</div>
 						</form>
@@ -76,9 +76,9 @@
 							<!--Card image-->
 							<div class="view overlay">
 								<img class="card-img-top"
-									th:src="@{profileImage(id=${animal.id})}" alt="Card image cap"
+									th:src="@{/animal/profileImage(id=${animal.id})}" alt="Card image cap"
 									onerror="this.src='../resources/default.jpg'"> <a
-									th:href="@{profile(id=${animal.id})}">
+									th:href="@{/animal/profile(id=${animal.id})}">
 									<div class="mask rgba-white-slight"></div>
 								</a>
 							</div>
@@ -96,8 +96,8 @@
 								<hr>
 								<p class="card-text" th:text="'Alter: ' + ${animal.age}">Alter</p>
 								<div class="btn-group" role="group" aria-label="Basic example">
-									<a th:href="@{edit(id=${animal.id})}" class="btn btn-warning">
-										Bearbeiten</a> <a th:href="@{delete(id=${animal.id})}"
+									<a th:href="@{/animal/edit(id=${animal.id})}" class="btn btn-warning">
+										Bearbeiten</a> <a th:href="@{/animal/delete(id=${animal.id})}"
 										class="btn btn-danger">Löschen</a>
 								</div>
 							</div>
