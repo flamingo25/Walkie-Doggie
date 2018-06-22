@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -31,6 +32,7 @@ public class ImageController {
 	@Autowired
 	ImageRepository imageRepository;
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/upload", method = RequestMethod.GET)
 	public String showUploadForm(Model model, @RequestParam("id") int animalId) {
 
@@ -45,6 +47,7 @@ public class ImageController {
 		return "/animal/upload";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/upload", method = RequestMethod.POST)
 	public String uploadDocument(Model model, @RequestParam("id") int animalId,
 			@RequestParam("myFile") MultipartFile file) {
@@ -123,6 +126,7 @@ public class ImageController {
 		}
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/images")
 	public String images(Model model, @RequestParam int id) {
 		Optional<AnimalModel> animalOpt = animalRepository.findById(id);
@@ -139,6 +143,7 @@ public class ImageController {
 		return "/animal/images";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/images/delete")
 	public String deleteImage(Model model, @RequestParam int id) {
 
@@ -166,6 +171,7 @@ public class ImageController {
 		return "redirect:/animal/images?id=" + animal.getId();
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/images/profile")
 	public String profileImage(Model model, @RequestParam int id) {
 

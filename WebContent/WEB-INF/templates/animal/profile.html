@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
@@ -58,19 +59,27 @@
 						</a>
 						<div class="button-group">
 							<a th:href="@{/animal/upload(id=${animal.id})}"
-								class="btn btn-block btn-primary mb-2"><i
-								class="fa fa-upload mr-3"></i>Bild hochladen </a> <a
+								class="btn btn-block btn-primary mb-2" sec:authorize="hasRole('EMPLOYEE')"><i
+								class="fa fa-upload mr-3"></i>Bild hochladen </a>
+								
+								 <a
 								th:href="@{/animal/images(id=${animal.id})}"
-								class="btn btn-block btn-primary mb-2"><i
-								class="fa fa-file-image-o mr-3"></i>Bilder ändern </a> <a
+								class="btn btn-block btn-primary mb-2" sec:authorize="hasRole('EMPLOYEE')"><i
+								class="fa fa-file-image-o mr-3"></i>Bilder ändern </a> 
+								
+								<a
 								th:href="@{/calendar/animal(id=${animal.id})}"
 								class="btn btn-block btn-primary mb-2"><i
-								class="fa fa-calendar mr-3"></i>Termin buchen </a> <a
+								class="fa fa-calendar mr-3"></i>Termin buchen </a> 
+								
+								<a
 								th:href="@{/adopt/new(id=${animal.id})}"
 								class="btn btn-block btn-primary mb-2"><i
-								class="fa fa-file-text-o mr-3"></i>Adoption starten </a> <br> <a
+								class="fa fa-file-text-o mr-3"></i>Adoption starten </a> <br> 
+								
+								<a
 								th:href="@{/animal/edit(id=${animal.id})}"
-								class="btn btn-block btn-primary mb-2"><i
+								class="btn btn-block btn-primary mb-2" sec:authorize="hasRole('EMPLOYEE')"><i
 								class="fa fa-pencil mr-3"></i>Profil bearbeiten </a>
 
 							<table class="table table-user-information">

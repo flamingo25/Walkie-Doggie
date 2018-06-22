@@ -1,5 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 <meta charset="utf-8"/>
 </head>
@@ -79,10 +80,10 @@
                     <i class="fa fa-users mr-3"></i>Benutzer</a>
                     
                     
-				<a th:if="${actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item active waves-effect">
+				<a th:if="${actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item active waves-effect" sec:authorize="hasRole('EMPLOYEE')">
                     <i class="fa fa-users mr-3"></i>Personal
                 </a>
-                <a th:if="${!actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item list-group-item-action waves-effect">
+                <a th:if="${!actual.equals('control')}" th:href="@{/user/listAdmins}" class="list-group-item list-group-item-action waves-effect" sec:authorize="hasRole('EMPLOYEE')">
                     <i class="fa fa-users mr-3"></i>Personal
                 </a>
             </div>

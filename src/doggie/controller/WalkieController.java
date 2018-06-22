@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -193,6 +194,7 @@ public class WalkieController {
 		return "/walkie/adoption";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/adopt/accept")
 	public String accept(Model model, @RequestParam int id, @RequestParam boolean accept) {
 

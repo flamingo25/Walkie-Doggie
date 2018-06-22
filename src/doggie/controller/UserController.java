@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -44,13 +45,13 @@ public class UserController {
 
 	@Autowired
 	UserImageDao userImageDao;
-	
+
 	@Autowired
 	UserProfileDao userProfileDao;
 
 	@Autowired
 	UserRoleDao userRoleDao;
-	
+
 	@Autowired
 	AnimalRepository animalRepository;
 
@@ -92,6 +93,7 @@ public class UserController {
 		return "/user/profile";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/user/promote")
 	public String promoteUser(Model model, @RequestParam int id) {
 		Optional<User> userOpt = userDao.findById(id);
@@ -115,6 +117,7 @@ public class UserController {
 		return "forward:/user/listUsers";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/user/demote")
 	public String demoteUser(Model model, @RequestParam int id) {
 		Optional<User> userOpt = userDao.findById(id);
@@ -202,12 +205,13 @@ public class UserController {
 		Date dayOfBirth = cal.getTime();
 		profile.setDayOfBirth(dayOfBirth);
 
-		if (password.equals(password2)) {
-			user.setPassword(password);
-			user.encryptPassword();
+		if (!password.isEmpty() || !password2.isEmpty()) {
+			if (password.equals(password2)) {
+				user.setPassword(password);
+				user.encryptPassword();
+			} else model.addAttribute("errorMessage", "Passwörter stimmen nicht überein und wurden nicht geändert");
 		}
-		
-		
+
 		userDao.save(user);
 
 		model.addAttribute("message", "Profil " + user.getUserName() + " wurde geändert!");
@@ -215,6 +219,7 @@ public class UserController {
 		return "forward:/user/profile";
 	}
 
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/user/reset")
 	public String reset(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
@@ -222,12 +227,12 @@ public class UserController {
 
 		user.setPassword("password");
 		user.encryptPassword();
-		
+
 		userDao.save(user);
 
 		model.addAttribute("errorMessage", "Passwort wurde zurückgesetzt!");
 
-		return "forward:/user/profile";
+		return "forward:/user/listUsers";
 	}
 
 	@RequestMapping(value = "/user/upload", method = RequestMethod.GET)
@@ -242,28 +247,43 @@ public class UserController {
 	@RequestMapping(value = "/user/upload", method = RequestMethod.POST)
 	public String uploadUserImage(Model model, Principal principal, @RequestParam("myFile") MultipartFile file) {
 
-		if (file.getSize() < 2400000 && file.getSize() > 100 ) {
+		if (file.getSize() < 2400000 && file.getSize() > 100) {
 
 			try {
 				List<User> userOpt = userDao.findByUserName(principal.getName());
 				User user = userOpt.get(0);
 				UserProfile profile = user.getUserProfile();
-				
+
 				if (profile.getImage() != null) {
+
+					Integer oldImg = profile.getImage().getId();
 					profile.setImage(null);
+
+					UserImage newImage = new UserImage();
+					newImage.setContent(file.getBytes());
+					newImage.setContentType(file.getContentType());
+					newImage.setFilename(file.getOriginalFilename());
+					newImage.setName(file.getName());
+					newImage.setUserProfile(profile);
+					profile.setImage(newImage);
+					user.setUserProfile(profile);
+					userDao.save(user);
+
+					userImageDao.deleteById(oldImg);
+
+				} else {
+
+					UserImage newImage = new UserImage();
+					newImage.setContent(file.getBytes());
+					newImage.setContentType(file.getContentType());
+					newImage.setFilename(file.getOriginalFilename());
+					newImage.setName(file.getName());
+					newImage.setUserProfile(profile);
+					profile.setImage(newImage);
+					user.setUserProfile(profile);
+					userDao.save(user);
 				}
-				
-				
-				UserImage newImage = new UserImage();
-				newImage.setContent(file.getBytes());
-				newImage.setContentType(file.getContentType());
-				newImage.setFilename(file.getOriginalFilename());
-				newImage.setName(file.getName());
-				newImage.setUserProfile(profile);
-				profile.setImage(newImage);
-				user.setUserProfile(profile);
-				userDao.save(user);
-				
+
 				model.addAttribute("message", "Bild wurde hochgeladen!");
 
 			} catch (Exception e) {
@@ -281,7 +301,7 @@ public class UserController {
 		Optional<User> userOpt = userDao.findById(userId);
 		User user = userOpt.get();
 		UserProfile profile = user.getUserProfile();
-		
+
 		UserImage img = profile.getImage();
 
 		try {
@@ -306,6 +326,7 @@ public class UserController {
 		return "/user/list";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping("/user/listAdmins")
 	public String listAdmins(Model model) {
 
@@ -317,16 +338,16 @@ public class UserController {
 
 		return "/user/list";
 	}
-	
+
 	@RequestMapping(value = "/user/favourites")
 	public String handleFavourites(Model model, Principal principal) {
 		List<User> userOpt = userDao.findByUserName(principal.getName());
 		User user = userOpt.get(0);
-		
+
 		List<AnimalModel> animals = animalRepository.findAllByFUser(user);
-		
+
 		model.addAttribute("animals", animals);
-		
+
 		return "/user/favourites";
 	}
 

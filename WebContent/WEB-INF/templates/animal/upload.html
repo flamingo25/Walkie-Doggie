@@ -18,6 +18,8 @@
 							<form class="form-horizontal" enctype="multipart/form-data"
 								method="post" th:action="@{/animal/upload}">
 								<fieldset>
+									<input type="hidden" th:name="${_csrf.parameterName}"
+										th:value="${_csrf.token}" />
 									<legend class="pb-4 ml-3 text-center"
 										style="color: #0066ff; font-weight: bold;"
 										th:text="'Bild für ' + ${animal.name} + ' hochladen'"></legend>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
@@ -89,10 +90,10 @@
 
 						<td class="col-md-3 center-block p-2"><a
 							class="btn btn-sm btn-success" th:href="@{/user/show(id=${user.id})}">Zu
-								Profil</a> <a th:if="${actual.equals('Mitglieder')}"
+								Profil</a> <a th:if="${actual.equals('Mitglieder')}" sec:authorize="hasRole('ADMIN')"
 							th:href="@{/user/promote(id=${user.id})}" type="button"
 							class="btn btn-sm btn-danger mr-2">Befördern!</a>
-							<a th:if="${actual.equals('Mitarbeiter')}"
+							<a th:if="${actual.equals('Mitarbeiter')}" sec:authorize="hasRole('ADMIN')"
 							th:href="@{/user/demote(id=${user.id})}" type="button"
 							class="btn btn-sm btn-danger mr-2">Abstufen!</a></td>
 

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -96,6 +97,7 @@ public class AnimalController {
 		return "/animal/profile";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/delete")
 	public String deleteAnimal(Model model, @RequestParam int id) {
 
@@ -118,6 +120,7 @@ public class AnimalController {
 		return "forward:/animal/petbook";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/add", method = RequestMethod.GET)
 	public String showAddAnimalForm(Model model) {
 		List<Species> species = speciesRepository.findAll();
@@ -134,6 +137,7 @@ public class AnimalController {
 		return "/animal/edit";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/edit", method = RequestMethod.GET)
 	public String showChangeAnimalForm(Model model, @RequestParam int id) {
 
@@ -167,6 +171,7 @@ public class AnimalController {
 		return "/animal/edit";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/add", method = RequestMethod.POST)
 	public String addAnimal(@Valid AnimalModel newAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
@@ -203,6 +208,7 @@ public class AnimalController {
 		return "forward:/animal/petbook";
 	}
 
+	@Secured("ROLE_EMPLOYEE")
 	@RequestMapping(value = "/animal/edit", method = RequestMethod.POST)
 	public String editAnimal(@Valid AnimalModel changedAnimalModel, BindingResult bindingResult, Model model,
 			@RequestParam("species") int species,
@@ -269,10 +275,10 @@ public class AnimalController {
 			List<AnimalModel> fav = animalRepository.findAllByFUser(user);
 			fav.removeIf(v -> v.getId() != id);
 			if (CollectionUtils.isEmpty(fav)) {
-				
+
 				user.addFavourite(animal);
 				userDao.save(user);
-				
+
 				model.addAttribute("message", animal.getName() + " wurde zu deinen Favoriten hinzugefügt!");
 			} else
 				model.addAttribute("errorMessage", animal.getName() + " befindet sich bereits in deinen Favoriten!");
@@ -280,9 +286,9 @@ public class AnimalController {
 		} else {
 			favourites.removeIf(v -> v.getId() == id);
 			userDao.save(user);
-			
+
 			model.addAttribute("errorMessage", animal.getName() + " wurde von deinen Favoriten entfernt!");
-			
+
 			return "forward:/user/favourites";
 		}
 	}

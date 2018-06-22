@@ -9,19 +9,22 @@
 
 
 	<http>
-		<csrf disabled="true" />
+		<csrf />
 		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/fillUsers" access="permitAll" />
 		<intercept-url pattern="/images/**" access="permitAll" />
 		<intercept-url pattern="/signUp" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="permitAll" />
-
-		<!-- intercept-url pattern="/**" access="hasRole('USER')" / -->
-		<!-- intercept-url pattern="/**" access="hasRole('USER') or hasRole('ADMIN')" 
-			/ -->
+		<intercept-url pattern="/animal/add" access="hasRole('EMPLOYEE')" />
+		<intercept-url pattern="/animal/edit" access="hasRole('EMPLOYEE')" />
+		<intercept-url pattern="/animal/upload" access="hasRole('EMPLOYEE')" />
+		<intercept-url pattern="/animal/images" access="hasRole('EMPLOYEE')" />
+		<intercept-url pattern="/user/promote" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/user/demote" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/user/reset" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/user/listAdmins" access="hasRole('EMPLOYEE')" />
+		<intercept-url pattern="/adopt/accept" access="hasRole('EMPLOYEE')" />
+		
 		<intercept-url pattern="/**" access="authenticated" />
-		<intercept-url pattern="/delete"
-			access="hasRole('ADMIN')" />
 
 		<form-login login-page="/login" default-target-url='/'
 			always-use-default-target='true' />

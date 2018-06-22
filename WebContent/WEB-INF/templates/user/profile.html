@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
 <div th:replace="~{includes/bootstrap :: bootstrapMeta}" />
@@ -28,88 +29,95 @@
 	<div class="container-fluid mt-5">
 		<div class="card mb-4 wow fadeIn p-5">
 			<div>
-			<!--  Error message ----------------------------------------------------------- -->
-			<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
-				class="alert alert-danger" role="alert"></div>
-			<!--  Error message ----------------------------------------------------------- -->
+				<!--  Error message ----------------------------------------------------------- -->
+				<div th:unless="${errorMessage} == null" th:utext="${errorMessage}"
+					class="alert alert-danger" role="alert"></div>
+				<!--  Error message ----------------------------------------------------------- -->
 
-			<!--  Warning message ----------------------------------------------------------- -->
-			<div th:unless="${warningMessage} == null"
-				th:utext="${warningMessage}" class="alert alert-warning"
-				role="warning"></div>
-			<!--  Warning message ----------------------------------------------------------- -->
+				<!--  Warning message ----------------------------------------------------------- -->
+				<div th:unless="${warningMessage} == null"
+					th:utext="${warningMessage}" class="alert alert-warning"
+					role="warning"></div>
+				<!--  Warning message ----------------------------------------------------------- -->
 
-			<!--   message ----------------------------------------------------------- -->
-			<div th:unless="${message} == null" th:utext="${message}"
-				class="alert alert-success" role="warning"></div>
-			<!--   message ----------------------------------------------------------- -->
-		</div>
+				<!--   message ----------------------------------------------------------- -->
+				<div th:unless="${message} == null" th:utext="${message}"
+					class="alert alert-success" role="warning"></div>
+				<!--   message ----------------------------------------------------------- -->
+			</div>
 
 
-		<div class="col-md-12 center-block">
-			<div class="row">
-				<div class="col-3">
-					<a th:href="@{/user/image(id=${user.id})}" class="logo waves-effect pb-4"> <img
-						th:src="@{/user/image(id=${user.id})}"
-						onerror="this.src='../resources/default.jpg'"
-						class="img-thumbnail" style="width: 100%; height: 100%;">
-					</a>
-					<div th:if="${view == null}"class="button-group">
-						<a th:href="@{/user/upload}" class="btn btn-block btn-primary mb-2"><i
-							class="fa fa-upload mr-3"></i>Bild hochladen </a> <a
-							th:href="@{/user/edit}" class="btn btn-block btn-primary mb-2"><i
-							class="fa fa-pencil mr-3"></i>Profil bearbeiten </a> <a
-							th:href="@{/user/reset}" class="btn btn-block btn-primary mb-2"><i
-							class="fa fa-undo mr-3"></i>Passwort zurücksetzen </a>
+			<div class="col-md-12 center-block">
+				<div class="row">
+					<div class="col-3">
+						<a th:href="@{/user/image(id=${user.id})}"
+							class="logo waves-effect pb-4"> <img
+							th:src="@{/user/image(id=${user.id})}"
+							onerror="this.src='../resources/default.jpg'"
+							class="img-thumbnail" style="width: 100%; height: 100%;">
+						</a>
+						<div th:if="${view == null}" class="button-group">
+							<a th:href="@{/user/upload}"
+								class="btn btn-block btn-primary mb-2"><i
+								class="fa fa-upload mr-3"></i>Bild hochladen </a> <a
+								th:href="@{/user/edit}" class="btn btn-block btn-primary mb-2"><i
+								class="fa fa-pencil mr-3"></i>Profil bearbeiten </a>
+						</div>
+						<div th:if="${view}" class="button-group">
+							<a th:href="@{/user/reset}"
+								class="btn btn-block btn-primary mb-2"
+								sec:authorize="hasRole('ADMIN')"><i class="fa fa-undo mr-3"></i>Passwort
+								zurücksetzen </a>
+						</div>
+
 					</div>
-				</div>
-				<div class="col-8">
-					<table class="table table-user-information">
-						<h3 class="font-weight-bold" th:text="${user.userName}">Name</h3>
-						<br>
-						<tbody>
-							<tr>
-								<td>Benutzer-ID:</td>
-								<td th:text="${user.userProfile.id}"></td>
-							</tr>
-							<tr>
-								<td>Vorname:</td>
-								<td th:text="${user.userProfile.firstName}"></td>
-							</tr>
-							<tr>
-								<td>Nachname:</td>
-								<td th:text="${user.userProfile.surName}"></td>
-							</tr>
-							<tr>
-								<td>Geburtsdatum:</td>
-								<td th:text="${user.userProfile.dayOfBirth}"></td>
-							</tr>
+					<div class="col-8">
+						<table class="table table-user-information">
+							<h3 class="font-weight-bold" th:text="${user.userName}">Name</h3>
+							<br>
+							<tbody>
+								<tr>
+									<td>Benutzer-ID:</td>
+									<td th:text="${user.userProfile.id}"></td>
+								</tr>
+								<tr>
+									<td>Vorname:</td>
+									<td th:text="${user.userProfile.firstName}"></td>
+								</tr>
+								<tr>
+									<td>Nachname:</td>
+									<td th:text="${user.userProfile.surName}"></td>
+								</tr>
+								<tr>
+									<td>Geburtsdatum:</td>
+									<td th:text="${user.userProfile.dayOfBirth}"></td>
+								</tr>
 
-							<tr>
-							<tr>
-								<td>E-Mail:</td>
-								<td th:text="${user.userProfile.email}"></td>
-							</tr>
-							<tr>
-								<td>PLZ:</td>
-								<td th:text="${user.userProfile.zip}"></td>
-							</tr>
-							<tr>
-								<td>Stadt:</td>
-								<td th:text="${user.userProfile.city}"></td>
-							</tr>
-							<tr>
-								<td>Adresse:</td>
-								<td th:text="${user.userProfile.address}"></td>
-							</tr>
-							<tr>
-								<td>Telefon:</td>
-								<td th:text="${user.userProfile.phone}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<hr>
+								<tr>
+								<tr>
+									<td>E-Mail:</td>
+									<td th:text="${user.userProfile.email}"></td>
+								</tr>
+								<tr>
+									<td>PLZ:</td>
+									<td th:text="${user.userProfile.zip}"></td>
+								</tr>
+								<tr>
+									<td>Stadt:</td>
+									<td th:text="${user.userProfile.city}"></td>
+								</tr>
+								<tr>
+									<td>Adresse:</td>
+									<td th:text="${user.userProfile.address}"></td>
+								</tr>
+								<tr>
+									<td>Telefon:</td>
+									<td th:text="${user.userProfile.phone}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<hr>
 	</main>
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

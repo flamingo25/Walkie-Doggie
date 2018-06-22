@@ -18,6 +18,8 @@
 							<form class="form-horizontal" enctype="multipart/form-data"
 								method="post" th:action="@{/user/upload}">
 								<fieldset>
+									<input type="hidden" th:name="${_csrf.parameterName}"
+										th:value="${_csrf.token}" />
 									<legend class="pb-4 ml-3 text-center"
 										style="color: #0066ff; font-weight: bold;"
 										th:text="'Bild für ' + ${user.userName} + ' hochladen'"></legend>
@@ -40,8 +42,8 @@
 											<button type="submit" class="btn btn-primary">
 												<i class="fa fa-upload mr-2" aria-hidden="true"></i>Hochladen
 											</button>
-											<a th:href="@{/user/profile}" class="btn btn-danger">
-													<i class="fa fa-ban mr-2" aria-hidden="true"></i>Abbrechen
+											<a th:href="@{/user/profile}" class="btn btn-danger"> <i
+												class="fa fa-ban mr-2" aria-hidden="true"></i>Abbrechen
 											</a>
 										</div>
 									</div>
