@@ -28,7 +28,6 @@ import doggie.user.model.User;
 import doggie.user.model.UserProfile;
 
 public class ReportView extends ReportOutput {
-	
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
@@ -119,7 +118,10 @@ public class ReportView extends ReportOutput {
 		mainCell.setPaddingTop(30);
 		mainCell.setPaddingLeft(20);
 		mainCell.addElement(new Phrase(
-				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+				"Für den Fall, dass ich ein Jungtier adoptiere, welches nicht kastriert ist, habe ich dafür Sorge zu tragen, dass das Tier in einem vertraglich bestimmten Alter kastriert wird. Die Bestätigung des Tierarztes muss vorgelegt und die Kosten von mir selbst getragen werden.\r\n" + 
+				"\r\n" +
+				"Mit dem Absenden des Adoptionsantrages habe ich bestätigt, dass ich über den finanziellen und zeitlichen Aufwand informiert bin und weiß, welche Pflichten mit der Anschaffung eines Tieres auf mich zukommen.\r\n" + 
+				"",
 				font));
 		main.addCell(mainCell);
 		document.add(main);
